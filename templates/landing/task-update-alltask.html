@@ -1,0 +1,202 @@
+{% extends "backend/base/admin_base.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    .dlt-btn{
+        border: none;
+        font-size: 20px;
+        font-weight: 800; 
+        color: #cf4949;
+    }
+
+    .update-button {
+        border: none;
+        background-color: rgb(0, 191, 0);
+        color: white;
+        font-size: 16px;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .update-button:hover {  
+        background-color: rgb(0, 150, 0);
+    }
+
+    .back{
+        border: none;
+        background-color: #303956;
+        color: white;
+        font-size: 36px;
+        font-weight: 1400;
+    }
+
+    .back:hover{
+        transform: scale(1.05);
+        color: grey;
+    }
+</style>
+
+
+<form method="POST">
+    {% csrf_token %}
+    <div id="modal-3" class="modal fade" role="dialog" tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="border-bottom: 1px solid rgba(0,0,0,0.2)">
+                    <h4 class="modal-title">Delete TASK</h4>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <h5 style="margin-top:10px; margin-bottom:20px;">Confirm <span style="color:red;">delete</span> this document?</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" type="submit" name="delete_btn" id="delete_btn">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<form method="POST">
+    {% csrf_token %}
+    <div id="modal-4" class="modal fade" role="dialog" tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="border-bottom: 1px solid rgba(0,0,0,0.2)">
+                    <h4 class="modal-title">Delete TASK</h4>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <h5 style="margin-top:10px; margin-bottom:20px;">Confirm <span style="color:red;">delete</span> this photo?</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" type="submit" name="delete_photo_btn" id="delete_photo_btn">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="container-fluid">
+    <div class="profile-foreground position-relative mx-n4 mt-n4">
+        <div class="profile-wid-bg">
+            {% comment %} <img src="{% static 'assets/images/profile-bg.jpg' %}" alt="" class="profile-wid-img" /> {% endcomment %}
+        </div>
+    </div>
+    <div class="pt-4 mb-4 mb-lg-3 pb-lg-4 profile-wrapper">
+        <div class="row g-4">
+            <h2 style="color: white; " ><button id="backButton" class="back" >&#8592;&nbsp;&nbsp;</button>
+            TASK UPDATE</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div>
+                <!-- Tab panes -->
+                <div class="tab-content pt-4 text-muted">
+                    <div class="tab-pane active" id="overview-tab" role="tabpanel">
+                        <div class="row">
+                            <div class="col-xxl-12">
+                                {% comment %} TASK DETAILs {% endcomment %}
+                                <div class="card">
+                                    <div class="card-body">
+                                        <form method="POST" action="" enctype="multipart/form-data">
+                                            {% csrf_token %}
+
+                                            <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
+                                                <div class="col">
+                                                    {% if task.complete %}
+                                                        <button class="btn btn-success" name="complete_btn">Complete</button>
+                                                    {% else %}
+                                                        <button class="btn btn-danger" name="incomplete_btn">Incomplete</button>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            
+                                            {% include "libs/input.html" with label="Title" name="title" required="True" value=task.title %}
+                                            {% include "libs/input.html" with label="Description" name="description" required="True" value=task.description %}
+                                            {% include "libs/input.html" with label="Due Date" name="duedate" type="datetime" value=task.duedate %}
+                                            <!-- {% include "libs/input.html" with label="Upload Photo" type="image" name="photo" %} -->
+                                            <label style="margin-top: 10px;">Upload Photo</label>
+                                            <input class="form-control" type="file" name="photo" id="photo" multiple accept="image/*" />
+                                            {% if task.photo %}
+                                                <p  stye="margin-top: 5px"></p>
+                                                <i class="text-muted">Previous Photo:&nbsp;&nbsp;</i>
+                                                {% for pho in task.photo.all %}
+                                                <i  stye="margin-top: 5px"></i>
+                                                    <img src="{{ pho.Taskfile.url }}" width="50">
+                                                    <button data-bs-target="#modal-4" data-bs-toggle="modal" onclick="delete_photo_function(this)" style="top: 2px;" value="{{ pho.id }}" class="dlt-btn" type="button">&#215;</button>
+                                                
+                                                {% endfor %}
+                                            {% else %}
+                                                :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-
+                                            {% endif %}
+                                            
+                                            <p></p>
+                                            {% include "libs/input.html" with label="Upload File" type="file" name="document" multiple=True max_size="100MB" max_file=3 %}
+                                            
+                                            {% for doc in task.document.all %}
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-primary" style="padding: 10px 25px; top: 10px;" type="button" href="{{ doc.Taskfile.url }}" target="_blank">
+                                                    File {{forloop.counter}}
+                                                </a> 
+                                                <button data-bs-target="#modal-3" data-bs-toggle="modal" onclick="delete_function(this)" style="top: 12px;" value="{{ doc.id }}" class="dlt-btn" type="button">&#215;</button>
+                                            {% endfor %}
+
+                                            <hr style="margin-top: 50px;">
+                                            <button class="btn btn-success" type="submit" name="update-btn">Update</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- container-fluid -->
+
+{% endblock content %}
+
+{% block script %}
+
+<script>
+    function delete_function(that){
+        console.log(that.value)
+        document.getElementById('delete_btn').value = that.value
+    }
+</script>
+
+<script>
+    function delete_photo_function(that){
+        console.log(that.value)
+        document.getElementById('delete_photo_btn').value = that.value
+    }
+</script>
+
+<script type="text/javascript">
+    document.getElementById("backButton").onclick = function(){
+        location.href = "{% url 'all-task' %}"
+    }
+
+</script>
+
+{% endblock script %}

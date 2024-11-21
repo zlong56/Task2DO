@@ -1,0 +1,10 @@
+{% load custom_filters %}
+{% with url_list=url_list|split:"," label_list=label_list|split:","%}
+{% for this_url in url_list %}
+<li class="breadcrumb-item">
+    <a href="{{this_url|to_url}}">
+        {{ label_list|get_index:forloop.counter0 }}
+    </a>
+</li>
+{% endfor %}
+{% endwith %}

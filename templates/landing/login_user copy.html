@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+{% if user.id %}
+    <meta name="user_id" content="{{ user.id }}">
+{% endif %}
+    <title>{{COMPANY_NAME}}</title>
+    <link rel="icon" type="image/jpeg" sizes="237x122" href="{% static 'landing_assets/img/logo.png' %}">
+    <link rel="stylesheet" href="{% static 'landing_assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Baloo+Bhaina+2&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Dongle&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Outfit&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Petrona&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sen&amp;display=swap">
+    <link rel="stylesheet" href="{% static 'landing_assets/fonts/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'landing_assets/fonts/ionicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'landing_assets/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'landing_assets/css/Vertical-Navigation-with-double-sub-menu--scroll-enable-by-Jigar-Mistry.css' %}">
+</head>
+
+<body>
+    <form method="POST">
+    {% csrf_token %}
+    <div class="container" style="margin-top: 100px;width: 85%;box-shadow: 0px 0px 18px 8px rgba(187,177,152,0.71);background: #ffffff;border-radius: 1px;">
+        <div class="row">
+            <div class="col d-flex flex-column justify-content-center align-items-center align-content-center align-self-center" style="padding-right: 60px;padding-left: 60px;padding-top: 88px;">
+                <div class="row" style="border-radius: 160px;height: 60px;">
+                    <div class="col d-flex justify-content-center">
+                        <p class="d-flex justify-content-center align-items-center" style="font-size: 48px;color: #2668c9;font-weight: bold;font-family: Outfit, sans-serif;">{{COMPANY_NAME}}</p>
+                    </div>
+                </div>
+                <p class="text-nowrap text-center d-flex d-lg-flex justify-content-center justify-content-lg-center" style="color: #696969;font-weight: bold;font-family: Outfit, sans-serif;font-size: 12px;">{{FULL_COMPANY_NAME}}</p>
+                {% for msg in messages %}
+                    <p style="margin-bottom: -30px; color:red;">{{msg}}</p>
+                {% endfor %}
+                <input type="text" name="username" style="background: #ebdede;border-style: none;box-shadow: 7px 7px 10px #aa847a, inset 0px 0px 0px 2px rgba(245,236,236,0.4);padding-bottom: 7px;font-size: 12px;padding-left: 12px;padding-top: 6px;margin-top: 60px;border-radius: 2px;max-width: 250px;width: 100%;" placeholder="Username">
+                <input type="password" name="password" style="background: #ebdede;border-style: none;box-shadow: 7px 7px 10px #aa847a, inset 0px 0px 0px 2px rgba(245,236,236,0.4);padding-bottom: 7px;font-size: 12px;padding-left: 12px;padding-top: 6px;margin-top: 13px;border-radius: 2px;max-width: 250px;width: 100%;" placeholder="Password">
+                <button class="btn btn-primary" type="submit" style="margin-top: 13px;background: #2668c9;border-style: none;box-shadow: 7px 7px 10px #999594, inset 0px -4px 6px 0px rgba(255,255,255,0.2);font-size: 13px;border-radius: 8px;padding-top: 4px;padding-bottom: 4px;color: rgba(255,255,255,0.84);max-width: 250px;width: 100%;">Login</button>
+                <button class="btn btn-primary" type="button" style="background: rgba(255,255,255,0);color: rgb(181,176,176);border-style: none;margin-top: 120px;font-size: 12px;"></button>
+            </div>
+            <div class="col d-flex flex-column justify-content-center align-items-center align-content-center" style="text-align: center;padding-left: 60px;padding-right: 60px;background: #2668c9;padding-top: 88px;padding-bottom: 100px;">
+                <img src="{% static 'landing_assets/img/logo.png' %}" width="130px" height="120px" style="border-radius: 20px;" />
+                <p style="text-align: center;font-size: 38px;color: var(--bs-white);font-weight: bold;text-shadow: 3px 3px 1px rgba(235,205,78,0.5);">Welcome !</p>
+                <!-- <p class="text-nowrap d-flex justify-content-center" style="text-align: center;font-size: 23px;color: var(--bs-white);font-weight: bold;margin-top: 42px;margin-bottom: 0px;text-shadow: 3px 3px 1px rgba(235,205,78,0.5);">Don't have an account ?</p><a class="btn btn-primary" role="button" style="margin-top: 15px;background: #082b56;border-style: none;font-size: 13px;border-radius: 8px;padding-top: 4px;padding-bottom: 4px;/*color: rgba(255,255,255,0.84);*/box-shadow: 7px 6px 8px rgba(56, 148, 229, 0.66);width: 120px;" href="#">Signup</a> -->
+            </div>
+        </div>
+    </div>
+    </form>
+    <script src="{% static 'landing_assets/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'landing_assets/js/Vertical-Navigation-with-double-sub-menu--scroll-enable-by-Jigar-Mistry.js' %}"></script>
+
+</body>
+
+</html>

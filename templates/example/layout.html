@@ -1,0 +1,493 @@
+{% extends "backend/base/admin_base.html" %}
+{% load static %}
+{% load custom_filters %}
+{% block title %} DEV - Layout Examples {% endblock %}
+
+{% block content %}
+    <style>
+        .display_row {
+            .col-2 {
+                border-width: 1px;   /* Set bottom border thickness */
+                border-style: solid; /* Set bottom border style, needed to make the border visible */
+                border-color: lightslategrey;  /* Set bottom border color */
+                border-radius: 5px; /* Set bottom border radius */
+                height:50px;
+            }
+            .col-3 {
+                border-width: 1px;   /* Set bottom border thickness */
+                border-style: solid; /* Set bottom border style, needed to make the border visible */
+                border-color: lightslategrey;  /* Set bottom border color */
+                border-radius: 5px; /* Set bottom border radius */
+                height:50px;
+            }
+            .col-4 {
+                border-width: 1px;   /* Set bottom border thickness */
+                border-style: solid; /* Set bottom border style, needed to make the border visible */
+                border-color: lightslategrey;  /* Set bottom border color */
+                border-radius: 5px; /* Set bottom border radius */
+                height:50px;
+            }
+            .col-6 {
+                border-width: 1px;   /* Set bottom border thickness */
+                border-style: solid; /* Set bottom border style, needed to make the border visible */
+                border-color: lightslategrey;  /* Set bottom border color */
+                border-radius: 5px; /* Set bottom border radius */
+                height:50px;
+            }
+            .col-12 {
+                border-width: 1px;   /* Set bottom border thickness */
+                border-style: solid; /* Set bottom border style, needed to make the border visible */
+                border-color: lightslategrey;  /* Set bottom border color */
+                border-radius: 5px; /* Set bottom border radius */
+                height:50px;
+            }
+            .col-lg-2 {
+                border-width: 1px;   /* Set bottom border thickness */
+                border-style: solid; /* Set bottom border style, needed to make the border visible */
+                border-color: lightslategrey;  /* Set bottom border color */
+                border-radius: 5px; /* Set bottom border radius */
+                height:50px;
+            }
+            .col-lg-3 {
+                border-width: 1px;   /* Set bottom border thickness */
+                border-style: solid; /* Set bottom border style, needed to make the border visible */
+                border-color: lightslategrey;  /* Set bottom border color */
+                border-radius: 5px; /* Set bottom border radius */
+                height:50px;
+            }
+        }
+    </style>
+
+    <div class="row">
+        <div class="col-12">
+            <p>The text copied</p>
+        </div>
+        <div class="col-12">
+            <span class="form-control" rows="5" id="raw_text" style="white-space: pre;"></span>
+        </div>
+        <div class="col-12">
+            <hr><p>The div's copied</p>
+        </div>
+        <div class="col-12">
+            <div class="row display_row" id="raw_div">
+            </div>
+            <hr>
+        </div>
+        <div class="col-12">
+            <div class='row'>
+                <div class="col-lg-2 col-md-4 col-6">
+                    {% include "libs/input.html" with name="Row_Include" label="Include Row Div" type="switch" id="Row_Include" %}
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    {% include "libs/input.html" with name="Align_Vertical" label="Vertical Alignment" type="select" value="-" options="-,align-items-start,align-items-center,align-items-end,align-items-stretch,align-items-baseline"|split:"," %}
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    {% include "libs/input.html" with name="Align_Horizontal" label="Horizontal Alignment" type="select" value="-" options="-,justify-content-start,justify-content-center,justify-content-end,justify-content-between,justify-content-around,justify-content-evenly"|split:"," %}
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    {% include "libs/input.html" with name="Align_Text" label="Text Alignment" type="select" value="-" options="-,text-start,text-center,text-end"|split:"," %}
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    {% include "libs/input.html" with name="Padding_Vertical" label="Vertical Padding" type="integer" %}
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    {% include "libs/input.html" with name="Padding_Horizontal" label="Horizontal Padding" type="integer" %}
+                </div>
+            </div>
+        </div>
+        <div class="col-12 align-self-end">
+            {% comment %} search button {% endcomment %}
+            <span id="Input_value"></span>
+        </div>
+        <div class="col-12"><hr></div>
+    </div>
+    
+
+        <div class="row display_row">
+            {% comment %} 6 col per row {% endcomment %}
+            <div class="col-5 offset-3">
+                <h4 style="margin-bottom:15px;margin-top:15px;">6 col per row </h4>
+            </div>
+            <div class="col-1" style="margin-bottom:15px;margin-top:15px;">
+                    {% include "libs/button.html" with text="Copy" toast="Copied" id="Copy_btn" class="success" onclick="copy_function('6_col_per_row')" %}</h4>
+            </div><div class="col-1 offset-2"></div>
+            <div class="col-2">
+                Col 1
+            </div>
+            <div class="col-2">
+                Col 2
+            </div>
+            <div class="col-2">
+                Col 3
+            </div>
+            <div class="col-2">
+                Col 4
+            </div>
+            <div class="col-2">
+                Col 5
+            </div>
+            <div class="col-2">
+                Col 6
+            </div>
+
+            
+            <div class="col-5 offset-3">
+                <h4 style="margin-bottom:15px;margin-top:15px;">6 - 3 col per row </h4>
+            </div>
+            <div class="col-1" style="margin-bottom:15px;margin-top:15px;">
+                    {% include "libs/button.html" with text="Copy" toast="Copied" id="Copy_btn" class="success" onclick="copy_function('6_3_col_per_row')" %}
+            </div><div class="col-1 offset-2"></div>
+            <div class="col-11">
+                <h4>
+                </h4>
+            </div>
+            <div class="col-lg-2 col-4">
+                Col 1
+            </div>
+            <div class="col-lg-2 col-4">
+                Col 2
+            </div>
+            <div class="col-lg-2 col-4">
+                Col 3
+            </div>
+            <div class="col-lg-2 col-4">
+                Col 4
+            </div>
+            <div class="col-lg-2 col-4">
+                Col 5
+            </div>
+            <div class="col-lg-2 col-4">
+                Col 6
+            </div>
+
+
+
+            <div class="col-5 offset-3">
+                <h4 style="margin-bottom:15px;margin-top:15px;">6 - 2 col per row </h4>
+            </div>
+            <div class="col-1" style="margin-bottom:15px;margin-top:15px;">
+                    {% include "libs/button.html" with text="Copy" toast="Copied" id="Copy_btn" class="success" onclick="copy_function('6_2_col_per_row')" %}
+            </div><div class="col-1 offset-2"></div>
+            <div class="col-11">
+                <h4>
+                </h4>
+            </div>
+            <div class="col-lg-2 col-6">
+                Col 1
+            </div>
+            <div class="col-lg-2 col-6">
+                Col 2
+            </div>
+            <div class="col-lg-2 col-6">
+                Col 3
+            </div>
+            <div class="col-lg-2 col-6">
+                Col 4
+            </div>
+            <div class="col-lg-2 col-6">
+                Col 5
+            </div>
+            <div class="col-lg-2 col-6">
+                Col 6
+            </div>
+
+            
+            <div class="col-5 offset-3">
+                <h4 style="margin-bottom:15px;margin-top:15px;">6 - 3 - 2 col per row </h4>
+            </div>
+            <div class="col-1" style="margin-bottom:15px;margin-top:15px;">
+                    {% include "libs/button.html" with text="Copy" toast="Copied" id="Copy_btn" class="success" onclick="copy_function('6_3_2_col_per_row')" %}
+            </div><div class="col-1 offset-2"></div>
+            <div class="col-11">
+                <h4>
+                </h4>
+            </div>
+            <div class="col-lg-2 col-md-4 col-6">
+                Col 1
+            </div>
+            <div class="col-lg-2 col-md-4 col-6">
+                Col 2
+            </div>
+            <div class="col-lg-2 col-md-4 col-6">
+                Col 3
+            </div>
+            <div class="col-lg-2 col-md-4 col-6">
+                Col 4
+            </div>
+            <div class="col-lg-2 col-md-4 col-6">
+                Col 5
+            </div>
+            <div class="col-lg-2 col-md-4 col-6">
+                Col 6
+            </div>
+
+            <div class="col-5 offset-3">
+                <h4 style="margin-bottom:15px;margin-top:15px;">6 - 3 - 1 col per row </h4>
+            </div>
+            <div class="col-1" style="margin-bottom:15px;margin-top:15px;">
+                    {% include "libs/button.html" with text="Copy" toast="Copied" id="Copy_btn" class="success" onclick="copy_function('6_3_1_col_per_row')" %}
+            </div><div class="col-1 offset-2"></div>
+            <div class="col-11">
+                <h4>
+                </h4>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-12">
+                Col 1
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-12">
+                Col 2
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-12">
+                Col 3
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-12">
+                Col 4
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-12">
+                Col 5
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-12">
+                Col 6
+            </div>
+
+
+            <div class="col-5 offset-3">
+                <h4 style="margin-bottom:15px;margin-top:15px;">6 - 2 - 1 col per row </h4>
+            </div>
+            <div class="col-1" style="margin-bottom:15px;margin-top:15px;">
+                    {% include "libs/button.html" with text="Copy" toast="Copied" id="Copy_btn" class="success" onclick="copy_function('6_2_1_col_per_row')" %}
+            </div><div class="col-1 offset-2"></div>
+            <div class="col-11">
+                <h4>
+                </h4>
+            </div>
+            <div class="col-lg-2 col-md-6 col-12">
+                Col 1
+            </div>
+            <div class="col-lg-2 col-md-6 col-12">
+                Col 2
+            </div>
+            <div class="col-lg-2 col-md-6 col-12">
+                Col 3
+            </div>
+            <div class="col-lg-2 col-md-6 col-12">
+                Col 4
+            </div>
+            <div class="col-lg-2 col-md-6 col-12">
+                Col 5
+            </div>
+            <div class="col-lg-2 col-md-6 col-12">
+                Col 6
+            </div>
+
+
+            {% comment %} 4 col per row {% endcomment %}
+            <div class="col-10 offset-1"><hr></div>
+            <div class="col-5 offset-3">
+                <h4 style="margin-bottom:15px;margin-top:15px;">4 col per row</h4>
+            </div>
+            <div class="col-1" style="margin-bottom:15px;margin-top:15px;">
+                {% include "libs/button.html" with text="Copy" toast="Copied" id="Copy_btn" class="success" onclick="copy_function('4_col_per_row')" %}
+            </div><div class="col-1 offset-2"></div>
+
+            <div class="col-3">
+                Col 1
+            </div>
+            <div class="col-3">
+                Col 2
+            </div>
+            <div class="col-3">
+                Col 3
+            </div>
+            <div class="col-3">
+                Col 4
+            </div>
+
+
+
+            <div class="col-5 offset-3">
+                <h4 style="margin-bottom:15px;margin-top:15px;">4 - 2 col per row</h4>
+            </div>
+            <div class="col-1" style="margin-bottom:15px;margin-top:15px;">
+                    {% include "libs/button.html" with text="Copy" toast="Copied" id="Copy_btn" class="success" onclick="copy_function('4_2_col_per_row')" %}
+            </div><div class="col-1 offset-2"></div>
+            <div class="col-6 col-sm-3">
+                Col 1
+            </div>
+            <div class="col-6 col-sm-3">
+                Col 2
+            </div>
+            <div class="col-6 col-sm-3">
+                Col 3
+            </div>
+            <div class="col-6 col-sm-3">
+                Col 4
+            </div>
+
+
+            <div class="col-5 offset-3">
+                <h4 style="margin-bottom:15px;margin-top:15px;">4 - 1 col per row</h4>
+            </div>
+            <div class="col-1" style="margin-bottom:15px;margin-top:15px;">
+                    {% include "libs/button.html" with text="Copy" toast="Copied" id="Copy_btn" class="success" onclick="copy_function('4_1_col_per_row')" %}
+            </div><div class="col-1 offset-2"></div>
+            <div class="col-12 col-sm-3">
+                Col 1
+            </div>
+            <div class="col-12 col-sm-3">
+                Col 2
+            </div>
+            <div class="col-12 col-sm-3">
+                Col 3
+            </div>
+            <div class="col-12 col-sm-3">
+                Col 4
+            </div>
+
+
+            <div class="col-5 offset-3">
+                <h4 style="margin-bottom:15px;margin-top:15px;">4 - 2 - 1 col per row</h4>
+            </div>
+            <div class="col-1" style="margin-bottom:15px;margin-top:15px;">
+                    {% include "libs/button.html" with text="Copy" toast="Copied" id="Copy_btn" class="success" onclick="copy_function('4_2_1_col_per_row')" %}
+            </div><div class="col-1 offset-2"></div>
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                Col 1
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                Col 2
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                Col 3
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                Col 4
+            </div>
+
+            {% comment %} 3 col per row {% endcomment %}
+            <div class="col-10 offset-1"><hr></div>
+            <div class="col-5 offset-3">
+                <h4 style="margin-bottom:15px;margin-top:15px;">3 col per row </h4>
+            </div>
+            <div class="col-1" style="margin-bottom:15px;margin-top:15px;">
+                    {% include "libs/button.html" with text="Copy" toast="Copied" id="Copy_btn" class="success" onclick="copy_function('3_col_per_row')" %}</h4>
+            </div><div class="col-1 offset-2"></div>
+            <div class="col-4">
+                Col 1
+            </div>
+            <div class="col-4">
+                Col 2
+            </div>
+            <div class="col-4">
+                Col 3
+            </div>
+
+            <div class="col-5 offset-3">
+                <h4 style="margin-bottom:15px;margin-top:15px;">3 - 1 col per row </h4>
+            </div>
+            <div class="col-1" style="margin-bottom:15px;margin-top:15px;">
+                    {% include "libs/button.html" with text="Copy" toast="Copied" id="Copy_btn" class="success" onclick="copy_function('3_1_col_per_row')" %}
+            </div><div class="col-1 offset-2"></div>
+            <div class="col-12 col-sm-4">
+                Col 1
+            </div>
+            <div class="col-12 col-sm-4">
+                Col 2
+            </div>
+            <div class="col-12 col-sm-4">
+                Col 3
+            </div>
+
+
+
+            {% comment %} 2 col per row {% endcomment %}
+            <div class="col-10 offset-1"><hr></div>
+            <div class="col-5 offset-3">
+                <h4 style="margin-bottom:15px;margin-top:15px;">2 col per row </h4>
+            </div>
+            <div class="col-1" style="margin-bottom:15px;margin-top:15px;">
+                    {% include "libs/button.html" with text="Copy" toast="Copied" id="Copy_btn" class="success" onclick="copy_function('2_col_per_row')" %}</h4>
+            </div><div class="col-1 offset-2"></div>
+            <div class="col-6">
+                Col 1
+            </div>
+            <div class="col-6">
+                Col 2
+            </div>
+
+            <div class="col-5 offset-3">
+                <h4 style="margin-bottom:15px;margin-top:15px;">2 - 1 col per row </h4>
+            </div>
+            <div class="col-1" style="margin-bottom:15px;margin-top:15px;">
+                    {% include "libs/button.html" with text="Copy" toast="Copied" id="Copy_btn" class="success" onclick="copy_function('2_1_col_per_row')" %}
+            </div><div class="col-1 offset-2"></div>
+            <div class="col-12 col-sm-6">
+                Col 1
+            </div>
+            <div class="col-12 col-sm-6">
+                Col 2
+            </div>
+
+
+            {% comment %} 1 col per row {% endcomment %}
+            <div class="col-10 offset-1"><hr></div>
+            <div class="col-5 offset-3">
+                <h4 style="margin-bottom:15px;margin-top:15px;">1 col per row </h4>
+            </div>
+            <div class="col-1" style="margin-bottom:15px;margin-top:15px;">
+                    {% include "libs/button.html" with text="Copy" toast="Copied" id="Copy_btn" class="success" onclick="copy_function('1_col_per_row')" %}</h4>
+            </div><div class="col-1 offset-2"></div>
+            <div class="col-12" id="display_col">
+                Col 1
+            </div>
+
+
+
+
+
+
+        </div>
+
+    {% include "example/build/grid.html" %}
+
+    <script>
+        function copy_function(key){
+            var Row_Include = document.getElementById("Row_Include").checked;
+            var Align_Vertical = document.getElementById("Align_Vertical").value;
+            var Align_Horizontal = document.getElementById("Align_Horizontal").value;
+            var Align_Text = document.getElementById("Align_Text").value;
+            var Padding_Vertical = document.getElementById("Padding_Vertical").value;
+            var Padding_Horizontal = document.getElementById("Padding_Horizontal").value;
+
+            var arrange_setting = {
+                "Row_Include": Row_Include,
+                "Align_Vertical": Align_Vertical,
+                "Align_Horizontal": Align_Horizontal,
+                "Align_Text": Align_Text,
+                "Padding_Vertical": Padding_Vertical,
+                "Padding_Horizontal": Padding_Horizontal
+            }
+
+            var this_conf = conf_dict[key];
+            var copy_text = add_column(this_conf[0],this_conf[1], false, arrange_setting);
+            var copy_text_show_div = add_column(this_conf[0],this_conf[1], true, arrange_setting);
+            var copy_text_show = add_column(this_conf[0],this_conf[1], null, arrange_setting);
+            
+            var textArea = document.createElement("textarea");
+            textArea.value = copy_text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand("Copy");
+            textArea.remove();
+            
+            //var Input_value_div = document.getElementById("Input_value");
+            //Input_value_div.innerHTML = "Copied "+key+" to clipboard!";
+
+            var raw_text = document.getElementById("raw_text");
+            raw_text.innerText = copy_text_show;
+            var raw_div = document.getElementById("raw_div");
+            raw_div.innerHTML = copy_text_show_div;
+        }
+
+    </script>
+{% endblock %}

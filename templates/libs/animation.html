@@ -1,0 +1,16 @@
+<div data-aos="{{style}}" id="{{target}}_animation_div" 
+{% if duration %}
+data-aos-duration="{{duration}}"
+{% endif %}
+>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // wrap <div data-aos="{{style}}"></div> to {{target}} id element
+        var {{target}}_div =  document.getElementById("{{target}}")
+        var {{target}}_div_clone =  {{target}}_div.cloneNode()
+        document.getElementById("{{target}}_animation_div").appendChild({{target}}_div_clone)
+        {{target}}_div.remove()
+    });
+</script>

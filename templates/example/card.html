@@ -1,0 +1,156 @@
+{% extends "backend/base/admin_base.html" %}
+{% load static %}
+{% load custom_filters %}
+{% block title %} DEV - Card Examples {% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-4">
+        {% include "libs/input.html" with type="select" name="input_example" id="input_example" label="Card Example" %}
+    </div>
+    <div class="col-lg-1 align-self-end">
+        {% comment %} search button {% endcomment %}
+        {% include "libs/button.html" with text="Copy" toast="Copied" id="Copy_btn" class="success" %}
+    </div>
+    <div class="col-lg-7 align-self-end">
+        {% comment %} search button {% endcomment %}
+        <span id="Input_value"></span>
+    </div>
+    <div class="col-12">
+    <hr>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <h4> Card with running number</h4>
+    </div>
+    <div class="col-lg-3 col-md-6 col-12">
+        {% include "libs/card.html" with
+            title="Example Title 1" 
+            value="100"
+            unit="days"
+            style="success"
+            icon="calendar"
+        %}
+    </div>
+    <div class="col-lg-3 col-md-6 col-12">
+        {% include "libs/card.html" with
+            title="Example Title 2" 
+            value="80"
+            unit="days"
+            style="warning"
+            icon="award"
+        %}
+    </div>
+    <div class="col-lg-3 col-md-6 col-12">
+        {% include "libs/card.html" with
+            title="Example Title 3" 
+            value="40"
+            unit="days"
+            style="danger"
+            icon="table"
+        %}
+    </div>
+    <div class="col-lg-3 col-md-6 col-12">
+        {% include "libs/card.html" with
+            title="Example Title 4" 
+            value="3000" 
+            unit="days"
+            style="primary"
+            icon="bar-chart"
+        %}
+    </div>
+    
+    <div class="col-12">
+        {% include "libs/card.html" with
+            title="Card with multiple text" 
+            text="Main Text"
+            style="secondary"
+            icon="check"
+            label_list="Sub Label 1,Sub Label 2" 
+            value1="100 day"
+            value2="200 day"
+        %}
+    </div>
+    <div class="col-12 col-sm-6">
+        {% include "libs/card_with_pie.html" with 
+            title_xl="Card with piecart" 
+            label_list="Label 1,Label 2,Label 3" 
+            value1="100 day"
+            value2="200 day"
+            value3="300 day"
+            Data="[100, 200, 300]"
+            seriesName="['Parameter 1','Parameter 2','Parameter 3']" 
+            height='200'
+        %}
+    </div>
+    <div class="col-12 col-sm-6">
+        {% include "libs/card_with_color_graph.html" with 
+            title_xl="Card with color graph" 
+            label_list="Label 1,Label 2" 
+            value1="10 %" 
+            value2="20 %" 
+            xData=xData
+            yData=yData.0
+            height='500'
+        %}
+    </div>
+
+    <div class="col-12">
+
+        {% include "libs/card_with_graph.html" with 
+            title_xl="Card with multi graph" 
+            label_list="Label 1,Label 2" 
+            value1="10 %" 
+            value2="20 %" 
+            xData=xData
+            yData=yData
+            seriesName="['Parameter 1','Parameter 2','Parameter 3']"
+            graphType="['bar','line','line']"
+            no_marker=True
+            height='500'
+        %}
+        
+    </div>
+</div>
+
+<script>
+
+    function show_text(input_text){
+        return "{ %".replaceAll(" ","") +" include "+ input_text +" "+ "% }".replaceAll(" ","");
+    }
+
+    var example_dict = {}
+    example_dict["Card - Primary"] = show_text('"libs/card.html" with title="Example Title 1" value="100" unit="days" style="primary" icon="calendar"')
+    example_dict["Card - Success"] = show_text('"libs/card.html" with title="Example Title 1" value="100" unit="days" style="success" icon="calendar"')
+    example_dict["Card - Warning"] = show_text('"libs/card.html" with title="Example Title 1" value="100" unit="days" style="warning" icon="calendar"')
+    example_dict["Card - Danger"] = show_text('"libs/card.html" with title="Example Title 1" value="100" unit="days" style="danger" icon="calendar"')
+    example_dict["Card with text"] = show_text('"libs/card.html" with title="Example Title 1" text="Text 1" style="success" icon="calendar"')
+    example_dict["Card with multiple text"] = show_text('"libs/card.html" with title="Card with multiple text" text="Main Text" style="primary" icon="check" label_list="Sub Label" text1="Sub Text"')
+    example_dict["Card with piecart"] = show_text(`"libs/card_with_pie.html" with title_xl="Card with piecart" label_list="Label 1,Label 2,Label 3" value1="100 day" value2="200 day" value3="300 day" Data="[100, 200, 300]" seriesName="['Parameter 1','Parameter 2','Parameter 3']" height="200"`)
+    example_dict["Card with color graph"] = show_text(`"libs/card_with_color_graph.html" with title_xl="Card with color graph" label_list="Label 1,Label 2" value1="10 %" value2="20 %" xData=xData yData=yData.0 height="500"`)
+    example_dict["Card with multi graph"] = show_text(`"libs/card_with_graph.html" with title_xl="Card with multi graph" label_list="Label 1,Label 2" value1="10 %" value2="20 %" xData=xData yData=yData seriesName="['Parameter 1','Parameter 2','Parameter 3']" graphType="['bar','line','line']" no_marker=True height="500"`)
+
+    $(document).ready(function() {
+        // set select option value using example_dict key while value is value of example_dict
+        for(var key in example_dict){
+            $('#input_example').append('<option value="'+key+'">'+key+'</option>');
+        }
+        $('#input_example').on('change', function() {
+            var selected = document.getElementById("input_example").value
+            console.log(selected,example_dict[selected])
+            document.getElementById("Input_value").innerHTML = example_dict[selected];
+        });
+        $('#Copy_btn').on('click', function() {
+            var copyText = document.getElementById("Input_value");
+            var textArea = document.createElement("textarea");
+            textArea.value = copyText.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand("Copy");
+            textArea.remove();
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% load static %}
+{% load custom_filters %}
+
+
+{% if not no_label %}
+<div class="card">
+    <div class="card-header">
+        {% if label %}
+            <h4 class="card-title mb-0">{{label}}</h4>
+        {% else %}
+            <h4 class="card-title mb-0">{{id|remove:' '}}</h4>
+        {% endif %}
+    </div><!-- end card header -->
+
+    <div class="card-body">
+        <div id="pie_chart{{id|remove:' '}}" data-colors='["--vz-primary"]' class="apex-charts" dir="ltr"></div>
+    </div><!-- end card-body -->
+</div><!-- end card -->
+{% else %}
+    <div id="pie_chart{{id|remove:' '}}" data-colors='["--vz-primary"]' class="apex-charts" dir="ltr"></div>
+{% endif %}
+
+<script>
+    function createPieChart(elementId, yData, titleText,seriesName) {
+        const colorsArray = ["#2E86C1","#F39C12","#7D3C98","#28B463","#D35400","#229954","#A569BD","#B03A2E","#9B59B6","#3498DB","#C39BD3","#E74C3C"];
+        let lastDateProcessed = null;
+        const parsedYData = yData.map(value => parseFloat(value));
+        const maxAbsValue = Math.max(...parsedYData.map(Math.abs));
+        const options = {
+            series: yData,
+            colors: colorsArray,
+            labels: seriesName,
+            {% if not no_label %}
+            title: {
+                {% if label %}
+                text: "{{label}}",
+                {% else %}
+                text: titleText,
+                {% endif %}
+                align: "left",
+                style: {
+                    fontWeight: 500
+                }
+            },
+            {% endif %}
+            chart: {
+                {% if height %}
+                height: {{height}},
+                {% else %}
+                height: 300,
+                {% endif %}
+                type: "donut"
+            },
+            legend: {
+                position: "bottom"
+            },
+            dataLabels: {
+                dropShadow: {
+                    enabled: !1
+                }
+            },
+        };
+    
+        const chart = new ApexCharts(document.querySelector("#" + elementId), options);
+        chart.render();
+        return chart; // Return chart instance for further interactions
+    }
+    
+    {% if id %}
+    const {{id|remove:' '}} = createPieChart("pie_chart{{id|remove:' '}}", {{Data|safe}}, "{{id|remove:' '}}", {{seriesName|safe}});
+    {% endif %}
+    
+    
+</script>

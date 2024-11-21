@@ -1,0 +1,117 @@
+{% load custom_filters %}
+
+{% if id %}
+<table id="{{id}}" class="table nowrap dt-responsive align-middle table-hover table-bordered" style="width:100%;">
+{% elif title %}
+<table id="{{title|remove_spaces}}" class="table nowrap dt-responsive align-middle table-hover table-bordered" style="width:100%;">
+{% else %}
+<table id="dataTable" class="table nowrap dt-responsive align-middle table-hover table-bordered" style="width:100%;">
+{% endif %}
+    <thead>
+        <tr>
+            <th style="width: 10px;">
+                <div class="form-check" style="width: fit-content;">
+                    <input class="form-check-input fs-15" type="checkbox" id="checkAll" value="option">
+                </div>
+            </th>
+            {% for cell in header %}
+                <th style="width: fit-content;">{{cell}}</th>
+            {% endfor %}
+            {% if view or edit or delete %}
+                <th>Action</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% if data|length > 0 %}
+        {% for row in data %}
+        <tr>
+            <td style="width: 10px;">
+                <div class="form-check" style="width: fit-content;">
+                    <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option1">
+                </div>
+                <input type="hidden" class="hidden" value="{{forloop.counter0}}">
+            </td>
+            {% for cell in row %}
+                <td style="width: fit-content;">
+                {% if cell and cell != "None" %}
+                {{cell}}
+                {% else %}
+                -
+                {% endif %}
+                </td>
+            {% endfor %}
+            {% if view or edit or delete %}
+            {% include "libs/sub/table_sub_button.html" with view=view edit=edit delete=delete %}
+            {% endif %}
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td style="text-align:center;" colspan="{{query|get_parameter|length|add:1}}">No data found</td>
+        </tr>
+        {% endif %}
+    </tbody>
+</table>
+
+<script>
+    {% if view or edit or delete %}
+    var column_length = {{query|get_parameter|length}}
+    {% else %}
+    var column_length = {{query|get_parameter|length}} - 1
+    {% endif %}
+    var column_list = Array.from({ length: column_length }, (_, i) => i + 1);
+
+    {% if title %}
+    var title = "{{title|remove_spaces}}"
+    {% else %}
+    var title = "{{dataTable}}"
+    {% endif %}
+
+    {% if id %}
+    var id = "{{id}}"
+    {% else %}
+    var id = title
+    {% endif %}
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+        console.log("ID = ",id)
+        new DataTable("#"+id, {
+            scrollCollapse: !0,
+            dom: "Bfrtip",
+            buttons: [
+                {
+                    extend: 'excel', // Export to Excel
+                    text: 'Export to Excel',
+                    filename: title+" Data", 
+                    exportOptions: {
+                        columns: column_list,
+                        customize: function(xlsx) {
+                            var sheet = xlsx.xl.worksheets[title+'.xml'];
+                            $('row c[r^="A"]', sheet).attr('s', '2');
+                            $('row:first c', sheet).attr('s', '27');
+                            $('row:first c t', sheet).text(title+' Data');
+                        }
+                    }
+                },
+                {
+                    extend: 'csv', // Export to CSV
+                    text: 'Export to CSV',
+                    filename: title+" Data", 
+                    exportOptions: {
+                        columns: column_list,
+                        title: title
+                    }
+            }],
+            {% if order %}
+            order: {{order}},
+            {% else %}
+            order: [[2, 'desc']],
+            {% endif %}
+        })
+        for(var row of document.getElementsByClassName("dtr-details")){
+            row.style.width="100%"
+        }
+    })
+</script>

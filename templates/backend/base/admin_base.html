@@ -1,0 +1,213 @@
+{% load static %}
+{% load pwa %}
+<!doctype html>
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
+<head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>
+        {% block title %} 
+            {{COMPANY_NAME}}
+        {% endblock %}
+    </title>
+    {% if user.id %}
+        <meta name="user_id" content="{{ user.id }}">
+    {% endif %}
+    {% progressive_web_app_meta %}
+    <link rel="icon" type="image/jpeg" sizes="237x122" href="{% static 'pwa_assets/logo.png' %}">
+    <link rel="shortcut icon" type="image/jpeg" sizes="237x122" href="{% static 'pwa_assets/logo.png' %}">
+    {% include "backend/base/sub/link.html" %}
+    {% block plugin %}
+
+    {% endblock plugin %}
+</head>
+
+<body>
+    {% include "libs/loading.html" %}
+    <script>
+        var preference = localStorage.getItem("data-bs-theme")
+        if(preference){
+            if(preference=='light'){
+                localStorage.setItem("data-bs-theme", "light"), document.documentElement.setAttribute("data-bs-theme", "light");
+            }else{
+                document.documentElement.setAttribute("data-bs-theme", "dark"), localStorage.setItem("data-bs-theme", "dark");
+            }
+        }
+    </script>
+    {% include "backend/base/sub/libs.html" %}
+
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+
+        {% include 'backend/base/header.html' %}
+        {% include 'backend/base/navbar.html' %}
+
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
+            {% block modal %}
+            
+            {% endblock modal %}
+
+            <div class="page-content" style="padding-right: 0px;padding-left: 0px;">
+                <div class="container-fluid" >
+
+                    {% block title_row %}{% endblock title_row %}
+                    
+                    <div class="card mt-4">
+                        <div class="card-body p-4">
+                    
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                    <h4 class="mb-sm-0">
+                                        {% block pagetitle %}
+                                        
+                                        {% endblock pagetitle %}
+                                    </h4>
+                    
+                                    <div class="page-title-right">
+                                        <ol class="breadcrumb m-0">
+                                            {% block pagetitle2 %}
+                                            
+                                            {% endblock pagetitle2 %}
+                                        </ol>
+                                    </div>
+                    
+                                </div>
+                            </div>
+                        </div>
+
+                        {% block content %}
+
+                        {% endblock %}
+
+
+                        </div>
+                    </div>
+                    {% block bottom_row %}{% endblock bottom_row %}
+                </div>
+            </div>
+            {% include "backend/base/footer.html" %}
+        </div>
+
+    </div>
+
+
+
+    <!--start back-to-top-->
+    <button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
+        <i class="ri-arrow-up-line"></i>
+    </button>
+    <!--end back-to-top-->
+
+    <!--preloader-->
+    <div id="preloader">
+        <div id="status">
+            <div class="spinner-border text-primary avatar-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+    {% include "backend/base/sub/init.html" %}
+
+    {% if messages %}
+    <script>
+        {% for message in messages %}
+            Swal.fire({
+                title: "{{ message.tags|capfirst }}",
+                html: "{{ message | safe }}",
+                icon: "{{ message.tags }}",
+                confirmButtonClass: "btn btn-primary w-xs mt-2",
+                buttonsStyling: false,
+                showCloseButton: true,
+                width: '800px',
+            });
+        {% endfor %}
+    </script>
+    {% endif %}
+    <script>
+        function sweetalert(title,message,alert_type){
+            Swal.fire({
+                title: title,
+                html: message,
+                icon: alert_type,
+                confirmButtonClass: "btn btn-primary w-xs mt-2",
+                buttonsStyling: false,
+                showCloseButton: true,
+                width: '800px',
+            });
+        }
+        
+        function info(title,message){
+            sweetalert(title,message,"info")
+        }
+        function alert(title,message){
+            sweetalert(title,message,"warning")
+        }
+        function warning(title,message){
+            sweetalert(title,message,"question")
+        }
+        function success(title,message){
+            sweetalert(title,message,"success")
+        }
+        function freeze(title,message,millisecond){
+            Swal.fire({
+                title: title,
+                html: message+'<br> Please wait: <b></b> milliseconds.<br/><div class="swal2-progressbar"><div class="swal2-progress"></div></div>',
+                timer: millisecond,
+                allowOutsideClick: () => !Swal.isLoading(),
+                didOpen: () => {
+                Swal.showLoading();
+
+                const swalContent = Swal.getHtmlContainer();
+                const progressBar = swalContent.querySelector('.swal2-progress');
+                const timerEl = swalContent.querySelector('b');
+                let width = 0;
+
+                timerInterval = setInterval(() => {
+                    const timeLeft = Swal.getTimerLeft();
+                    if(timeLeft !== undefined) {
+                    timerEl.textContent = timeLeft;
+                    width += 0.2;
+                    progressBar.style.width = width + '%';
+                    }
+                }, 100);
+                },
+                willClose: () => {
+                clearInterval(timerInterval);
+                },
+            }).then((result) => {
+                if (result.dismiss === Swal.DismissReason.timer) {
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if(preference){
+                console.log(preference)
+                T("data-bs-theme", preference), document.documentElement.setAttribute("data-bs-theme", preference), localStorage.setItem("data-bs-theme", preference);
+            }
+            else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                T("data-bs-theme", "dark"), document.documentElement.setAttribute("data-bs-theme", "dark"), localStorage.setItem("data-bs-theme", "dark");
+            } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+                T("data-bs-theme", "light"), localStorage.setItem("data-bs-theme", "light"), document.documentElement.setAttribute("data-bs-theme", "light");
+            } else {
+            }
+        });
+        
+        
+    </script>
+
+    {% block script %}
+
+    {% endblock script%}
+
+
+</body>
+
+</html>

@@ -1,0 +1,64 @@
+{% load custom_filters %}
+{% if href %}
+<a
+{% else %}
+<button 
+{% endif %}
+
+{% if submit or type == 'submit' or type == "Submit" %}
+type="submit"
+{% endif %}
+
+{% if style %}
+style="{{style}}"
+{% endif %}
+
+{% if toast %}
+    data-toast data-toast-text="{{toast}}" 
+    data-toast-gravity="top" data-toast-position="center"
+    {% if toast_class %}
+    data-toast-classname="{{toast_class}}" 
+    {% elif class %}
+    data-toast-classname="{{class}}" 
+    {% else %}
+    data-toast-classname="primary" 
+    {% endif %}
+    data-toast-duration="3000" data-toast-close="close" data-toast-style="style"
+{% endif %}
+
+{% if full_class %}
+class="{{full_class}}"
+{% elif class %}
+class="btn btn-{{class}}"
+{% else %}
+class="btn btn-primary"
+{% endif %}
+
+{% if href %}
+href="{{href|to_url}}"
+{% if newPage %}
+target="__blank"
+{% endif %}
+{% endif %}
+
+{% if id %} id="{{id}}" {% endif %}
+{% if onclick %} onclick="{{onclick}}" {% endif %}
+{{kwargs}} 
+>
+{% if icon %}
+{% include "libs/icon.html" with icon=icon class=none size="xs" style=none %}
+{% endif %}
+
+{% if text %}
+{{text}}
+{% elif submit %}
+Submit
+{% else %}
+Button
+{% endif %}
+
+{% if href %}
+</a>
+{% else %}
+</button>
+{% endif %}

@@ -1,0 +1,181 @@
+{% extends "backend/base/admin_base.html" %}
+{% load static %}
+{% load custom_filters %}
+{% block title %} DEV - Page Create {% endblock %}
+
+{% block content %}
+    <style>
+        #createdContent {
+            .row {
+                margin-bottom: 10px;
+                .col-* {
+                    border: 1px solid #ddd;
+                }
+            }
+        }
+    </style>
+    <div class="row">
+        <div class="col-12"><h4>Page Creator System - 2</h4></div>
+    </div>
+    <form method="post" id="page_create_form">
+    {% csrf_token %}
+    <div id="generated_content">
+
+    </div>
+    </form>
+
+    {% include "example/build/grid.html" %}
+
+    <script>
+        var debug_elem;
+        var content = '';
+        var row_config = {{row_config|safe}};
+        var this_row_config = ""
+        var this_row_id = ""
+
+        // document ready
+        $(document).ready(function () {
+            {% for row in parameters %}
+            content += '<div class="row">';
+                {% for col in row %}
+                    this_row_config = row_config[{{forloop.parentloop.counter0}}]+"_col_per_row"
+                    content += conf_dict[this_row_config][0].split("</div>")[0];
+                    this_row_id = 'row_{{forloop.parentloop.counter0}}_col_{{forloop.counter0}}';
+                    console.log(this_row_id,'{{col}}')
+                    {% if col == 'graph' %}
+                    content += '<label style="margin-top:15px;">Please select graph parameter</label>';
+                    content += generate_select_input(this_row_id,graph_dict);
+                    {% elif col == 'input' %}
+                    content += '<label style="margin-top:15px;">Please select input parameter</label>';
+                    content += generate_select_input(this_row_id,input_dict);
+                    {% elif col == 'table' %}
+                    content += '<label style="margin-top:15px;">Please select table parameter</label>';
+                    content += generate_select_input(this_row_id,table_dict);
+                    {% elif col == 'button' %}
+                    content += '<label style="margin-top:15px;">Please select button parameter</label>';
+                    content += generate_select_input(this_row_id,button_dict);
+                    {% elif col == 'text' %}
+                    content += '<label style="margin-top:15px;">Please select text parameter</label>';
+                    content += generate_text_input(this_row_id);
+                    {% elif col == 'card' %}
+                    content += '<label style="margin-top:15px;">Please select card parameter</label>';
+                    content += generate_select_input(this_row_id,card_dict);
+                    {% else %}
+                    {% endif %}
+                    content += '</div>'
+                {% endfor %}
+            content += '</div>';
+            {% endfor %}
+            document.getElementById('generated_content').innerHTML = content;
+        });
+    </script>
+    <script>
+
+    function show_text(input_text){
+        return "{ %".replaceAll(" ","") +" include "+ input_text +" "+ "% }".replaceAll(" ","");
+    }
+    
+    function generate_select_input(select_id,this_dict){
+        var return_div = "<select name='"+select_id+"' id='"+select_id+"' class='form-control'>";
+        for (var key in this_dict) {
+            return_div += "<option value='"+this_dict[key]+"'>"+key+"</option>";
+        }
+        return_div += "</select>";
+        return return_div;
+    }
+
+    var graph_dict = {}
+    graph_dict["Example Line Graph"] = show_text("'libs/graph/line_graph.html' with label='Example Line Graph' id='myChart' xData=xData yData=yData.0");
+    graph_dict["Show Point Line Graph"] = show_text("'libs/graph/line_graph.html' with label='Show Point Line Graph' id='myChart_show' xData=xData yData=yData.0 show_point=True");
+    graph_dict["Demo Multi Line Data"] = show_text("'libs/graph/multi_line_graph.html' with label='Demo Multi Line Data' id='myChart2' xData=xData yData=yData seriesName=seriesName");
+    graph_dict["Demo Annotate Graph"] = show_text("'libs/graph/annotate_line_graph.html' with label='Demo Annotate Graph' id='myChart3' xData=xData yData=yData seriesName=seriesName");
+    graph_dict["Demo Range Line Graph"] = show_text("'libs/graph/range_line_graph.html' with label='Demo Range Line Graph' id='myChart4' xData=xData yData=yData.0");
+    graph_dict["Demo Sync Line Graph"] = show_text("'libs/graph/sync_line_graph.html' with label='Demo Sync Line Graph' id='myChart5' xData=xData yData=yData seriesName=seriesName");
+    graph_dict["Show Point Bar Graph"] = show_text('"libs/graph/bar_graph.html" with label="Show Point Bar Graph" id="myChart_show" xData=xData yData=yData.0 show_point=True');
+    graph_dict["Demo Color bar Graph"] = show_text('"libs/graph/color_bar_graph.html" with label="Demo Color bar Graph" id="myChart2" xData=xData yData=negtive_yData seriesName=seriesName full_height=True');
+    graph_dict["Demo Multi bar Data"] = show_text('"libs/graph/multi_bar_graph.html" with label="Demo Multi bar Data" id="myChart3" xData=xData yData=yData seriesName=seriesName');
+    graph_dict["Demo Annotate Graph"] = show_text('"libs/graph/annotate_bar_graph.html" with label="Demo Annotate Graph" id="myChart4" xData=xData yData=yData seriesName=seriesName');
+    graph_dict["Demo Stack bar Graph"] = show_text('"libs/graph/stack_bar_graph.html" with label="Demo Stack bar Graph" id="myChart5" xData=xData yData=yData seriesName=seriesName');
+    graph_dict["Demo 100% Stack bar Graph"] = show_text('"libs/graph/stack_bar_graph.html" with label="Demo 100% Stack bar Graph" id="myChart6" xData=xData yData=yData seriesName=seriesName full_height=True');
+    graph_dict["Demo Range bar Graph"] = show_text('"libs/graph/range_bar_graph.html" with label="Demo Range bar Graph" id="myChart7" xData=xData yData=yData seriesName=seriesName');
+    graph_dict["Demo Sync bar Graph"] = show_text('"libs/graph/sync_bar_graph.html" with label="Demo Sync bar Graph" id="myChart8" xData=xData yData=yData seriesName=seriesName');
+    graph_dict["Demo Mix Graph"] = show_text('"libs/graph/mix_graph.html" with label="Demo Mix Graph" id="myChart9" xData=xData yData=yData seriesName=seriesName graphType="[\'bar\',\'bar\',\'area\']"');
+    graph_dict["Pie Chart"] = show_text("'libs/graph/pie_chart.html' with label='Show Point Bar Graph' id='myChart_show' Data=yData.0 seriesName=seriesName");
+    
+
+    var input_dict = {}
+    input_dict["Text"] = show_text('"libs/input.html" with name="Text" value=result.Text');
+    input_dict["Password"] = show_text('"libs/input.html" with name="Password" type="password" value=result.Password');
+    input_dict["Number"] = show_text('"libs/input.html" with name="Number" type="number" value=result.Number');
+    input_dict["Integer"] = show_text('"libs/input.html" with name="Integer" type="integer" value=result.Number');
+    input_dict["Passport"] = show_text('"libs/input.html" with name="Passport" type="passport" value=result.Passport');
+    input_dict["IC"] = show_text('"libs/input.html" with name="IC" type="IC" value=result.IC');
+    input_dict["Phone"] = show_text('"libs/input.html" with name="Phone" type="phone" value=result.Phone');
+    input_dict["Country"] = show_text('"libs/input.html" with name="Country" type="country" value=result.Country');
+    input_dict["Select"] = show_text('"libs/input.html" with name="Select" type="select" value=result.Select options="Java,Javascript,Python,HTML,CSS,C,C++,C#"|split:","');
+    input_dict["SelectMultiple"] = show_text('"libs/input.html" with name="SelectMultiple" type="selectmultiple" value=result.SelectMultiple options="Java,Javascript,Python,HTML,CSS,C,C++,C#"|split:","');
+    input_dict["TextArea"] = show_text('"libs/input.html" with name="TextArea" type="textarea" value=result.TextArea');
+    input_dict["Date"] = show_text('"libs/input.html" with name="Date" type="date" value=result.Date');
+    input_dict["DateTime"] = show_text('"libs/input.html" with name="DateTime" type="datetime" value=result.DateTime');
+    input_dict["DateRange"] = show_text('"libs/input.html" with name="DateRange" type="daterange" value=result.DateRange');
+    input_dict["Image"] = show_text('"libs/input.html" with name="Image" type="image" label="Image" value=result.Image');
+    input_dict["File"] = show_text('"libs/input.html" with name="File" type="file" value=result.File multiple=True max_size="100MB" max_file=3');
+    input_dict["Datalist"] = show_text('"libs/input.html" with name="Datalist" type="datalist" value=result.Datalist  options="Java,Javascript,Python,HTML,CSS,C,C++,C#"|split:","');
+    input_dict["Slider"] = show_text('"libs/input.html" with name="Slider" type="slider" min="-100" max="100" value=result.Slider');
+    input_dict["Editor"] = show_text('"libs/input.html" with name="Editor" type="editor"  value=result.Editor show=True');
+    input_dict["Checkbutton1"] = show_text('"libs/input.html" with name="Checkbutton1" type="checkbutton" label="Check Button" value=result.Checkbutton1');
+    input_dict["Checkbutton2"] = show_text('"libs/input.html" with name="Checkbutton2" type="checkbutton" label="Check Button Success" class="success" value=result.Checkbutton2');
+    input_dict["Checkbutton3"] = show_text('"libs/input.html" with name="Checkbutton3" type="checkbutton" label="Check Button Warning" class="warning" value=result.Checkbutton3');
+    input_dict["Checkbutton4"] = show_text('"libs/input.html" with name="Checkbutton4" type="checkbutton" label="Check Button Danger" class="danger" value=result.Checkbutton4');
+    input_dict["Switch1"] = show_text('"libs/input.html" with name="Switch1" type="switch" label="Switch" value=result.Switch1');
+    input_dict["Switch2"] = show_text('"libs/input.html" with name="Switch2" type="switch" label="Switch Success" class="success" value=result.Switch2');
+    input_dict["Switch3"] = show_text('"libs/input.html" with name="Switch3" type="switch" label="Switch Warning" class="warning" value=result.Switch3');
+    input_dict["Switch4"] = show_text('"libs/input.html" with name="Switch4" type="switch" label="Switch Danger" class="danger" value=result.Switch4');
+    input_dict["Checkbox"] = show_text('"libs/input.html" with name="Checkbox" type="checkbox" label="Check Box" value=result.Checkbox');
+    
+    var table_dict = {}
+    table_dict["Query Based"] = show_text('"libs/table.html" with query=Account title="Query Based"');
+    table_dict["Header Data Based"] = show_text('"libs/table.html" with title="Header Data Based" header=table_header data=table_data ');
+    table_dict["Header Data Based w/ Buttons"] = show_text('"libs/table.html" with title="Header Data Based" header=table_header data=table_data view="my_view()" edit="my_edit()" delete="my_delete()" custom_btn="Custom Button" custom_btn_fn="my_custom_btn_fn()"');
+    
+
+    var button_dict = {}
+    button_dict["Success"] = show_text('"libs/button.html" with text="success" class="success"');
+    button_dict["Info"] = show_text('"libs/button.html" with text="info" class="info"');
+    button_dict["Warning"] = show_text('"libs/button.html" with text="warning" class="warning"');
+    button_dict["Primary"] = show_text('"libs/button.html" with text="primary" class="primary"');
+    button_dict["Secondary"] = show_text('"libs/button.html" with text="secondary" class="secondary"');
+    button_dict["Danger"] = show_text('"libs/button.html" with text="danger" class="danger"');
+    button_dict["Link"] = show_text('"libs/button.html" with text="link" class="link"');
+    button_dict["Dark"] = show_text('"libs/button.html" with text="dark" class="dark"');
+    button_dict["Light"] = show_text('"libs/button.html" with text="light" class="light"');
+    button_dict["Toast"] = show_text('"libs/button.html" with text="Im a Toast Button" toast="Im toast, you just click me"');
+    button_dict["Toast Danger"] = show_text('"libs/button.html" with text="My color is red" toast="Im toast, you just click me" class="danger"');
+    button_dict["Icon Book"] = show_text('"libs/button.html" with text="Book is here" icon="book" class="info"');
+    button_dict["Icon Plus"] = show_text('"libs/button.html" with text="I do math" icon="plus" class="success"');
+    button_dict["Onclick"] = show_text('"libs/button.html" with text="Click me !" onclick="success(\'Title\',\'Hooray\')" class="info"');
+    button_dict["Link"] = show_text('"libs/button.html" with text="Click me !" href="home" class="link"');
+    button_dict["Link Youtube"] = show_text('"libs/button.html" with text="Youtube" onclick="window.location.href=\'https://www.youtube.com/\'" class="danger"');
+    button_dict["Link New Page"] = show_text('"libs/button.html" with text="Anothe link button :)" href="home" class="secondary" newPage=True');
+    button_dict["Style"] = show_text('"libs/button.html" with text="Custom Button" style="width:100%;border:solid 5px;border-color:black;" class="primary"');
+    button_dict["Full Class 1"] = show_text('"libs/button.html" with text="Custom Button" full_class="btn btn-outline-dark waves-effect waves-light"');
+    button_dict["Full Class 2"] = show_text('"libs/button.html" with text="Custom Button" full_class="btn rounded-pill btn-light waves-effect"');
+    button_dict["Full Class 3"] = show_text('"libs/button.html" with text="Custom Button" full_class="btn btn-soft-info waves-effect waves-light"');
+    button_dict["Full Class 4"] = show_text('"libs/button.html" with text="Custom Button" full_class="btn btn-ghost-info waves-effect waves-light"');
+
+
+    var card_dict = {}
+    card_dict["Card - Primary"] = show_text('"libs/card.html" with title="Example Title 1" value="100" unit="days" style="primary" icon="calendar"')
+    card_dict["Card - Success"] = show_text('"libs/card.html" with title="Example Title 1" value="100" unit="days" style="success" icon="calendar"')
+    card_dict["Card - Warning"] = show_text('"libs/card.html" with title="Example Title 1" value="100" unit="days" style="warning" icon="calendar"')
+    card_dict["Card - Danger"] = show_text('"libs/card.html" with title="Example Title 1" value="100" unit="days" style="danger" icon="calendar"')
+    card_dict["Card with text"] = show_text('"libs/card.html" with title="Example Title 1" text="Text 1" style="success" icon="calendar"')
+    card_dict["Card with multiple text"] = show_text('"libs/card.html" with title="Card with multiple text" text="Main Text" style="primary" icon="check" label_list="Sub Label" text1="Sub Text"')
+    card_dict["Card with piecart"] = show_text(`"libs/card_with_pie.html" with title_xl="Card with piecart" label_list="Label 1,Label 2,Label 3" value1="100 day" value2="200 day" value3="300 day" Data="[100, 200, 300]" seriesName="['Parameter 1','Parameter 2','Parameter 3']" height="200"`)
+    card_dict["Card with color graph"] = show_text(`"libs/card_with_color_graph.html" with title_xl="Card with color graph" label_list="Label 1,Label 2" value1="10 %" value2="20 %" xData=xData yData=yData.0 height="500"`)
+    card_dict["Card with multi graph"] = show_text(`"libs/card_with_graph.html" with title_xl="Card with multi graph" label_list="Label 1,Label 2" value1="10 %" value2="20 %" xData=xData yData=yData seriesName="['Parameter 1','Parameter 2','Parameter 3']" graphType="['bar','line','line']" no_marker=True height="500"`)
+
+
+
+    </script>
+{% endblock %}

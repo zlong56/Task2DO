@@ -1,0 +1,69 @@
+{% extends "landing/base/index.html" %}
+{% load static %}
+{% block title %}Contact Us{% endblock title %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col">
+    <div class="container">
+    <div class="card">
+        <div class="bg-primary card-header">
+            {% comment %} back button {% endcomment %}
+            <a href="{% url 'login_user' %}" class="btn btn-primary">Back</a>
+        </div>
+        <div class="card-body px-5">
+            <h2 class="mb-3"><strong>Contact Info</strong></h2>
+
+            <p>Welcome to CIDB EXPATRATE. We are glad to be at your service.</p>
+
+            <h4>Phone</h4>
+            <p><a href="tel:+603-4042 8880" style="color: black; text-decoration: none;">+603-4042 8880</a></p>
+            <h4>Email</h4>
+            <p><a href="mailto:corpcomm@cidbh.com.my" style="color: black; text-decoration: none;">corpcomm@cidbh.com.my</a></p>
+            <h4>Address</h4>
+            <address>
+                CIDB Holdings Sdn Bhd 199701002059 (417555-H) <br>
+                Level 22, Menara Dato' Onn, <br>
+                Putra World Trade Centre (PWTC), <br>
+                No. 45, Jalan Tun Ismail, <br>
+                Kuala Lumpur 50480 Malaysia.
+            </address>
+            
+            {% comment %} 
+            <hr>
+
+            <h2>Send Us a Message</h2>
+            <p>Required fields are marked.</p>
+
+            <form id="contact-form" action="https://cidblink.com/contact-us" method="post">
+                <input type="hidden" name="_token" value="h4xPV7OBiRym0JURaB6LcNnI6J2v9nDK3gWJ8zEU">                <div class="row">
+                    <div class="col-md-7">
+                        <div class="form-row row-cols-1">
+                            <div class="col form-group">
+                                <label for="name">Name <strong class="text-red">*</strong></label>
+                                <input type="text" name="name" id="name" class="form-control" value="">
+                            </div>
+                            <div class="col form-group">
+                                <label for="email">Email <strong class="text-red">*</strong></label>
+                                <input type="email" name="email" id="email" class="form-control" value="">
+                            </div>
+                            <div class="col form-group">
+                                <label for="subject">Subject <strong class="text-red">*</strong></label>
+                                <input type="text" name="subject" id="subject" class="form-control" value="">
+                            </div>
+                            <div class="col form-group">
+                                <label for="message">Message <strong class="text-red">*</strong></label>
+                                <textarea row="5" name="message" id="message" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                            </form> {% endcomment %}
+        </div>
+</div>
+
+        </div>
+    </div>
+</div>
+{% endblock content %}

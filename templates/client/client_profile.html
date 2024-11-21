@@ -1,0 +1,121 @@
+{% extends "backend/base/admin_base.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    .name-header{
+        font-weight: 700;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);;
+    }
+</style>
+
+
+<div class="container-fluid">
+    <div class="profile-foreground position-relative mx-n4 mt-n4">
+        <div class="profile-wid-bg">
+            {% comment %} <img src="{% static 'assets/images/profile-bg.jpg' %}" alt="" class="profile-wid-img" /> {% endcomment %}
+        </div>
+    </div>
+    <div class="pt-4 mb-4 mb-lg-3 pb-lg-4 profile-wrapper">
+        <div class="row g-4">
+            <div class="col">
+                <div class="p-2">
+                    <!-- <p class="text-white text-opacity-75">
+                        WELCOME
+                    </p> -->
+                    <h2 class="text-white mb-1">USER PROFILE</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="row">
+        <div class="col-lg-12">
+            <div>
+                <!-- <div class="d-flex profile-wrapper"> -->
+                    <!-- Nav tabs -->
+
+                    <!-- <ul class="nav nav-pills animation-nav profile-nav gap-2 gap-lg-3 flex-grow-1" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link fs-14 active" data-bs-toggle="tab" href="#overview-tab" role="tab">
+                                <i class="ri-airplay-fill d-inline-block d-md-none"></i> <span class="d-none d-md-inline-block">Overview</span>
+                            </a>
+                        </li>
+                    </ul> -->
+
+                    <!-- <div class="flex-shrink-0">
+                        <a href="{% url 'client_profile_setting' %}" class="btn btn-success"><i class="ri-edit-box-line align-bottom"></i> Edit Profile</a>
+                    </div> -->
+                <!-- </div> -->
+                <!-- Tab panes -->
+                <div class="tab-content pt-4 text-muted">
+                    <div class="tab-pane active" id="overview-tab" role="tabpanel">
+                        <div class="row">
+                            <div class="col-xxl-12">
+                                {% comment %} CLIENT INFO {% endcomment %}
+                                <div class="card">
+                                    <div class="card-body">
+                                        <p></p>
+                                        <div class="row align-items-center">
+                                            <!-- Profile Picture Section -->
+                                            <div class="col-md-3 text-center">
+                                                <img src="{% static 'assets/images/users/avatar-8.jpg' %}" alt="Profile Picture" class="img-fluid rounded-circle">
+                                                <p></p>
+                                                <h4 class="name-header">{{obj.Name}}</h4>
+                                            </div>
+                                            
+                                            <!-- Personal Information Section -->
+                                            <div class="col-md-9">
+                                                <div class="table-responsive">
+                                                    <table class="table table-borderless mb-0" >
+                                                        <tbody>
+                                                            
+                                                            <tr>
+                                                                <th class="ps-0 text-start" scope="row" style="width: 15%;">Email</th>
+                                                                <td class="text-muted text-start">:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{obj.Email}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="ps-0 text-start" scope="row">Phone Number</th>
+                                                                <td class="text-muted text-start">:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{obj.PhoneNum}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="ps-0 text-start" scope="row">Address</th>
+                                                                <td class="text-muted text-start text-uppercase">:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{obj.Address}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="ps-0 text-start" scope="row">Date of Birth</th>
+                                                                <td class="text-muted text-start text-uppercase">:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{obj.DOB|date:"j F Y"}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="ps-0 text-start" scope="row">Last Login</th>
+                                                                <td class="text-muted text-start text-uppercase">:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{obj.last_login}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="ps-0 text-start" scope="row">Date Register</th>
+                                                                <td class="text-muted text-start text-uppercase">:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{obj.DateRegister}}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- container-fluid -->
+
+{% endblock content %}
+
+
+{% block script %}
+{% endblock script %}

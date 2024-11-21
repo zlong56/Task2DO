@@ -1,0 +1,106 @@
+{% extends "backend/base/admin_base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <div class="position-relative mx-n4 mt-n4">
+        <div class="profile-wid-bg profile-setting-img" style="height:150px;">
+            <div class="overlay-content">
+                <div class="text-end p-3">
+                    {% comment %} <div class="p-0 ms-auto rounded-circle profile-photo-edit">
+                        <input id="profile-foreground-img-file-input" type="file" class="profile-foreground-img-file-input">
+                        <label for="profile-foreground-img-file-input" class="profile-photo-edit btn btn-light">
+                            <i class="ri-image-edit-line align-bottom me-1"></i> Change Cover
+                        </label>
+                    </div> {% endcomment %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xxl-12">
+            <div class="card mt-xxl-n5">
+                <div class="card-header">
+                    <ul class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#personalDetails" role="tab">
+                                <i class="fas fa-home"></i> Profile
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#changePassword" role="tab">
+                                <i class="far fa-user"></i> Change Password
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body p-4">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="personalDetails" role="tabpanel">
+                            <form method="POST">
+                                {% csrf_token %}
+                                <h4>Personal</h4>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        {% include "libs/input.html" with labe="SSM Register Number" name="SSMRegisterNum" value=obj.SSMRegisterNum required=True %}
+                                    </div>
+                                    <div class="col-lg-6">
+                                        {% include "libs/input.html" with labe="CIDB Register Number" name="CIDBRegNumber" value=obj.CIDBRegNumber required=True %}
+                                    </div>
+                                    <div class="col-lg-6">
+                                        {% include "libs/input.html" with label="Company Name" name="CompanyName" value=obj.CompanyName required=True %}
+                                    </div>
+                                    <div class="col-lg-6">
+                                        {% include "libs/input.html" with label="Email" name="Email" value=obj.Email type="email" required=True %}
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <div class="hstack gap-2 justify-content-end" style="margin:20px;">
+                                            <button type="submit" class="btn btn-primary">Updates</button>
+                                            <a type="button" href="{% url 'profile' %}" class="btn btn-soft-success">Cancel</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane" id="changePassword" role="tabpanel">
+                            <form method="POST">
+                                {% csrf_token %}
+                                <div class="row g-2">
+                                    <div class="col-lg-4">
+                                        {% include "libs/input.html" with name="old_password" label="Old Password" required=True type="password" %}
+                                    </div>
+                                    <!--end col-->
+                                    <div class="col-lg-4">
+                                        {% include "libs/input.html" with name="new_password1" label="New Password" required=True type="password" %}
+                                    </div>
+                                    <!--end col-->
+                                    <div class="col-lg-4">
+                                        {% include "libs/input.html" with name="new_password2" label="Confirm Password" required=True type="password" %}
+                                    </div>
+                                    <!--end col-->
+                                    <div class="col-lg-12">
+                                        <div class="text-end">
+                                            <input type="submit" class="btn btn-success" value="Change Password" name="Change_Password"></button>
+                                        </div>
+                                    </div>
+                                    <!--end col-->
+                                </div>
+                                <!--end row-->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}
+
+
+{% block script %}
+{% endblock script %}

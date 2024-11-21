@@ -1,0 +1,21 @@
+{% load custom_filters %}
+
+<footer class="footer">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                {% with DEV_NAME_MINI=DEV_NAME|split:" " %}
+                <span id="this_year_footer"></span> © {{DEV_NAME}}
+                {% endwith %}
+            </div>
+            <!-- <div class="col-sm-6">
+                <div class="text-sm-end d-none d-sm-block">
+                    Powered by {{DEV_NAME}}
+                </div>
+            </div> -->
+        </div>
+    </div>
+    <script>
+        document.getElementById("this_year_footer").innerHTML = new Date().getFullYear()
+    </script>
+</footer>

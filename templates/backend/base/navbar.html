@@ -1,0 +1,46 @@
+{% load static %}
+
+<!-- ========== App Menu ========== -->
+<div class="app-menu navbar-menu">
+
+    <div id="scrollbar">
+        <div class="container-fluid" style="margin-top: 20px;">
+
+            <div id="two-column-menu">
+            </div>
+            <ul class="navbar-nav" id="navbar-nav">
+                
+                <!-- FOR ADMIN -->
+                {% if user.is_admin or user.is_superuser %}
+                    {% include "libs/nav.html" with label="Home" url='adminhome' icon="activity" %}
+                {% endif %}
+
+                {% if user.AccType == "Client" %}
+                    <li class="menu-title"><span data-key="t-menu">MENU</span></li>
+                    {% include "libs/nav.html" with label="Home" url='clienthome' icon="activity" %}
+                    {% include "libs/nav.html" with label="Task" url='all-task' icon="book" %}
+                {% endif %}
+                    
+                <!-- FOR DEVELOPER -->
+                {% if user.is_superuser %}
+                    <li class="menu-title"><span data-key="t-menu" style="color:red; background-color:black; width:100%;">FOR DEVELOPER</span></li>
+                    {% include "libs/nav.html" with label="Tools Example"  class='bx bx-scatter-chart'
+                            url_list='table,graph,bargraph,piegraph,input,icon_list,button,card,modal,page,animation,layout' 
+                            label_list='Table,Line Graph,Bar Graph,Pie Chart,Inputs,Icons,Buttons,Card,Modal,Pagination,Animation,Grid Layout' 
+                        %}
+                    {% include "libs/nav.html" with label="App Setting" 
+                            url_list='app_setting,page_creator' 
+                            label_list='App Setting,Page Creator' 
+                            icon='settings'
+                        %}
+                {% endif %}
+            </ul>
+        </div>
+        <!-- Sidebar -->
+    </div>
+
+    <div class="sidebar-background"></div>
+</div>
+<!-- Left Sidebar End -->
+<!-- Vertical Overlay-->
+<div class="vertical-overlay"></div>

@@ -1,0 +1,209 @@
+{% load static %}
+{% load custom_filters %}
+
+
+<div class="card">
+    <div class="card-header">
+        {% if label %}
+            <h4 class="card-title mb-0">{{label}}</h4>
+        {% else %}
+            <h4 class="card-title mb-0">{{id}}</h4>
+        {% endif %}
+    </div><!-- end card header -->
+
+    <div class="card-body">
+        <div id="mainChart_{{id}}" data-colors='["--vz-primary"]' class="apex-charts" dir="ltr"></div>
+        <div id="panChart_{{id}}" style="touch-action: none;" data-colors='["--vz-primary"]' class="apex-charts" dir="ltr"></div>
+    </div><!-- end card-body -->
+</div><!-- end card -->
+
+<script>
+    function createRangeLineChart(elementId, xData, yData, titleText, is_target) {
+        const colorsArray = ["#2E86C1","#F39C12","#7D3C98","#28B463","#D35400","#229954","#A569BD","#B03A2E","#9B59B6","#3498DB","#C39BD3","#E74C3C"];
+        let options;
+        var quarterIndex = Math.round(xData.length / 4);
+        var threeQuartersIndex = Math.round(3 * xData.length / 4);
+        
+        let presetStart = xData[quarterIndex];
+        let presetEnd = xData[threeQuartersIndex];
+    
+        // Configuration for the main chart
+        if (is_target) {
+            options = {
+                series: [{
+                    name: titleText,
+                    data: yData
+                }],
+                chart: {
+                    id: elementId,
+                    type: "line",
+                    height: 220,
+                    zoom: {
+                        enabled: false
+                    },
+                    toolbar: {
+                        autoSelected: "pan",
+                        show: true
+                    }
+                },
+                {% if show_point %}
+                    dataLabels: {
+                    enabled: true
+                },
+                {% endif %}
+                stroke: {
+                    curve: "smooth",
+                    {% if strokesize %}
+                    width: {{strokesize}}
+                    {% else %}
+                    width: 3
+                    {% endif %}
+                },
+                colors: [colorsArray[0]],
+                title: {
+                    {% if label %}
+                    text: "{{label}}",
+                    {% else %}
+                    text: titleText,
+                    {% endif %}
+                    align: "left",
+                    style: {
+                        fontWeight: 500
+                    }
+                },
+                fill: {
+                    opacity: 1
+                },
+                markers: {
+                    size: 0
+                },
+                xaxis: {
+                    type: "datetime",
+                    categories: xData
+                },
+                yaxis: {
+                    title: {
+                        text: "{{label}}"
+                    },
+                },
+                tooltip: {
+                    x: {
+                        format: "yyyy-MM-dd HH:mm"
+                    }
+                }
+            };
+        } 
+        // Configuration for the brush/pan chart
+        else {
+            options = {
+                series: [{
+                    data: yData
+                }],
+                chart: {
+                    id: elementId,
+                    height: 130,
+                    type: "area",
+                    brush: {
+                        target: "mainChart_{{id}}", // This should be the ID of the main chart
+                        enabled: true
+                    },
+                    selection: {
+                        enabled: true,
+                        xaxis: {
+                            min: presetStart,
+                            max: presetEnd
+                        }
+                    }
+                },
+                title: {
+                    align: "left",
+                    style: {
+                        fontWeight: 500
+                    }
+                },
+                {% if show_point %}
+                    dataLabels: {
+                    enabled: true
+                },
+                {% endif %}
+                stroke: {
+                    curve: "smooth"
+                },
+                colors: [colorsArray[3]],
+                fill: {
+                    type: "gradient",
+                    gradient: {
+                        opacityFrom: .91,
+                        opacityTo: .1
+                    }
+                },
+                xaxis: {
+                    type: "datetime",
+                    categories: xData,
+                    tooltip: {
+                        enabled: false
+                    }
+                },
+                yaxis: {
+                    tickAmount: 2
+                },
+                tooltip: {
+                    x: {
+                        format: "yyyy-MM-dd HH:mm"
+                    }
+                }
+            };
+        }
+    
+        // Render the chart
+        let chart = new ApexCharts(document.querySelector(`#${elementId}`), options);
+        chart.render();
+        return chart; // Return chart instance for further interactions
+    }
+    
+    // Existing function modified to accept a new series data array
+    function editRangeLineChart(chartInstance, newXData, seriesData,seriesName) {
+        const newSeries =[{
+            name: seriesName,
+            data: seriesData
+        }];
+        chartInstance.updateOptions({
+            series: newSeries,
+            xaxis: {
+                categories: newXData
+            }
+        });
+    }
+
+    function addSeriesToRangeChart(chartInstance, seriesName, seriesData) {
+        const newSeries = {
+            name: seriesName,
+            data: seriesData
+        };
+    
+        // Assuming the series is available directly under chartInstance's options
+        if (!chartInstance.options.series) {
+            chartInstance.options.series = [];
+        }
+        
+        chartInstance.options.series.push(newSeries);
+        chartInstance.updateOptions({
+            series: chartInstance.options.series
+        });
+    }
+    
+    
+    {% if id %}
+    // Usage example:
+
+    var dateStrs = {{ xData|safe }}; // assuming date_list_from_context is a list of date strings
+    var {{id}}_xData = dateStrs.map(str => new Date(str).getTime());
+
+    // Call for the pan/brush chart
+    const {{id}} = createRangeLineChart("mainChart_{{id}}", {{id}}_xData, {{yData|safe}}, "{{label}}", true);
+    const pan_{{id}} = createRangeLineChart("panChart_{{id}}", {{id}}_xData, {{yData|safe}}, "{{label}}", false);
+    {% endif %}
+    
+    
+</script>
+

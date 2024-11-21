@@ -1,0 +1,23 @@
+{% extends "backend/base/admin_base.html" %}
+{% load static %}
+{% load custom_filters %}
+{% block title %} DEV - File Input {% endblock %}
+
+{% block content %}
+
+    <form method="POST" enctype="multipart/form-data" >
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-lg-6">
+                {% include "libs/input.html" with name="InputFile" type="file" value=result.File multiple=True max_size="100MB" max_file=3 %}
+            </div>
+            <!--end col-->
+            <div class="col-lg-12">
+                <hr>
+                <input type="submit" class="btn btn-primary" value="Submit">
+            </div>
+        </div>
+        <!--end row-->
+    </form>
+
+{% endblock %}

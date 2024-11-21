@@ -1,0 +1,10 @@
+{% extends "backend/base/admin_base.html" %}
+{% load static %}
+{% load custom_filters %}
+{% block title %} Dashboard {% endblock %}
+
+{% block content %}
+{{request.user.is_superuser}}
+{{request.user.Name}}
+
+{% endblock %}

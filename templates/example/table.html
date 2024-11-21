@@ -1,0 +1,107 @@
+{% extends "backend/base/admin_base.html" %}
+{% load static %}
+{% load custom_filters %}
+{% block title %} DEV - Table Example {% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-4">
+            {% include "libs/input.html" with type="select" name="input_example" id="input_example" label="Table Example" %}
+        </div>
+        <div class="col-lg-1 align-self-end">
+            {% comment %} search button {% endcomment %}
+            {% include "libs/button.html" with text="Copy" toast="Copied" id="Copy_btn" class="success" %}
+        </div>
+        <div class="col-lg-7 align-self-end">
+            {% comment %} search button {% endcomment %}
+            <span id="Input_value"></span>
+        </div>
+        <div class="col-12">
+        <hr>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+        </div>
+        <div class="col-lg-12">
+        {% include "libs/table.html" with query=Account title="Query Based" %}
+        </div>
+        <div class="col-lg-12">
+        {% include "libs/table.html" with title="Header Data Based" header=table_header data=table_data 
+            view="my_view()" edit="my_edit()" delete="my_delete()" 
+            custom_btn="Custom Button" custom_btn_fn="my_custom_btn_fn()"
+        %}
+        </div>
+        {% comment %} <div class="col-lg-12">
+        {% include "libs/table.html" with header=UserActivity_header data=UserActivity_data title="UserActivity" %}
+        </div> {% endcomment %}
+        <!--end col-->
+    </div>
+    <script>
+        function my_view(){
+            info("View","View Pressed");
+        }
+        function my_edit(){
+            success("Edit","Edit Pressed");
+        }
+        function my_delete(){
+            alert("Delete","Delete Pressed");
+        }
+        function my_custom_btn_fn(){
+            freeze("Custom Button Pressed","Freeze",1500); // freeze, unfreeze, lock, unlock
+        }
+    </script>
+    <!--end row-->
+
+    <script>
+        function show_text(input_text){
+            return "{ %".replaceAll(" ","") +" include "+ input_text +" "+ "% }".replaceAll(" ","");
+    }
+    
+        var example_dict = {}
+        example_dict["Query Based"] = show_text('"libs/table.html" with query=Account title="Query Based"');
+        example_dict["Header Data Based"] = show_text('"libs/table.html" with title="Header Data Based" header=table_header data=table_data ');
+        example_dict["Header Data Based w/ Buttons"] = show_text('"libs/table.html" with title="Header Data Based" header=table_header data=table_data view="my_view()" edit="my_edit()" delete="my_delete()" custom_btn="Custom Button" custom_btn_fn="my_custom_btn_fn()"');
+        $(document).ready(function() {
+            // set select option value using example_dict key while value is value of example_dict
+            for(var key in example_dict){
+                $('#input_example').append('<option value="'+key+'">'+key+'</option>');
+            }
+            $('#input_example').on('change', function() {
+                var selected = document.getElementById("input_example").value
+                console.log(selected,example_dict[selected])
+                document.getElementById("Input_value").innerHTML = example_dict[selected];
+            });
+            $('#Copy_btn').on('click', function() {
+                var copyText = document.getElementById("Input_value");
+                var textArea = document.createElement("textarea");
+                textArea.value = copyText.textContent;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand("Copy");
+                textArea.remove();
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block script %}
+    <!--datatable js-->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+{% endblock %}
+
+
+
+{% block plugin %}
+    <!--datatable css-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
+    <!--datatable responsive css-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+{% endblock %}

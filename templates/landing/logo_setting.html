@@ -1,0 +1,41 @@
+{% extends "backend/base/admin_base.html" %}
+{% load static %}
+{% load custom_filters %}
+{% block title %} Logo Setting {% endblock %}
+
+{% block content %}
+
+    <form method="POST" enctype="multipart/form-data" >
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-lg-4">
+                {% include "libs/input.html" with name="COMPANY_NAME" value=COMPANY_NAME %}
+            </div>
+            <div class="col-lg-4">
+                {% include "libs/input.html" with name="FULL_COMPANY_NAME" value=FULL_COMPANY_NAME %}
+            </div>
+            <div class="col-lg-4">
+                {% include "libs/input.html" with name="DEV_NAME" value=DEV_NAME %}
+            </div>
+            <div class="col-lg-4">
+                {% include "libs/input.html" with name="logo" type="image" value=Logo label="Logo" %}
+            </div>
+            <div class="col-lg-4">
+                {% include "libs/input.html" with name="logo_sm" type="image" value=Logo_Small label="Logo Small" %}
+            </div>
+            <div class="col-lg-4">
+                {% include "libs/input.html" with name="favicon" type="image" value=Favicon label="Favicon" %}
+            </div>
+            <div class="col-lg-4">
+                {% include "libs/input.html" with name="DEBUG" type="checkbutton" class="success" label="Debug Status" value=DEBUG %}
+            </div>
+            <!--end col-->
+            <div class="col-lg-12">
+                <hr>
+                <input type="submit" class="btn btn-primary" value="Submit">
+            </div>
+        </div>
+        <!--end row-->
+    </form>
+
+{% endblock %}

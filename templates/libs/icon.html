@@ -1,0 +1,11 @@
+<i 
+    {% if class %}
+        class="{{class}}"
+    {% elif icon %}
+        data-feather="{{icon}}" 
+        {% if style %}class="icon-dual-{{style}}"{% endif %}
+        
+    {% else %}
+        data-feather="align-left"
+    {% endif %}
+></i> 

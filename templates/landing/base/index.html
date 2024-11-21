@@ -1,0 +1,148 @@
+{% load static %}
+{% load pwa %}
+<!doctype html>
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
+
+<head>
+
+    <meta charset="utf-8" />
+    <title>
+        {% block title %}
+            Sign In 
+        {% endblock title %}
+     </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="{{COMPANY_NAME}} Admin & Dashboard" name="description" />
+    <meta content="{{COMPANY_NAME}}" name="author" />
+    {% if user.id %}
+        <meta name="user_id" content="{{ user.id }}">
+    {% endif %}
+    {% progressive_web_app_meta %}
+    <!-- App favicon -->
+    <link rel="icon" type="image/jpeg" sizes="237x122" href="{% static 'pwa_assets/logo.png' %}">
+    <link rel="shortcut icon" type="image/jpeg" sizes="237x122" href="{% static 'pwa_assets/logo.png' %}">
+
+    <!-- Layout config Js -->
+    <script src="{% static 'assets/js/layout.js' %}"></script>
+    <!-- Bootstrap Css -->
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="{% static 'assets/css/icons.min.css' %}" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="{% static 'assets/css/app.min.css' %}" rel="stylesheet" type="text/css" />
+    <!-- custom Css-->
+    <link href="{% static 'assets/css/custom.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'assets/libs/sweetalert2/sweetalert2.min.css' %}" rel="stylesheet" type="text/css" />
+    {% include "backend/base/sub/link.html" %}
+
+</head>
+
+<body>
+    {% include "libs/loading.html" %}
+    {% include "backend/base/sub/libs.html" %}
+    {% comment %} {% include "backend/base/sub/init.html" %} {% endcomment %}
+    {% block modal %}
+    
+    {% endblock modal %}
+
+    <div class="auth-page-wrapper pt-5">
+        <!-- auth page bg -->
+        <div class="auth-one-bg-position auth-one-bg" id="auth-particles" style="background-image: url({% static 'assets/images/landing_banner2.jpeg' %});">
+            <div class="bg-overlay"></div>
+
+            <div class="shape">
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1440 120">
+                    <path d="M 0,36 C 144,53.6 432,123.2 720,124 C 1008,124.8 1296,56.8 1440,40L1440 140L0 140z"></path>
+                </svg>
+            </div>
+        </div>
+
+        <!-- auth page content -->
+        <div class="auth-page-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="text-center mt-sm-5 mb-4 text-white-50">
+                            <style>
+                                .glass {
+                                    background: rgba(255, 255, 255, 0.25); /* Semi-transparent white */
+                                    backdrop-filter: blur(10px); /* Blur the background */
+                                    border-radius: 10px;
+                                    border: 1px solid rgba(255, 255, 255, 0.2); /* Optional light border */
+                                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional subtle shadow */
+                                    padding: 20px;
+                                  }
+                            </style>
+                            <div>
+                                <a href="/" class="glass d-inline-block auth-logo">
+                                    <img src="{% static 'pwa_assets/file.png' %}" alt="" height="120" style="padding:10px; background-color: white; border-radius:10px;">
+                                </a>
+                            </div>
+                            <p class="mt-3 fs-15 fw-medium">TASK MANAGEMENT SYSTEM</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+                {% block content %}
+                
+                {% endblock content %}
+                <!-- end row -->
+            </div>
+            <!-- end container -->
+        </div>
+        <!-- end auth page content -->
+
+    </div>
+    <!-- end auth-page-wrapper -->
+    <hr>
+    {% if term_condition %}
+    <div class="row">
+        <div class="col" style="text-align:center; height:30px;"><a href="{% url 'refundpolicy' %}" target="_blank">Refund & Policy</a></div>
+        <div class="col" style="text-align:center; height:30px;"><a href="{% url 'termsandcondition' %}" target="_blank">Terms & Conditions</a></div>
+        <div class="col" style="text-align:center; height:30px;"><a href="{% url 'privacypolicy' %}" target="_blank">Privacy Policy</a></div>
+        <div class="col" style="text-align:center; height:30px;"><a href="{% url 'contactus' %}" target="_blank">Contact</a></div>
+        <div class="col" style="text-align:center; height:30px;"><a href="{% url 'productlisting' %}" target="_blank">Product Listing</a></div>
+        <div class="col" style="text-align:center; height:30px;"><a href="{% url 'deliverymethod' %}" target="_blank">Delivering Method</a></div>
+    </div>
+    {% endif %}
+
+    <!-- JAVASCRIPT -->
+    <script src="{% static 'assets/libs/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/libs/simplebar/simplebar.min.js' %}"></script>
+    <script src="{% static 'assets/libs/node-waves/waves.min.js' %}"></script>
+    <script src="{% static 'assets/libs/feather-icons/feather.min.js' %}"></script>
+    <script src="{% static 'assets/js/pages/plugins/lord-icon-2.1.0.js' %}"></script>
+    {% comment %} <script src="{% static 'assets/js/plugins.js' %}"></script> {% endcomment %}
+
+    <!-- particles js -->
+    <script src="{% static 'assets/libs/particles.js/particles.js' %}"></script>
+    <!-- particles app js -->
+    <script src="{% static 'assets/js/pages/particles.app.js' %}"></script>
+    <!-- password-addon init -->
+    <script src="{% static 'assets/js/pages/password-addon.init.js' %}"></script>
+    <script src="{% static 'assets/libs/sweetalert2/sweetalert2.min.js' %}"></script>
+    <script src="{% static 'assets/js/pages/modal.init.js' %}"></script>
+    
+    {% if messages %}
+    <script>
+        {% for message in messages %}
+            Swal.fire({
+                title: "{{ message.tags|capfirst }}",
+                html: "{{ message | safe }}",
+                icon: "{{ message.tags }}",
+                confirmButtonClass: "btn btn-primary w-xs mt-2",
+                buttonsStyling: false,
+                showCloseButton: true,
+                width: '800px',
+            });
+        {% endfor %}
+
+    </script>
+    {% endif %}
+    
+    {% block script %}
+    
+    {% endblock script %}
+</body>
+
+</html>

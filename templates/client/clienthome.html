@@ -1,0 +1,31 @@
+{% extends "backend/base/admin_base.html" %}
+{% load static %}
+{% load custom_filters %}
+{% block title %} CLIENT-DASHBOARD {% endblock %}
+
+{% block content %}
+
+<!-- APPLICANT -->
+{% include 'landing/task_list.html' %}
+
+{% endblock %}
+
+{% block script %}
+<script>
+    $(document).ready(function () {
+        $("#applicant_button_card a").click(function() {
+            document.getElementById("applicant_submit_btn").value = $(this).find("p").text().trim();
+            document.getElementById("applicant_submit_btn").click();
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#application_button_card a").click(function() {
+            document.getElementById("application_submit_btn").value = $(this).find("p").text().trim();
+            document.getElementById("application_submit_btn").click();
+        });
+    });
+</script>
+{% endblock %}

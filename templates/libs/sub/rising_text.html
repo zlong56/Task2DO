@@ -1,0 +1,15 @@
+{% load custom_filters %}
+
+{% if front_unit %}
+<span style="font-size: 16px;">{{front_unit}}</span>
+{% endif %}
+{% if label %}
+<span class="fw-medium text-muted text-truncate mb-0" style="font-size: 15px;">{{label}} : </span>
+{% endif %}
+{% with value_list=value|split:" "  %}
+    <span style="font-size: 16px" class="counter-value" data-target="{{value_list.0|remove:','}}">0</span>
+    {% if value_list|length > 1 %}
+    <span style="font-size: 16px;" >{{value|split_right:" "}}</span>
+    {% endif %}
+{% endwith %}
+<br>

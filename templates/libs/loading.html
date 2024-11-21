@@ -1,0 +1,94 @@
+<style>
+    .loading-screen {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: rgba(255,255,255,0.8);
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    
+    .loader {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #3498db;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+        margin-top: 20px;
+        display: inline-block;
+        animation: fadeInOut 2s infinite;
+    }
+
+    @keyframes fadeInOut {
+        0%, 100% { opacity: 0; }
+        50% { opacity: 1; }
+    }
+</style>
+
+<!-- Loading Screen -->
+<div id="loadingScreen" class="loading-screen">
+    <div class="loader"></div>
+    <p class="loading-text" id="loading-text">Gathering resources...</p>
+    {% comment %} <p class="loading-text">Pre-loading assets...</p>
+    <p class="loading-text">Getting things ready for you...</p>
+    <p class="loading-text">Hang tight, magic in progress...</p>
+    <p class="loading-text">Harnessing the force...</p>
+    <p class="loading-text">Entertaining the 0s and 1s...</p> {% endcomment %}
+</div>
+
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+        const words = [
+            "Transitioning to the subsequent page...",
+            "Taking you to the next destination...",
+            "Let's see what's next...",
+            "Ready for the next chapter? Here we go...",
+            "Opening a new digital doorway...",
+            "Taking a magic carpet ride to the next view...",
+            "Warp speed to the next galaxy...",
+            "Popping into the next pixel playground...",
+            "Nearing the finish line...",
+            "Garnishing the digital dish...",
+            "Setting the cherry on top...",
+        ];
+        var loadingScreen = document.getElementById('loadingScreen');
+        loadingScreen.style.backgroundColor= "rgba(255,255,255,0.5)";
+        let index = 0;  // Start at the first word
+        const loadingelement = document.getElementById('loading-text');
+        setInterval(() => {
+            index++;  // Move to the next word
+            if (index >= words.length) {
+                index = 0;  // Reset to the first word when reaching the end of the list
+            }
+            loadingelement.textContent = words[index];
+        }, 2000);  // Change every 2 seconds (2000 milliseconds)
+        hide_load()
+    });
+    window.addEventListener('load', function() {
+        hide_load()
+    });
+    window.addEventListener('beforeunload', function(event) {
+        var loadingScreen = document.getElementById('loadingScreen');
+        document.getElementById("loading-text").innerText = "Redirecting..."
+        loadingScreen.style.display = 'flex';
+        setTimeout(hide_load, 7500);
+    });
+    function hide_load(){
+        var loadingScreen = document.getElementById('loadingScreen');
+        loadingScreen.style.display = 'none';
+    }
+</script>

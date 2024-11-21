@@ -1,0 +1,99 @@
+{% extends "backend/base/admin_base.html" %}
+{% load static %}
+{% load custom_filters %}
+{% block title %} DEV - Modal Examples {% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-4">
+        {% include "libs/input.html" with type="select" name="input_example" id="input_example" label="Modal Example" %}
+    </div>
+    <div class="col-lg-1 align-self-end">
+        {% comment %} search button {% endcomment %}
+        {% include "libs/button.html" with text="Copy" toast="Copied" id="Copy_btn" class="success" %}
+    </div>
+    <div class="col-lg-7 align-self-end">
+        {% comment %} search button {% endcomment %}
+        <span id="Input_value"></span>
+    </div>
+    <div class="col-12">
+    <hr>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-3 col-md-6 col-12 my-2">
+        <p> Inline Modal button </p>
+        {% include "libs/modal.html" with 
+            text="Open Modal" class="success" id="example_modal_inline"
+            title="Example Modal Title"
+            body="<img src='https://cdn-icons-png.flaticon.com/512/10970/10970392.png' height='250' ><p>Example <b style='color:red'>Inline HTML Modal Body</b></p>" 
+            footer="<h4>Demo custom footer</h4>"  %}
+    </div>
+    <div class="col-lg-3 col-md-6 col-12 my-2">
+        <p> Target Modal button </p>
+        {% include "libs/modal.html" with text="Open Modal" class="primary" target="example_modal" title="Example Modal Title" %}
+        <div id="example_modal">
+            <img src="{% static 'assets/images/small/img-1.jpg' %}" alt="placeholder" class="img-fluid">
+            <p> Example Target Modal Body </p>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-12">
+        <p> Form Modal button </p>
+        {% include "libs/modal.html" with text="Open Modal" class="warning" target="example_modal_form" title="Example Modal Title" form=True %}
+        <div id="example_modal_form">
+            {% comment %} example registration form with email, password, confirm password, IC, name, mobile, gender (select) {% endcomment %}
+            {% include "libs/input.html" with type="email" name="Email" required=True %}
+            {% include "libs/input.html" with type="IC" name="IC" required=True  %}
+            {% include "libs/input.html" with type="text" name="Name" capitalize=True %}
+            {% include "libs/input.html" with type="phone" name="Mobile" %}
+            {% include "libs/input.html" with name="Gender" type="select" value=result.Select options="Male,Female"|split:"," %}
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-12">
+        <p> Onclick Modal button </p>
+        {% include "libs/modal.html" with 
+                text="Open Modal" class="secondary" id="example_modal_onclick"
+                title="Example Onclick Modal" body="<p>Demo onclick modal</p>" 
+                onclick="success('onclick = success()')" 
+            %}
+    </div>
+    <div class="col-12">
+        <hr>
+    </div>
+</div>
+
+<script>
+
+    function show_text(input_text){
+        return "{ %".replaceAll(" ","") +" include "+ input_text +" "+ "% }".replaceAll(" ","");
+    }
+
+    var example_dict = {}
+    example_dict["Inline Modal"] = show_text(`'libs/modal.html' with text='Open Modal' class='success' id='example_modal_inline' title='Example Modal Title' body='<p>Example <b style=\"color:red\">Inline HTML Modal Body</b></p>' footer='<h4>Demo custom footer</h4>'`);
+    example_dict["Target Modal"] = show_text(`'libs/modal.html' with text='Open Modal' class='primary' target='example_modal' title='Example Modal Title'`);
+    example_dict["Form Modal"] = show_text(`'libs/modal.html' with text='Open Modal' class='warning' target='example_modal_form' title='Example Modal Title' form=True`);
+    example_dict["Onclick Modal"] = show_text(`'libs/modal.html' with text='Open Modal' class='secondary' id='example_modal_onclick' title='Example Onclick Modal' body='<p>Demo onclick modal</p>' onclick='success("onclick = success()")'`);
+
+    $(document).ready(function() {
+        // set select option value using example_dict key while value is value of example_dict
+        for(var key in example_dict){
+            $('#input_example').append('<option value="'+key+'">'+key+'</option>');
+        }
+        $('#input_example').on('change', function() {
+            var selected = document.getElementById("input_example").value
+            console.log(selected,example_dict[selected])
+            document.getElementById("Input_value").innerText = example_dict[selected];
+        });
+        $('#Copy_btn').on('click', function() {
+            var copyText = document.getElementById("Input_value");
+            var textArea = document.createElement("textarea");
+            textArea.value = copyText.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand("Copy");
+            textArea.remove();
+        });
+    });
+</script>
+{% endblock %}

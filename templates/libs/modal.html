@@ -1,0 +1,89 @@
+{% load custom_filters %}
+
+<!-- Button trigger modal -->
+<a type="button" class="btn btn-{{class}}" data-bs-toggle="modal" 
+{% if id %}
+data-bs-target="#{{id}}_div"
+{% elif target %}
+data-bs-target="#{{target}}_div"
+{% elif title %}
+data-bs-target="#{{title|remove_spaces}}_div"
+{% else %}
+data-bs-target="#mymodal_div"
+{% endif %}
+>
+    {{text}}
+</a>
+
+<!-- Modal -->
+<div class="modal fade" tabindex="-1" aria-hidden="true"
+
+{% if id %}
+id="{{id}}_div" aria-labelledby="{{id}}_divLabel" 
+{% elif target %}
+id="{{target}}_div" aria-labelledby="{{target}}_divLabel" 
+{% elif title %}
+id="{{title|remove_spaces}}_div" aria-labelledby="{{title|remove_spaces}}_divLabel" 
+{% else %}
+id="mymodal_div" aria-labelledby="mymodal_divLabel" 
+{% endif %}
+    
+>
+<div class="modal-dialog">
+    <div class="modal-content">
+        {% if form %}
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}        
+        {% endif %}
+
+        {% if title %}
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">{{title}}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> 
+        </div> 
+        {% endif %}
+
+        <div class="modal-body">
+            {% if body %}
+                {{body|safe}}   
+            {% endif %}
+        </div>
+
+        {% if onclick %}
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-success" onclick="{{onclick}}">Confirm</button>
+        </div> 
+        {% endif %} 
+
+        {% if form %}
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            {% include "libs/button.html" with text="Submit" type="Submit" class="success" %}
+        </div> 
+        </form>       
+        {% endif %}
+
+        {% if footer %}
+        <div class="modal-footer">
+            {{footer|safe}}
+        </div> 
+        {% endif %}
+    </div>
+</div>
+</div>
+
+{% if target %}
+<script>
+    // document onload
+    document.addEventListener('DOMContentLoaded', function() {
+        // move {{target}} innerHTML to {{target}}_div modal-body then remove {{target}} element
+        var {{target}} = document.getElementById('{{target}}');
+        var {{target}}_div = document.getElementById('{{target}}_div');
+        {{target}}_div.querySelector('.modal-body').innerHTML = {{target}}.innerHTML;
+        {{target}}.remove();
+
+    });
+
+</script>
+{% endif %}

@@ -1,0 +1,39 @@
+{% extends "landing/base/index.html" %}
+{% load static %}
+{% block title %}Delivery Methods and Timing{% endblock title %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col">
+    <div class="container">
+    <div class="card">
+        <div class="bg-primary card-header">
+            {% comment %} back button {% endcomment %}
+            <a href="{% url 'login_user' %}" class="btn btn-primary">Back</a>
+        </div>
+        <div class="card-body px-5">
+            <h1 class="mb-3 text-center text-uppercase"><strong>Delivery Methods and Timing</strong></h1>
+            <hr>
+
+            <p><span style="font-size:11pt"><span style="background-color:white"><span><span dir="ltr" lang="EN-US"><span><span style="color:#343339">This delivery policy explains the methods and timing of delivery for services acquired through the CIDB EXPATRATE Platform. Please read through this policy carefully to understand how we manage service delivery and what to expect after your purchase.</span></span></span></span></span></span></p>
+
+            <h2><span style="font-size:16pt"><span style="background-color:white"><span><a name="_delivery_methods"></a><span dir="ltr" lang="EN-US" style="font-size:16.5pt"><span><span style="color:#1d1c21">Delivery Methods</span></span></span></span></span></span></h2>
+
+            <p><span style="font-size:11pt"><span style="background-color:white"><span><span dir="ltr" lang="EN-US"><span><span style="color:#343339">Services purchased on the CIDB EXPATRATE Platform are delivered electronically via online. </span></span></span></span></span></span></p>
+
+            <h2><span style="font-size:16pt"><span style="background-color:white"><span><a name="_delivery_timing"></a><span dir="ltr" lang="EN-US" style="font-size:16.5pt"><span><span style="color:#1d1c21">Delivery Timing</span></span></span></span></span></span></h2>
+
+            <p><span style="font-size:11pt"><span style="background-color:white"><span><span dir="ltr" lang="EN-US"><span><span style="color:#343339">The timing of service delivery varies depending on the type of service purchased:<br> 1. Expatrate Application Services: Application is registered immediately upon order confirmation and paid.<br> 2. JKSE Endorsement Services: JKSE Endorsement will be confirm after the endorsement is complete in JKSE.</span></span></span></span></span></span></p>
+
+            <h2><span style="font-size:16pt"><span style="background-color:white"><span><a name="_accessing_services"></a><span dir="ltr" lang="EN-US" style="font-size:16.5pt"><span><span style="color:#1d1c21">Accessing Purchased Services</span></span></span></span></span></span></h2>
+
+            <p><span style="font-size:11pt"><span style="background-color:white"><span><span dir="ltr" lang="EN-US"><span><span style="color:#343339">Ensure you can access the purchased services within 14 days from delivery. Contact CIDB EXPATRATE within 48 hours in case of access issues.</span></span></span></span></span></span></p>
+
+            <p>&nbsp;</p>
+        </div>
+    </div>
+
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,308 @@
+{% load custom_filters %}
+
+{% if title %}
+<div class="text-center pt-3 pb-4 mb-1">
+    <h5>{{title}}</h5>
+</div>
+{% elif header %}
+<div class="text-center pt-3 pb-4 mb-1">
+    {{header|safe}}
+</div>
+{% endif %}
+
+{% if type == "tab_page" %}
+    <div class="step-arrow-nav mb-4">
+        <ul class="nav nav-pills custom-nav nav-justified" role="tablist">
+            {% if page1 %}
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="{{page1}}_page_button" data-bs-toggle="pill" data-bs-target="#{{page1}}_page_content" type="button" role="tab" aria-controls="{{page1}}_page_content" aria-selected="true">{{page1}}</button>
+            </li>
+            {% endif %}
+            {% if page2 %}
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="{{page2}}_page_button" data-bs-toggle="pill" data-bs-target="#{{page2}}_page_content" type="button" role="tab" aria-controls="{{page2}}_page_content" aria-selected="false">{{page2}}</button>
+            </li>
+            {% endif %}
+            {% if page3 %}
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="{{page3}}_page_button" data-bs-toggle="pill" data-bs-target="#{{page3}}_page_content" type="button" role="tab" aria-controls="{{page3}}_page_content" aria-selected="false">{{page3}}</button>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <div class="tab-content">
+        {% if page1 %}
+        <div class="tab-pane fade show active" id="{{page1}}_page_content" role="tabpanel" aria-labelledby="{{page1}}_page_content">
+            {% if page2 %}
+            <div class="d-flex align-items-start gap-3 mt-4">
+                <button type="button" class="btn btn-success btn-label right ms-auto nexttab nexttab" onclick="my_press('{{page2}}_page_button')"><i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Next</button>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+        <!-- end tab pane -->
+
+        {% if page2 %}
+        <div class="tab-pane fade" id="{{page2}}_page_content" role="tabpanel" aria-labelledby="{{page2}}_page_content">
+            <div class="d-flex align-items-start gap-3 mt-4">
+                <button type="button" class="btn btn-light btn-label previestab" onclick="my_press('{{page1}}_page_button')"><i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i> Back</button>
+                {% if page3 %}
+                <button type="button" class="btn btn-success btn-label right ms-auto nexttab nexttab" onclick="my_press('{{page3}}_page_button')"><i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Next</button>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+        <!-- end tab pane -->
+
+        {% if page3 %}
+        <div class="tab-pane fade" id="{{page3}}_page_content" role="tabpanel">
+            
+            <button type="button" class="btn btn-light btn-label previestab" onclick="my_press('{{page2}}_page_button')"><i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i> Back</button>
+        </div>
+        {% endif %}
+        <!-- end tab pane -->
+    </div>
+{% elif type == "side_page" %}
+
+<div class="card-body form-steps">
+    <form class="vertical-navs-step">
+        <div class="row gy-5">
+            <div class="col-lg-3">
+                <div class="nav flex-column custom-nav nav-pills" role="tablist" aria-orientation="vertical">
+                    {% if page1 %}
+                    <button class="nav-link active" id="{{page1}}_page_button" data-bs-toggle="pill" data-bs-target="#{{page1}}_page_content" type="button" role="tab" aria-controls="{{page1}}_page_content" aria-selected="true">
+                        <span class="step-title me-2">
+                            <i class="ri-close-circle-fill step-icon me-2"></i> {% if step %}{{Step}} 1{% endif %}
+                        </span>
+                        {{page1}}
+                    </button>
+                    {% endif %}
+                    {% if page2 %}
+                    <button class="nav-link" id="{{page2}}_page_button" data-bs-toggle="pill" data-bs-target="#{{page2}}_page_content" type="button" role="tab" aria-controls="v-pills-bill-address" aria-selected="false">
+                        <span class="step-title me-2">
+                            <i class="ri-close-circle-fill step-icon me-2"></i> {% if step %}{{Step}} 2{% endif %}
+                        </span>
+                        {{page2}}
+                    </button>
+                    {% endif %}
+                    {% if page3 %}
+                    <button class="nav-link" id="{{page3}}_page_button" data-bs-toggle="pill" data-bs-target="#{{page3}}_page_content" type="button" role="tab" aria-controls="{{page3}}_page_content" aria-selected="false">
+                        <span class="step-title me-2">
+                            <i class="ri-close-circle-fill step-icon me-2"></i> {% if step %}{{Step}} 3{% endif %}
+                        </span>
+                        {{page3}}
+                    </button>
+                    {% endif %}
+                    {% if page4 %}
+                    <button class="nav-link" id="{{page4}}_page_button" data-bs-toggle="pill" data-bs-target="#{{page4}}_page_content" type="button" role="tab" aria-controls="{{page4}}_page_content" aria-selected="false">
+                        <span class="step-title me-2">
+                            <i class="ri-close-circle-fill step-icon me-2"></i> {% if step %}{{Step}} 4{% endif %}
+                        </span>
+                        {{page4}}
+                    </button>
+                    {% endif %}
+                </div>
+                <!-- end nav -->
+            </div>
+            <!-- end col-->
+            <div class="col-lg-9">
+                <div class="px-lg-4">
+                    <div class="tab-content">
+                        {% if page1 %}
+                        <div class="tab-pane fade show active" id="{{page1}}_page_content" role="tabpanel" aria-labelledby="{{page1}}_page_content">
+                            <div>
+                                <h5>{{page1}}</h5>
+                            </div>
+                            {% if page2 %}
+                            <div class="d-flex align-items-start gap-3 mt-4">
+                                <button type="button" class="btn btn-success btn-label right ms-auto nexttab nexttab" onclick="my_press('{{page2}}_page_button')"><i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Go to {{page2}}</button>
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+
+                        {% if page2 %}
+                        <div class="tab-pane fade" id="{{page2}}_page_content" role="tabpanel" aria-labelledby="{{page2}}_page_content">
+                            <div>
+                                <h5>{{page2}}</h5>
+                            </div>
+
+                            <div class="d-flex align-items-start gap-3 mt-4">
+                                <button type="button" class="btn btn-light btn-label previestab" onclick="my_press('{{page1}}_page_button')"><i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i> Back to {{page1}}</button>
+                                {% if page3 %}
+                                <button type="button" class="btn btn-success btn-label right ms-auto nexttab nexttab" onclick="my_press('{{page3}}_page_button')"><i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Go to {{page3}}</button>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        {% if page3 %}
+                        <div class="tab-pane fade" id="{{page3}}_page_content" role="tabpanel" aria-labelledby="{{page3}}_page_content">
+                            <div>
+                                <h5>{{page3}}</h5>
+                            </div>
+
+
+                            <div class="d-flex align-items-start gap-3 mt-4">
+                                <button type="button" class="btn btn-light btn-label previestab" onclick="my_press('{{page2}}_page_button')"><i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i> Back to {{page2}}</button>
+                                {% if page3 %}
+                                <button type="button" class="btn btn-success btn-label right ms-auto nexttab nexttab" onclick="my_press('{{page4}}_page_button')"><i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i> Order {{page4}}</button>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        {% if page4 %}
+                        <div class="tab-pane fade" id="{{page4}}_page_content" role="tabpanel" aria-labelledby="v-pills-finish">
+                            <div>
+                                <h5>{{page4}}</h5>
+                            </div>
+
+                            <div class="d-flex align-items-start gap-3 mt-4">
+                                <button type="button" class="btn btn-light btn-label previestab" onclick="my_press('{{page3}}_page_button')"><i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i> Back to {{page3}}</button>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <!-- end tab content -->
+                </div>
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+    </form>
+</div>
+
+{% else %}
+
+<div id="custom-progress-bar" class="progress-nav mb-4">
+    <div class="progress" style="height: 1px;">
+        <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+    
+    <ul class="nav nav-pills progress-bar-tab custom-nav" role="tablist">
+        {% if page1 %}
+            <li class="nav-item" role="presentation">
+                <button class="nav-link rounded-pill active" data-progressbar="custom-progress-bar" id="{{page1}}_page_button" data-bs-toggle="pill" data-bs-target="#{{page1}}_page_content" type="button" role="tab" aria-controls="{{page1}}_page_content" aria-selected="true">1</button>
+            </li>
+        {% endif %}
+        {% if page2 %}
+        <li class="nav-item" role="presentation">
+            <button class="nav-link rounded-pill" data-progressbar="custom-progress-bar" id="{{page2}}_page_button" data-bs-toggle="pill" data-bs-target="#{{page2}}_page_content" type="button" role="tab" aria-controls="{{page2}}_page_content" aria-selected="false">2</button>
+        </li>
+        {% endif %}
+        {% if page3 %}
+        <li class="nav-item" role="presentation">
+            <button class="nav-link rounded-pill" data-progressbar="custom-progress-bar" id="{{page3}}_page_button" data-bs-toggle="pill" data-bs-target="#{{page3}}_page_content" type="button" role="tab" aria-controls="{{page3}}_page_content" aria-selected="false">3</button>
+        </li>
+        {% endif %}
+    </ul>
+</div>
+
+<div class="tab-content">
+    {% if page1 %}
+    <div class="tab-pane fade show active" id="{{page1}}_page_content" role="tabpanel" aria-labelledby="{{page1}}_page_content">
+        
+        {% if page2 %}
+        <div class="d-flex align-items-start gap-3 mt-4">
+            <button type="button" class="btn btn-success btn-label right ms-auto nexttab nexttab" onclick="my_press('{{page2}}_page_button')"><i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Next</button>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+    <!-- end tab pane -->
+
+    {% if page2 %}
+    <div class="tab-pane fade" id="{{page2}}_page_content" role="tabpanel" aria-labelledby="{{page2}}_page_content">
+        
+        <div class="d-flex align-items-start gap-3 mt-4">
+            <button type="button" class="btn btn-link text-decoration-none btn-label previestab" onclick="my_press('{{page1}}_page_button')"><i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i> Back</button>
+            {% if page3 %}
+            <button type="button" class="btn btn-success btn-label right ms-auto nexttab nexttab" onclick="my_press('{{page3}}_page_button')"><i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Next</button>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+    <!-- end tab pane -->
+
+    {% if page3 %}
+    <div class="tab-pane fade" id="{{page3}}_page_content" role="tabpanel" aria-labelledby="{{page3}}_page_content">
+        
+        <button type="button" class="btn btn-link text-decoration-none btn-label previestab" onclick="my_press('{{page2}}_page_button')"><i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i> Back</button>
+    </div>
+    {% endif %}
+    <!-- end tab pane -->
+</div>
+
+{% endif %}
+
+
+{% if page1 %}
+<script>
+    var debug_elem = null;
+    function my_click(that_id){
+        debug_elem = document.getElementById(that_id)
+        document.getElementById(that_id).click();
+    }
+
+    function my_press(that_id){
+        document.getElementById(that_id).click();
+        var nav_div = document.getElementById(that_id)
+        var nav_list = nav_div.parentElement.parentElement.querySelectorAll(".nav-link")
+        var add_flag = true;
+        for(var i = 0; i < nav_list.length; i++){
+            if(nav_list[i].id == that_id){
+                nav_list[i].classList.add("active")
+                nav_list[i].classList.remove("done")
+                add_flag = false;
+            }
+            else if(add_flag){
+                nav_list[i].classList.add("done")
+                nav_list[i].classList.remove("active")
+            }else{
+                nav_list[i].classList.remove("done")
+                nav_list[i].classList.remove("active")
+            }
+        }
+    }
+
+
+    function page_inserter(page_id,childnode_no){
+        var page_id_elem = document.getElementById(page_id);
+        var page_id_clone = document.getElementById(page_id).cloneNode(true);
+        var page_id_div = document.getElementById(page_id+'_page_content');
+        page_id_div.insertBefore(page_id_clone, page_id_div.childNodes[childnode_no]);
+        page_id_elem.remove();
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // document onload we wrap the page into the pagination div
+        {% if type == "side_page" %}
+            {% if page1 %}
+                page_inserter('{{page1}}',1);
+            {% endif %}
+            {% if page2 %}
+                page_inserter('{{page2}}',1);
+            {% endif %}
+            {% if page3 %}
+                page_inserter('{{page3}}',1);
+            {% endif %}
+            {% if page4 %}
+                page_inserter('{{page4}}',1);
+            {% endif %}
+        {% else %}
+            {% if page1 %}
+                page_inserter('{{page1}}',0);
+            {% endif %}
+            {% if page2 %}
+                page_inserter('{{page2}}',0);
+            {% endif %}
+            {% if page3 %}
+                page_inserter('{{page3}}',0);
+            {% endif %}
+        {% endif %}
+    });
+
+</script>
+{% endif %}

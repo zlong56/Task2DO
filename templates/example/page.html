@@ -1,0 +1,123 @@
+{% extends "backend/base/admin_base.html" %}
+{% load static %}
+{% load custom_filters %}
+{% block title %} DEV - Page Examples {% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-4">
+        {% include "libs/input.html" with type="select" name="input_example" id="input_example" label="Page Example" %}
+    </div>
+    <div class="col-lg-1 align-self-end">
+        {% comment %} search button {% endcomment %}
+        {% include "libs/button.html" with text="Copy" toast="Copied" id="Copy_btn" class="success" %}
+    </div>
+    <div class="col-lg-7 align-self-end">
+        {% comment %} search button {% endcomment %}
+        <span id="Input_value"></span>
+    </div>
+    <div class="col-12">
+    <hr>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <label>Button Page </label>
+        <small> - Page limit : Max 3 page</small>
+        <div id="button_page_1">
+            Page 1 
+        </div>
+        <div id="button_page_2">
+            Page 2
+        </div>
+        <div id="button_page_3">
+            Page 3
+        </div>
+        {% include 'libs/page.html' with 
+                title="Example Title"
+                page1='button_page_1' 
+                page2='button_page_2' 
+                page3='button_page_3' 
+            %}
+        <hr>
+    </div>
+
+    <div class="col-12">
+        <label>Tab Page</label>
+        <small> - Page limit : Max 3 page</small>
+        <div id="tab_page_1">
+            Page 1
+        </div>
+        <div id="tab_page_2">
+            Page 2
+        </div>
+        <div id="tab_page_3">
+            Page 3
+        </div>
+        {% include 'libs/page.html' with 
+                type="tab_page" 
+                header="<h1>Example <span style='color:red'>Header</span></h1>"
+                page1='tab_page_1' 
+                page2='tab_page_2' 
+                page3='tab_page_3' 
+            %}
+        <hr>
+    </div>    
+    <div class="col-12">
+        <label>Side Page</label>
+        <small> - Page limit : Max 4 page</small>
+        <div id="side_page_1">
+            Page 1
+        </div>
+        <div id="side_page_2">
+            Page 2
+        </div>
+        <div id="side_page_3">
+            Page 3
+        </div>
+        <div id="side_page_4">
+            Page 4
+        </div>
+        {% include 'libs/page.html' with 
+                type="side_page" 
+                title="Side Page Example"
+                page1='side_page_1' 
+                page2='side_page_2' 
+                page3='side_page_3' 
+                page4='side_page_4' 
+            %}
+        <hr>
+    </div>    
+</div>
+
+<script>
+
+    function show_text(input_text){
+        return "{ %".replaceAll(" ","") +" include "+ input_text +" "+ "% }".replaceAll(" ","");
+    }
+
+    var example_dict = {}
+
+    $(document).ready(function() {
+        // set select option value using example_dict key while value is value of example_dict
+        for(var key in example_dict){
+            $('#input_example').append('<option value="'+key+'">'+key+'</option>');
+        }
+        $('#input_example').on('change', function() {
+            var selected = document.getElementById("input_example").value
+            console.log(selected,example_dict[selected])
+            document.getElementById("Input_value").innerHTML = example_dict[selected];
+        });
+        $('#Copy_btn').on('click', function() {
+            var copyText = document.getElementById("Input_value");
+            var textArea = document.createElement("textarea");
+            textArea.value = copyText.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand("Copy");
+            textArea.remove();
+        });
+    });
+</script>
+{% endblock %}

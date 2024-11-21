@@ -1,0 +1,22 @@
+{% extends "backend/base/admin_base.html" %}
+{% load static %}
+{% block title %} <h3>Title</h3> {% endblock %}
+
+{% block content %}
+
+<form method="POST">
+{% csrf_token %}
+    
+</form>
+
+{% endblock %}
+
+{% block script %}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#dataTable').DataTable();
+});
+</script>
+{% endblock %}

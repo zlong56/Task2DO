@@ -1,0 +1,246 @@
+{% load static %}
+{% load custom_filters %}
+
+{% if not no_label %}
+<div class="card">
+    <div class="card-header">
+        {% if label %}
+            <h4 class="card-title mb-0">{{label}}</h4>
+        {% else %}
+            <h4 class="card-title mb-0">{{id|remove:' '}}</h4>
+        {% endif %}
+    </div><!-- end card header -->
+
+    <div class="card-body">
+        <div id="bar_chart_Color_{{id|remove:' '}}" data-colors='["--vz-primary"]' class="apex-charts" dir="ltr"></div>
+    </div><!-- end card-body -->
+</div><!-- end card -->
+{% else %}
+    <div id="bar_chart_Color_{{id|remove:' '}}" data-colors='["--vz-primary"]' class="apex-charts" dir="ltr"></div>
+{% endif %}
+
+
+<script>
+    
+    function createColorBarChart(elementId, titleText, xData, yData, seriesName) {
+        const colorsArray = [
+            "#D32F2F",  // Dark Red
+            "#E57373",  // Light Red
+            "#64B5F6",  // Light Blue
+            "#1976D2",  // Dark Blue
+            "#689F38"   // Muted Green
+        ];
+        const parsedYData = yData[0].map(value => parseFloat(value));
+        const maxAbsValue = Math.max(...parsedYData.map(Math.abs));
+        // Calculate the step value.
+        const step = (2 * maxAbsValue) / 5; // Since you want 5 values in total.
+
+        // Generate the list of 6 split values.
+        const splitValues = Array.from({length: 6}, (_, i) => -maxAbsValue + i * step);
+        
+        
+        const options = {
+            chart: {
+                {% if height %}
+                height: {{height}},
+                {% else %}
+                height: 350,
+                {% endif %}
+                type: "bar",
+                toolbar: {
+                    show: !1
+                }
+            },
+            plotOptions: {
+                bar: {
+                    colors: {
+                        ranges: [{
+                            from: splitValues[0],
+                            to: splitValues[1],
+                            color: colorsArray[0]
+                        }, {
+                            from: splitValues[1],
+                            to: splitValues[2],
+                            color: colorsArray[1]
+                        }, {
+                            from: splitValues[2],
+                            to: splitValues[3],
+                            color: colorsArray[2]
+                        }, {
+                            from: splitValues[3],
+                            to: splitValues[4],
+                            color: colorsArray[3]
+                        }, {
+                            from: splitValues[4],
+                            to: splitValues[5],
+                            color: colorsArray[4]
+                        }]
+                    },
+                    columnWidth: "80%"
+                }
+            },
+            dataLabels: {
+                {% if not no_marker %}
+                enabled: true,
+                formatter: function(e) {
+                        const percentage = (e / maxAbsValue) * 100;
+                        return percentage.toFixed(1) + "%";
+                },
+                style: {
+                    fontSize: "12px",
+                    colors: ["#000000"]
+                }
+                {% else %}
+                enabled: false,
+                {% endif %}
+            },            
+            stroke: {
+                width: 2
+            },
+            colors: [colorsArray[2]],
+            title: {
+                {% if label %}
+                text: "{{label}}",
+                {% else %}
+                text: titleText,
+                {% endif %}
+                align: "center",
+                floating: !0,
+                style: {
+                    fontWeight: 500
+                }
+            },
+            grid: {
+                borderColor: "#f1f1f1"
+            },
+            xaxis: {
+                categories: xData,
+                type: "datetime",
+                title: {
+                    text: "DateTime"
+                }
+            },
+            yaxis: {
+                title: {
+                    text: "{{label}}"
+                },
+            },
+            tooltip: {
+                x: {
+                    format: "yyyy-MM-dd HH:mm"
+                }
+            },
+            responsive: [{
+                breakpoint: 600,
+                options: {
+                    chart: {
+                        toolbar: {
+                            show: !1
+                        }
+                    },
+                    legend: {
+                        show: !1
+                    }
+                }
+            }],
+            series: yData.map((data, index) => ({
+                    name: seriesName[index],
+                    data: data,
+                    type: "bar"
+                })),
+        };
+        
+        const chart = new ApexCharts(document.querySelector("#" + elementId), options);
+        chart.render();
+        return chart;
+    }
+
+    function getChartColorsArray(e) {
+        const elem = document.getElementById(e);
+        if (!elem) return null;
+    
+        const colorsData = elem.getAttribute("data-colors");
+        if (colorsData) {
+            return JSON.parse(colorsData).map(color => {
+                const trimmedColor = color.trim();
+                if (trimmedColor.startsWith("--")) {
+                    return getComputedStyle(document.documentElement).getPropertyValue(trimmedColor).trim() || trimmedColor;
+                } else if (trimmedColor.includes(",")) {
+                    const splitColor = trimmedColor.split(",");
+                    return `rgba(${getComputedStyle(document.documentElement).getPropertyValue(splitColor[0].trim()).trim()},${splitColor[1].trim()})`;
+                } else {
+                    return trimmedColor;
+                }
+            });
+        }
+        return null;
+    }
+
+    function editColorLineChart(chartInstance, newXData, newYData, seriesNames) {
+        if (!chartInstance || !chartInstance.opts.series || !chartInstance.opts.xaxis.categories) {
+            console.error("Series or xaxis categories property is not defined in the provided chart instance.");
+            return;
+        }
+        
+        if (seriesNames.length !== newYData.length) {
+            console.error("Mismatch between series names and data provided.");
+            return;
+        }
+    
+        for (let i = 0; i < seriesNames.length; i++) {
+            // Find the series to be updated by its name
+            let seriesToUpdate = chartInstance.opts.series.findIndex(series => series.name === seriesNames[i]);
+            
+            // If the series is found, update its data
+            if (seriesToUpdate !== -1) {
+                chartInstance.opts.series[seriesToUpdate].data = newYData[i];
+            } else {
+                console.error(`Series with the name ${seriesNames[i]} not found.`);
+                return;
+            }
+        }
+    
+        // Update the chart with new series data and X data
+        chartInstance.updateOptions({
+            series: chartInstance.opts.series,
+            xaxis: {
+                categories: newXData
+            }
+        });
+    }
+    
+    
+    function addSeriesToColorChart(chartInstance, newSeriesName, newYData) {
+        if (!chartInstance || !chartInstance.opts.series || !chartInstance.opts.xaxis.categories) {
+            console.error("Series or xaxis categories property is not defined in the provided chart instance.");
+            return;
+        }
+        
+        const existingXData = chartInstance.opts.xaxis.categories;
+    
+        const newSeries = {
+            name: newSeriesName,
+            data: newYData
+        };
+    
+        chartInstance.opts.series.push(newSeries);
+        chartInstance.updateOptions({
+            series: chartInstance.opts.series,
+            xaxis: {
+                categories: existingXData
+            }
+        });
+    }
+    
+    
+    {% if id %}
+    // Usage example:
+
+    var dateStrs = {{ xData|safe }}; // assuming date_list_from_context is a list of date strings
+    var {{id|remove:' '}}_xData = dateStrs.map(str => new Date(str).getTime());
+
+    const {{id|remove:' '}} = createColorBarChart("bar_chart_Color_{{id|remove:' '}}","Color Graph", {{id|remove:' '}}_xData, [{{yData|safe}}], {{seriesName|safe}});
+    {% endif %}
+    
+
+</script>

@@ -1,0 +1,258 @@
+Watching for file changes with StatReloader
+[10/Jan/2023 10:04:25] "GET / HTTP/1.0" 200 5034
+[10/Jan/2023 10:06:18] "POST / HTTP/1.0" 302 0
+[10/Jan/2023 10:06:18] "GET /adminhome/ HTTP/1.0" 200 6303
+[10/Jan/2023 10:06:29] "GET /admin/ HTTP/1.0" 200 6049
+Not Found: /favicon.ico
+[10/Jan/2023 10:06:31] "GET /favicon.ico HTTP/1.0" 404 5748
+[10/Jan/2023 10:06:34] "GET /admin/src/account/ HTTP/1.0" 200 11651
+[10/Jan/2023 10:06:34] "GET /admin/jsi18n/ HTTP/1.0" 200 3325
+[10/Jan/2023 10:06:40] "GET /admin/src/client/ HTTP/1.0" 200 8243
+[10/Jan/2023 10:06:41] "GET /admin/jsi18n/ HTTP/1.0" 200 3325
+[10/Jan/2023 10:06:43] "GET /admin/src/admin/ HTTP/1.0" 200 8004
+[10/Jan/2023 10:06:43] "GET /admin/jsi18n/ HTTP/1.0" 200 3325
+[10/Jan/2023 10:06:44] "GET /admin/src/client/ HTTP/1.0" 200 8243
+[10/Jan/2023 10:06:44] "GET /admin/jsi18n/ HTTP/1.0" 200 3325
+[10/Jan/2023 10:06:45] "GET /admin/src/job/ HTTP/1.0" 200 7740
+[10/Jan/2023 10:06:45] "GET /admin/jsi18n/ HTTP/1.0" 200 3325
+[10/Jan/2023 10:06:46] "GET /admin/src/seperatedfile/ HTTP/1.0" 200 6415
+[10/Jan/2023 10:06:46] "GET /admin/jsi18n/ HTTP/1.0" 200 3325
+[10/Jan/2023 10:06:47] "GET /admin/src/temp/ HTTP/1.0" 200 6347
+[10/Jan/2023 10:06:47] "GET /admin/jsi18n/ HTTP/1.0" 200 3325
+[10/Jan/2023 10:06:48] "GET /admin/src/uploadfile/ HTTP/1.0" 200 6394
+[10/Jan/2023 10:06:48] "GET /admin/jsi18n/ HTTP/1.0" 200 3325
+[10/Jan/2023 10:06:49] "GET /admin/src/client/ HTTP/1.0" 200 8243
+[10/Jan/2023 10:06:49] "GET /admin/jsi18n/ HTTP/1.0" 200 3325
+[10/Jan/2023 10:10:48] "GET /upload_excel/ HTTP/1.0" 200 14363
+Internal Server Error: /upload_excel/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.7/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.7/dist-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.7/dist-packages/django/contrib/auth/decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/home/IOT/sedimi-dms/src/decorators.py", line 35, in wrapper_function
+    return view_func(request, *args, **kwargs)
+  File "/home/IOT/sedimi-dms/src/views.py", line 516, in upload_excel
+    df = pd.read_excel(excelfile, header=None) #pd.read_excel(excelfile, skiprows=[1])
+  File "/usr/local/lib/python3.7/dist-packages/pandas/util/_decorators.py", line 311, in wrapper
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.7/dist-packages/pandas/io/excel/_base.py", line 364, in read_excel
+    io = ExcelFile(io, storage_options=storage_options, engine=engine)
+  File "/usr/local/lib/python3.7/dist-packages/pandas/io/excel/_base.py", line 1233, in __init__
+    self._reader = self._engines[engine](self._io, storage_options=storage_options)
+  File "/usr/local/lib/python3.7/dist-packages/pandas/io/excel/_openpyxl.py", line 521, in __init__
+    import_optional_dependency("openpyxl")
+  File "/usr/local/lib/python3.7/dist-packages/pandas/compat/_optional.py", line 118, in import_optional_dependency
+    raise ImportError(msg) from None
+ImportError: Missing optional dependency 'openpyxl'.  Use pip or conda to install openpyxl.
+[10/Jan/2023 10:11:24] "POST /upload_excel/ HTTP/1.0" 500 100065
+Internal Server Error: /upload_excel/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.7/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.7/dist-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.7/dist-packages/django/contrib/auth/decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/home/IOT/sedimi-dms/src/decorators.py", line 35, in wrapper_function
+    return view_func(request, *args, **kwargs)
+  File "/home/IOT/sedimi-dms/src/views.py", line 516, in upload_excel
+    df = pd.read_excel(excelfile, header=None) #pd.read_excel(excelfile, skiprows=[1])
+  File "/usr/local/lib/python3.7/dist-packages/pandas/util/_decorators.py", line 311, in wrapper
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.7/dist-packages/pandas/io/excel/_base.py", line 364, in read_excel
+    io = ExcelFile(io, storage_options=storage_options, engine=engine)
+  File "/usr/local/lib/python3.7/dist-packages/pandas/io/excel/_base.py", line 1233, in __init__
+    self._reader = self._engines[engine](self._io, storage_options=storage_options)
+  File "/usr/local/lib/python3.7/dist-packages/pandas/io/excel/_openpyxl.py", line 521, in __init__
+    import_optional_dependency("openpyxl")
+  File "/usr/local/lib/python3.7/dist-packages/pandas/compat/_optional.py", line 118, in import_optional_dependency
+    raise ImportError(msg) from None
+ImportError: Missing optional dependency 'openpyxl'.  Use pip or conda to install openpyxl.
+[10/Jan/2023 10:12:21] "POST /upload_excel/ HTTP/1.0" 500 100065
+[10/Jan/2023 10:13:59] "POST /upload_excel/ HTTP/1.0" 200 8273928
+[10/Jan/2023 10:15:13] "GET /upload_excel/ HTTP/1.0" 200 14364
+[10/Jan/2023 10:16:08] "POST /upload_excel/ HTTP/1.0" 200 8273929
+[10/Jan/2023 10:16:55] "POST /upload_excel/ HTTP/1.0" 302 0
+[10/Jan/2023 10:16:55] "GET /uploaded_excel/ HTTP/1.0" 200 7451
+[10/Jan/2023 10:17:15] "GET /clientlist/ HTTP/1.0" 200 4683629
+[10/Jan/2023 10:19:07] "GET /clientlist/ HTTP/1.0" 200 4683630
+[10/Jan/2023 10:19:16] "GET /admin_account/ HTTP/1.0" 200 9932
+[10/Jan/2023 10:20:29] "GET /admin_account/ HTTP/1.0" 200 10044
+[10/Jan/2023 10:21:22] "GET /admin_account/ HTTP/1.0" 200 9928
+[10/Jan/2023 10:21:46] "GET /admin_account/ HTTP/1.0" 200 9928
+[10/Jan/2023 10:21:48] "GET /adminhome/ HTTP/1.0" 200 6298
+[10/Jan/2023 10:21:49] "GET /admin_account/ HTTP/1.0" 200 9928
+[10/Jan/2023 10:21:55] "GET /clientlist/ HTTP/1.0" 200 4683625
+[10/Jan/2023 10:22:01] "GET /job_list/ HTTP/1.0" 200 9972
+[10/Jan/2023 10:22:21] "GET /job_list/ HTTP/1.0" 200 9973
+[10/Jan/2023 10:22:28] "GET /uploaded_excel/ HTTP/1.0" 200 7446
+[10/Jan/2023 10:22:30] "GET /adminhome/ HTTP/1.0" 200 6298
+[10/Jan/2023 10:22:35] "GET /uploaded_excel/ HTTP/1.0" 200 7446
+[10/Jan/2023 10:23:04] "GET /uploaded_excel/ HTTP/1.0" 200 7447
+[10/Jan/2023 10:38:58] "GET /admin_account/ HTTP/1.0" 200 9928
+[10/Jan/2023 10:39:00] "GET /uploaded_excel/ HTTP/1.0" 200 7447
+[10/Jan/2023 10:42:18] "GET /seperated_excel/ HTTP/1.0" 200 7091
+[10/Jan/2023 10:42:36] "GET /seperated_excel/ HTTP/1.0" 200 7092
+[10/Jan/2023 10:42:39] "GET /upload_excel/ HTTP/1.0" 200 14359
+[10/Jan/2023 10:43:14] "POST /upload_excel/ HTTP/1.0" 200 14543
+[10/Jan/2023 10:43:22] "GET /upload_existing_client/ HTTP/1.0" 200 7734
+[10/Jan/2023 10:43:23] "GET / HTTP/1.0" 200 5034
+[10/Jan/2023 10:43:39] "POST /upload_existing_client/ HTTP/1.0" 200 647579
+[10/Jan/2023 10:43:59] "POST /upload_existing_client/ HTTP/1.0" 200 647580
+[10/Jan/2023 10:47:24] "POST /upload_existing_client/ HTTP/1.0" 302 0
+[10/Jan/2023 10:47:29] "GET /clientlist/ HTTP/1.0" 200 5122216
+[10/Jan/2023 10:47:51] "GET /upload_existing_client/ HTTP/1.0" 200 7735
+[10/Jan/2023 10:48:00] "POST /upload_existing_client/ HTTP/1.0" 200 3571590
+[10/Jan/2023 10:49:03] "GET /upload_existing_client/ HTTP/1.0" 200 7735
+[10/Jan/2023 10:49:09] "GET /admin/src/client/ HTTP/1.0" 200 117745
+[10/Jan/2023 10:49:10] "GET /admin/jsi18n/ HTTP/1.0" 200 3325
+/home/IOT/sedimi-dms/src/migrations/__init__.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+January 10, 2023 - 10:03:15
+Django version 3.2.13, using settings 'jarviscore.settings'
+Starting development server at http://127.0.0.1:8010/
+Quit the server with CONTROL-C.
+time data '930063' does not match format '%y%m%d'
+time data '930063' does not match format '%y%m%d'
+Watching for file changes with StatReloader
+[10/Jan/2023 10:53:03] "GET /admin/logout/ HTTP/1.0" 302 0
+[10/Jan/2023 10:53:04] "GET /admin/ HTTP/1.0" 302 0
+[10/Jan/2023 10:53:04] "GET /admin/login/?next=/admin/ HTTP/1.0" 200 2218
+[10/Jan/2023 10:53:08] "POST /admin/login/?next=/admin/ HTTP/1.0" 302 0
+[10/Jan/2023 10:53:09] "GET /admin/ HTTP/1.0" 200 6049
+[10/Jan/2023 10:53:12] "GET /admin/src/client/ HTTP/1.0" 200 8243
+[10/Jan/2023 10:53:12] "GET /admin/jsi18n/ HTTP/1.0" 200 3325
+[10/Jan/2023 10:53:14] "GET /admin/src/account/ HTTP/1.0" 200 11652
+[10/Jan/2023 10:53:15] "GET /admin/jsi18n/ HTTP/1.0" 200 3325
+[10/Jan/2023 10:53:23] "GET /admin/src/account/ HTTP/1.0" 200 11652
+[10/Jan/2023 10:53:23] "GET /admin/jsi18n/ HTTP/1.0" 200 3325
+[10/Jan/2023 10:53:30] "GET / HTTP/1.0" 302 0
+[10/Jan/2023 10:53:30] "GET /adminhome/ HTTP/1.0" 200 6298
+[10/Jan/2023 10:53:33] "GET /clientlist/ HTTP/1.0" 200 10241
+[10/Jan/2023 10:53:57] "GET / HTTP/1.0" 200 5034
+[10/Jan/2023 10:55:46] "GET /logout/ HTTP/1.0" 302 0
+[10/Jan/2023 10:55:47] "GET / HTTP/1.0" 200 5140
+[10/Jan/2023 10:55:52] "POST / HTTP/1.0" 302 0
+[10/Jan/2023 10:55:52] "GET /adminhome/ HTTP/1.0" 200 6300
+[10/Jan/2023 10:55:55] "GET /admin/src/admin/ HTTP/1.0" 200 8007
+[10/Jan/2023 10:55:56] "GET /admin/jsi18n/ HTTP/1.0" 200 3325
+[10/Jan/2023 10:55:57] "GET /admin/src/account/ HTTP/1.0" 200 12510
+[10/Jan/2023 10:55:57] "GET /admin/jsi18n/ HTTP/1.0" 200 3325
+[10/Jan/2023 10:58:10] "GET /uploaded_excel/ HTTP/1.0" 200 7088
+[10/Jan/2023 11:08:32] "GET / HTTP/1.0" 200 5034
+Not Found: /remote/login
+[10/Jan/2023 11:35:20] "GET /remote/login HTTP/1.0" 404 5751
+[10/Jan/2023 12:18:47] "GET / HTTP/1.0" 302 0
+[10/Jan/2023 12:18:47] "GET /adminhome/ HTTP/1.0" 200 6300
+[10/Jan/2023 12:19:18] "GET /upload_existing_client/ HTTP/1.0" 200 7737
+[10/Jan/2023 12:21:02] "GET / HTTP/1.0" 200 5034
+Not Found: /robots.txt
+[10/Jan/2023 12:21:16] "GET /robots.txt HTTP/1.0" 404 5745
+Not Found: /sitemap.xml
+[10/Jan/2023 12:21:16] "GET /sitemap.xml HTTP/1.0" 404 5748
+Not Found: /.well-known/security.txt
+[10/Jan/2023 12:21:17] "GET /.well-known/security.txt HTTP/1.0" 404 5787
+[10/Jan/2023 12:22:57] "POST /upload_existing_client/ HTTP/1.0" 200 644963
+[10/Jan/2023 12:23:17] "POST /upload_existing_client/ HTTP/1.0" 302 0
+[10/Jan/2023 12:23:18] "GET /clientlist/ HTTP/1.0" 200 447522
+[10/Jan/2023 12:23:25] "GET /upload_existing_client/ HTTP/1.0" 200 7737
+[10/Jan/2023 12:23:35] "POST /upload_existing_client/ HTTP/1.0" 200 3567406
+[10/Jan/2023 12:25:51] "POST /upload_existing_client/ HTTP/1.0" 302 0
+[10/Jan/2023 12:25:53] "GET /clientlist/ HTTP/1.0" 200 2592761
+[10/Jan/2023 12:26:08] "GET /upload_existing_client/ HTTP/1.0" 200 7737
+Internal Server Error: /upload_existing_client/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.7/dist-packages/pandas/core/indexes/base.py", line 3361, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 76, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 108, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 5198, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 5206, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'Receipts'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.7/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.7/dist-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.7/dist-packages/django/contrib/auth/decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/home/IOT/sedimi-dms/src/decorators.py", line 35, in wrapper_function
+    return view_func(request, *args, **kwargs)
+  File "/home/IOT/sedimi-dms/src/views.py", line 726, in upload_existing_client
+    clientlist['Receipts'] = row['Receipts']
+  File "/usr/local/lib/python3.7/dist-packages/pandas/core/series.py", line 942, in __getitem__
+    return self._get_value(key)
+  File "/usr/local/lib/python3.7/dist-packages/pandas/core/series.py", line 1051, in _get_value
+    loc = self.index.get_loc(label)
+  File "/usr/local/lib/python3.7/dist-packages/pandas/core/indexes/base.py", line 3363, in get_loc
+    raise KeyError(key) from err
+KeyError: 'Receipts'
+[10/Jan/2023 12:26:16] "POST /upload_existing_client/ HTTP/1.0" 500 167872
+Not Found: /favicon.ico
+[10/Jan/2023 12:26:17] "GET /favicon.ico HTTP/1.0" 404 5748
+[10/Jan/2023 12:27:17] "GET /upload_existing_client/ HTTP/1.0" 200 7737
+Internal Server Error: /upload_existing_client/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.7/dist-packages/pandas/core/indexes/base.py", line 3361, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 76, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 108, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 5198, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 5206, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'BankStatement'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.7/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.7/dist-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.7/dist-packages/django/contrib/auth/decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/home/IOT/sedimi-dms/src/decorators.py", line 35, in wrapper_function
+    return view_func(request, *args, **kwargs)
+  File "/home/IOT/sedimi-dms/src/views.py", line 727, in upload_existing_client
+    clientlist['BankStatement'] = row['BankStatement']
+  File "/usr/local/lib/python3.7/dist-packages/pandas/core/series.py", line 942, in __getitem__
+    return self._get_value(key)
+  File "/usr/local/lib/python3.7/dist-packages/pandas/core/series.py", line 1051, in _get_value
+    loc = self.index.get_loc(label)
+  File "/usr/local/lib/python3.7/dist-packages/pandas/core/indexes/base.py", line 3363, in get_loc
+    raise KeyError(key) from err
+KeyError: 'BankStatement'
+[10/Jan/2023 12:27:28] "POST /upload_existing_client/ HTTP/1.0" 500 167957
+[10/Jan/2023 12:27:33] "GET /upload_existing_client/ HTTP/1.0" 200 7737
+[10/Jan/2023 12:28:09] "GET /upload_existing_client/ HTTP/1.0" 200 7737
+[10/Jan/2023 12:28:15] "POST /upload_existing_client/ HTTP/1.0" 200 1186896
+[10/Jan/2023 12:31:44] "POST /upload_existing_client/ HTTP/1.0" 302 0
+[10/Jan/2023 12:31:47] "GET /clientlist/ HTTP/1.0" 200 2779027
+[10/Jan/2023 12:31:55] "GET /upload_excel/ HTTP/1.0" 200 14361
+[10/Jan/2023 12:33:16] "POST /upload_excel/ HTTP/1.0" 200 8461172
+[10/Jan/2023 12:51:00] "POST /upload_excel/ HTTP/1.0" 302 0
+[10/Jan/2023 12:51:01] "GET /uploaded_excel/ HTTP/1.0" 200 7427
+[10/Jan/2023 12:51:11] "GET /clientlist/ HTTP/1.0" 200 7547794
+[10/Jan/2023 13:36:50] "GET / HTTP/1.0" 200 5034
+[10/Jan/2023 14:30:14] "GET /generate_excel/ HTTP/1.0" 200 1621216
+[10/Jan/2023 14:31:53] "GET /generate_excel/ HTTP/1.0" 200 382347
+[10/Jan/2023 14:32:00] "GET /uploaded_excel/ HTTP/1.0" 200 7427
+[10/Jan/2023 14:32:02] "GET /seperated_excel/ HTTP/1.0" 200 7453
+[10/Jan/2023 14:32:19] "POST /generate_excel/ HTTP/1.0" 302 0
+[10/Jan/2023 14:34:35] "GET / HTTP/1.0" 302 0
+[10/Jan/2023 14:34:35] "GET /adminhome/ HTTP/1.0" 200 6300
+[10/Jan/2023 14:34:37] "GET /admin/ HTTP/1.0" 200 6052
+[10/Jan/2023 14:38:46] "GET /clientlist/ HTTP/1.0" 200 10243
+[10/Jan/2023 14:38:48] "GET /upload_existing_client/ HTTP/1.0" 200 7737
+[10/Jan/2023 14:38:57] "POST /upload_existing_client/ HTTP/1.0" 200 644963
+[10/Jan/2023 14:39:10] "POST /upload_existing_client/ HTTP/1.0" 302 0
+[10/Jan/2023 14:39:11] "GET /clientlist/ HTTP/1.0" 200 448236
+[10/Jan/2023 14:39:15] "GET /upload_existing_client/ HTTP/1.0" 200 7737
+[10/Jan/2023 14:39:24] "POST /upload_existing_client/ HTTP/1.0" 200 3567434

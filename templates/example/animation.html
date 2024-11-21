@@ -1,0 +1,143 @@
+{% extends "backend/base/admin_base.html" %}
+{% load static %}
+{% load custom_filters %}
+{% block title %} DEV - Modal Examples {% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-4">
+        {% include "libs/input.html" with type="select" name="input_example" id="input_example" label="Animation Example" %}
+    </div>
+    <div class="col-lg-1 align-self-end">
+        {% comment %} search button {% endcomment %}
+        {% include "libs/button.html" with text="Copy" toast="Copied" id="Copy_btn" class="success" %}
+    </div>
+    <div class="col-lg-7 align-self-end">
+        {% comment %} search button {% endcomment %}
+        <span id="Input_value"></span>
+    </div>
+    <div class="col-12">
+    <hr>
+    </div>
+</div>
+
+
+
+<div class="row">
+
+    <div class="col-lg-3 col-md-6 col-12">
+        <p> Fade Up </p>
+        <img src="{% static 'pwa_assets/logo.png' %}" style="width:100%" id="fade_up_div" >
+        {% include 'libs/animation.html' with target='fade_up_div' style='fade-up' %}
+    </div>
+    <div class="col-lg-3 col-md-6 col-12">
+        <p> Fade Down </p>
+        <img src="{% static 'pwa_assets/logo.png' %}" style="width:100%" id="fade_down_div" >
+        {% include 'libs/animation.html' with target='fade_down_div' style='fade-down' %}
+    </div>
+    <div class="col-lg-3 col-md-6 col-12">
+        <p> Fade Left </p>
+        <img src="{% static 'pwa_assets/logo.png' %}" style="width:100%" id="fade_left_div" >
+        {% include 'libs/animation.html' with target='fade_left_div' style='fade-left' %}
+    </div>
+    <div class="col-lg-3 col-md-6 col-12">
+        <p> Fade Right </p>
+        <img src="{% static 'pwa_assets/logo.png' %}" style="width:100%" id="fade_right_div" >
+        {% include 'libs/animation.html' with target='fade_right_div' style='fade-right' %}
+    </div>
+    <div class="col-lg-3 col-md-6 col-12">
+        <p> Fade Up Right </p>
+        <img src="{% static 'pwa_assets/logo.png' %}" style="width:100%" id="fade_up_right_div" >
+        {% include 'libs/animation.html' with target='fade_up_right_div' style='fade-up-right' %}
+    </div>
+    <div class="col-lg-3 col-md-6 col-12">
+        <p> Fade Up Left </p>
+        <img src="{% static 'pwa_assets/logo.png' %}" style="width:100%" id="fade_up_left_div" >
+        {% include 'libs/animation.html' with target='fade_up_left_div' style='fade-up-left' %}
+    </div>
+    <div class="col-lg-3 col-md-6 col-12">
+        <p> Fade Down Right </p>
+        <img src="{% static 'pwa_assets/logo.png' %}" style="width:100%" id="fade_down_right_div" >
+        {% include 'libs/animation.html' with target='fade_down_right_div' style='fade-down-right' %}
+    </div>
+    <div class="col-lg-3 col-md-6 col-12">
+        <p> Fade Down Left </p>
+        <img src="{% static 'pwa_assets/logo.png' %}" style="width:100%" id="fade_down_left_div" >
+        {% include 'libs/animation.html' with target='fade_down_left_div' style='fade-down-left' %}
+    </div>
+    <div class="col-lg-3 col-md-6 col-12">
+        <p> Flip Up </p>
+        <img src="{% static 'pwa_assets/logo.png' %}" style="width:100%" id="flip_up_div" >
+        {% include 'libs/animation.html' with target='flip_up_div' style='flip-up' %}
+    </div>
+    <div class="col-lg-3 col-md-6 col-12">
+        <p> Flip Down </p>
+        <img src="{% static 'pwa_assets/logo.png' %}" style="width:100%" id="flip_down_div" >
+        {% include 'libs/animation.html' with target='flip_down_div' style='flip-down' %}
+    </div>
+    <div class="col-lg-3 col-md-6 col-12">
+        <p> Flip Left </p>
+        <img src="{% static 'pwa_assets/logo.png' %}" style="width:100%" id="flip_left_div" >
+        {% include 'libs/animation.html' with target='flip_left_div' style='flip-left' %}
+    </div>
+    <div class="col-lg-3 col-md-6 col-12">
+        <p> Flip Right </p>
+        <img src="{% static 'pwa_assets/logo.png' %}" style="width:100%" id="flip_right_div" >
+        {% include 'libs/animation.html' with target='flip_right_div' style='flip-right' %}
+    </div>
+    <div class="col-lg-3 col-md-6 col-12">
+        <p> Zoom In </p>
+        <img src="{% static 'pwa_assets/logo.png' %}" style="width:100%" id="zoom_in_div" >
+        {% include 'libs/animation.html' with target='zoom_in_div' style='zoom-in' %}
+    </div>
+    <div class="col-lg-3 col-md-6 col-12">
+        <p> Zoom Out </p>
+        <img src="{% static 'pwa_assets/logo.png' %}" style="width:100%" id="zoom_out_div" >
+        {% include 'libs/animation.html' with target='zoom_out_div' style='zoom-out' %}
+    </div>
+</div>
+
+<script>
+
+    function show_text(input_text){
+        return "{ %".replaceAll(" ","") +" include "+ input_text +" "+ "% }".replaceAll(" ","");
+    }
+
+    var example_dict = {}
+    example_dict["Fade Up"] = show_text("'libs/animation.html' with target='fade_up_div' style='fade-up' ");
+    example_dict["Fade Down"] = show_text("'libs/animation.html' with target='fade_down_div' style='fade-down' ");
+    example_dict["Fade Left"] = show_text("'libs/animation.html' with target='fade_left_div' style='fade-left' ");
+    example_dict["Fade Right"] = show_text("'libs/animation.html' with target='fade_right_div' style='fade-right' ");
+    example_dict["Fade Up Right"] = show_text("'libs/animation.html' with target='fade_up_right_div' style='fade-up-right' ");
+    example_dict["Fade Up Left"] = show_text("'libs/animation.html' with target='fade_up_left_div' style='fade-up-left' ");
+    example_dict["Fade Down Right"] = show_text("'libs/animation.html' with target='fade_down_right_div' style='fade-down-right' ");
+    example_dict["Fade Down Left"] = show_text("'libs/animation.html' with target='fade_down_left_div' style='fade-down-left' ");
+    example_dict["Flip Up"] = show_text("'libs/animation.html' with target='flip_up_div' style='flip-up' ");
+    example_dict["Flip Down"] = show_text("'libs/animation.html' with target='flip_down_div' style='flip-down' ");
+    example_dict["Flip Left"] = show_text("'libs/animation.html' with target='flip_left_div' style='flip-left' ");
+    example_dict["Flip Right"] = show_text("'libs/animation.html' with target='flip_right_div' style='flip-right' ");
+    example_dict["Zoom In"] = show_text("'libs/animation.html' with target='zoom_in_div' style='zoom-in' ");
+    example_dict["Zoom Out"] = show_text("'libs/animation.html' with target='zoom_out_div' style='zoom-out' ");
+
+    $(document).ready(function() {
+        // set select option value using example_dict key while value is value of example_dict
+        for(var key in example_dict){
+            $('#input_example').append('<option value="'+key+'">'+key+'</option>');
+        }
+        $('#input_example').on('change', function() {
+            var selected = document.getElementById("input_example").value
+            console.log(selected,example_dict[selected])
+            document.getElementById("Input_value").innerHTML = example_dict[selected];
+        });
+        $('#Copy_btn').on('click', function() {
+            var copyText = document.getElementById("Input_value");
+            var textArea = document.createElement("textarea");
+            textArea.value = copyText.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand("Copy");
+            textArea.remove();
+        });
+    });
+</script>
+{% endblock %}

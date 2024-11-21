@@ -1,0 +1,56 @@
+{% load custom_filters %}
+
+<div class="card card-animate" style="height:100%">
+    <div class="card-body">
+        <div class="d-flex align-items-center">
+            <div class="flex-grow-1 overflow-hidden">
+                {% if title_xl %}
+                <p class="fw-medium text-primary text-truncate mb-0" style="font-size:24px;"> {{title_xl}} </p>
+                {% else %}
+                <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> {{title}} </p>
+                {% endif %}
+            </div>
+        </div>
+        {% if value %}
+        <div class="d-flex align-items-end justify-content-between mt-4">
+            <div>
+                <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                    {% if front_unit %}{{front_unit}}{% endif %}
+                    <span class="counter-value" data-target="{{value|remove:','}}">0</span>
+                    {% if unit %}{{unit}}{% endif %}
+                </h4>
+            </div>
+        </div>
+        {% endif %}
+        {% if title_xl %}
+        {% include "libs/graph/color_bar_graph.html" with label=title_xl id=title_xl xData=xData yData=yData seriesName=title_xl|to_list height=height no_marker=True no_label=True%}
+        {% else %}
+        {% include "libs/graph/color_bar_graph.html" with label=title_xl id=title_xl xData=xData yData=yData seriesName=title_xl|to_list height=height no_marker=True no_label=True%}
+        {% endif %}
+        {% if label_list %}
+        <div class="d-flex align-items-end justify-content-between mt-4">
+            <div>
+                {% if label_list %}
+                    <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                        {% with label_list=label_list|split:"," %}
+                        {% for label in label_list %}
+                            {% if forloop.counter == 1 %}
+                            {% include "libs/sub/rising_text.html" with label=label value=value1 unit=unit1 %}
+                            {% elif forloop.counter == 2 %}
+                            {% include "libs/sub/rising_text.html" with label=label value=value2 unit=unit2 %}
+                            {% elif forloop.counter == 3 %}
+                            {% include "libs/sub/rising_text.html" with label=label value=value3 unit=unit3 %}
+                            {% elif forloop.counter == 4 %}
+                            {% include "libs/sub/rising_text.html" with label=label value=value4 unit=unit4 %}
+                            {% else %}
+                            {% include "libs/sub/rising_text.html" with label=label value=value5 unit=unit5 %}
+                            {% endif %}
+                        {% endfor %}
+                        {% endwith %}
+                    </h4>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div><!-- end card body -->
+</div>

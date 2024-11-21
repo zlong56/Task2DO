@@ -1,0 +1,136 @@
+{% extends "backend/base/admin_base.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    .bold-detail{
+        font-weight: 500;
+    }   
+
+    .back{
+        border: none;
+        background-color: #303956;
+        color: white;
+        font-size: 36px;
+        font-weight: 1400;
+    }
+
+    .back:hover{
+        transform: scale(1.05);
+        color: grey;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="profile-foreground position-relative mx-n4 mt-n4">
+        <div class="profile-wid-bg">
+            {% comment %} <img src="{% static 'assets/images/profile-bg.jpg' %}" alt="" class="profile-wid-img" /> {% endcomment %}
+        </div>
+    </div>
+    <div class="pt-4 mb-4 mb-lg-3 pb-lg-4 profile-wrapper">
+        <div class="row g-4">
+            <h2 style="color: white; " ><button id="backButton" class="back" >&#8592;&nbsp;&nbsp;</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div>
+                <div class="d-flex profile-wrapper">
+                    <h1 style="color: white !important;" class="fw-medium text-muted mb-0">TITLE: {{task.title}}</h1>
+                    <!-- <div class="flex-shrink-0">
+                        <a href="{% url 'client_profile_setting' %}" class="btn btn-success"><i class="ri-edit-box-line align-bottom"></i> Edit Profile</a>
+                    </div> -->
+                </div>
+                <!-- Tab panes -->
+                <div class="tab-content pt-4 text-muted">
+                    <div class="tab-pane active" id="overview-tab" role="tabpanel">
+                        <div class="row">
+                            <div class="col-xxl-12">
+                                {% comment %} TASK DETAILs {% endcomment %}
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title mb-3">TASK DETAIL</h5>
+                                        <div class="table-responsive">
+                                            <table class="table table-borderless mb-0">
+                                                <tbody>
+                                                    <tr>
+                                                        <th class="ps-0 text-muted" scope="row" style="width: 15%;">TASK DESCRIPTION</th>
+                                                        <td class="bold-detail" >:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{task.description}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="ps-0 text-muted" scope="row">TASK DUEDATE</th>
+                                                        <td class="bold-detail text-uppercase">:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{task.duedate}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="ps-0 text-muted" scope="row">TASK CREATED ON</th>
+                                                        <td class="bold-detail text-uppercase">:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{task.created}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="ps-0 text-muted" scope="row">LAST UPDATE</th>
+                                                        <td class="bold-detail text-uppercase">:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{task.lastchange}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="ps-0 text-muted" scope="row">TASK STATUS</th>
+                                                        <td class="bold-detail text-uppercase">
+                                                            :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{% if task.complete %}Completed{% else %}Pending{% endif %}
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <th class="ps-0 text-muted" scope="row" ectype="multipart/form-data">PHOTO</th>
+                                                        <td class="bold-detail">
+                                                            {% if task.photo %}
+                                                                
+                                                                {% for pho in task.photo.all %}
+                                                                    <img src="{{ pho.Taskfile.url }}" width="250">
+                                                                {% endfor %}
+                                                            {% else %}
+                                                            :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-
+                                                            {% endif %}
+                                                        </td>
+                                                    </tr>  
+                                                    <tr>
+                                                        <th class="ps-0 text-muted" scope="row" ectype="multipart/form-data">DOCUMENT</th>
+                                                        <td class="bold-detail">
+                                                            {% if task.document %}
+                                                                :
+                                                                {% for doc in task.document.all %}
+                                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-primary" type="button" href="{{ doc.Taskfile.url }}" download>File {{forloop.counter}}</a> 
+                                                                {% endfor %}
+                                                            {% else %}
+                                                            :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-
+                                                            {% endif %}
+                                                        </td>
+                                                    </tr>                                                   
+                                                    
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- container-fluid -->
+
+{% endblock content %}
+
+
+{% block script %}
+
+<script type="text/javascript">
+    document.getElementById("backButton").onclick = function(){
+        location.href = "{% url 'all-task' %}"
+    }
+
+</script>
+    
+{% endblock script %}

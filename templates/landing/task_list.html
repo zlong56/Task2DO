@@ -1,0 +1,205 @@
+{% block content %}
+
+<form method="POST">
+    {% csrf_token %}
+    <div id="modal-3" class="modal fade" role="dialog" tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="border-bottom: 1px solid rgba(0,0,0,0.2)">
+                    <h4 class="modal-title">Delete TASK</h4>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <h5 style="margin-top:10px; margin-bottom:20px;">Confirm <span style="color:red;">delete</span> your task?</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-light" type="button" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" type="submit" name="delete_btn" id="delete_btn">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<style>
+    .edit-link{
+        margin-left: 5px;
+        transform: rotateY(180deg);
+        font-weight: 600;
+        color: #3f4156;
+        font-size: 15px;
+        line-height: 0;
+        display: inline-block;
+    }
+
+    .edit-link:hover {
+        transform: rotateY(180deg) scale(1.2);
+        text-decoration: underline;
+    }
+
+    .dlt-btn{
+        border: none !important;
+        font-weight: 600;
+        background: none;
+        color: #cf4949;
+        font-size: 20px;
+        line-height: 0;
+    }
+
+    .dlt-btn:hover{
+        color: red;
+        transform: scale(1.1);
+    }
+
+    .all-task-link:hover {
+        color: rgb(50, 50, 255);
+        text-shadow: 2px 2px 4px rgba(2, 0, 50, 0.3);
+    }
+</style>
+
+
+<div class="row">
+    <div class="col-10">
+        <b><h3 style="margin-top: 10px;">TASK</h3></b>
+        <h5 style="margin-top: 15px;"><a class="add-task" href="{% url 'create-task' %}">&#43 Create New Task</a></h5>
+    </div>
+</div>
+<form id="applicant_btn_form" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-xl-12" style="margin-top: 10px;">
+            <div class="card-body p-0">
+                <div class="row g-0" id="applicant_button_card">
+                    {% for task in hidetasks %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card card-animate h-100">
+                            {% if task.complete %}
+                            <!-- Completed Task -->
+                            <div class="flex-grow-1 overflow-hidden">
+                                <div class="text-center">
+                                    <p class="text-uppercase fw-medium text-muted mb-0" style="color: green !important;">Completed</p>
+                                </div>
+                            </div>
+                            {% else %}
+                            <!-- Pending Task -->
+                            <div class="flex-grow-1 overflow-hidden">
+                                <div class="text-center">
+                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> PENDING ( {{task.duedate}} ) </p>
+                                </div>
+                            </div>
+                            {% endif %}
+        
+                            <div class="card-body d-flex justify-content-between align-items-center">
+                                <div class="task-details">
+                                    {% if task.complete %}
+                                    <div class="task-complete-icon"></div>
+                                    <a href="{% url 'task' task.id %}" >{{ task.title }}</a>
+                                    <br><p style="font-size: 10px" class="text-muted">Created on {{task.created}}</p>
+                                    {% else %}
+                                    <div class="task-pending-icon"></div>
+                                    <a href="{% url 'task' task.id %}" ><b>{{ task.title }}</b></a>
+                                    <br><h7 style="font-size: 10px" class="text-muted">Created on {{task.created}}</h7>                                    {% endif %}
+                                </div>
+        
+                                <div class="task-actions">
+        
+                                    <a class="edit-link" href="{% url 'update-task' task.id %}">&#9998;</a>
+                                    <button data-bs-target="#modal-3" data-bs-toggle="modal" onclick="delete_function(this)" value="{{task.id}}" class="dlt-btn" type="button">&#215;</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="flex-grow-1 overflow-hidden">
+                        <div class="text-center">
+                            <h4 class="text-uppercase fw-medium text-muted text-truncate mb-0"> YOU HAVE NO TASK YET </h4>
+                        </div>
+                        <div style="margin-top: 10px;"> </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-secondary" type="submit" name="applicant_submit_btn" style="display:none;" id="applicant_submit_btn"></button>
+    <div style="text-align: right;">
+        <a class="all-task-link" href="{% url 'all-task' %}" style="margin-bottom: 10px; text-align: right; "> ALL TASKS &#9776; </a>
+    </div>
+</form>
+
+
+<div class="row" style="margin-top: 50px;">
+    <div class="col-10">
+        <h3>TASK SUMMARY</h3>
+    </div>
+</div>
+<form id="application_btn_form" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-xl-6">
+            <div class="card-body p-0 h-100">
+                <div class="card card-animate" style="height:100%">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1 overflow-hidden">
+                                <h3 class="text-uppercase fw-medium text-muted text-truncate mb-0">TASKS RECENTLY EDITED</h3>
+                            </div>
+                        </div>
+                        <!-- Bullet list for tasks -->
+                        <ul class="mt-3">
+                            {% for task in editedtasks %}
+                                <li class="fw-medium text-muted mb-0" style="font-size: 14px;">
+                                    "<a href="{% url 'task' task.id %}">{{task.title}}</a>" edited {{task.lastchange|timesince}} ago
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-6">
+            <div class="card-body p-0 h-100">
+                <div class="card card-animate" style="height:100%">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1 overflow-hidden">
+                                <h3 style="color: #cf4949 !important;" class="text-uppercase fw-medium text-muted text-truncate mb-0">TASK CLOSEST TO DEADLINE</h3>
+                            </div>
+                        </div>
+                        <!-- Bullet list for tasks -->
+                        <ul class="mt-3">
+                            {% for task in tasks %}
+                                {% if not task.complete and task.duedate %}
+                                    <li  class="fw-medium text-muted mb-0" style="font-size: 14px;">
+                                        "<a href="{% url 'task' task.id %}">{{ task.title }}</a>" - {{ task.duedate }}
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <button class="btn btn-secondary" type="submit" name="application_submit_btn" style="display:none;" id="application_submit_btn"></button>
+</form>
+
+{% endblock content %}
+
+{% block script %}
+
+<script>
+    function delete_function(that){
+        console.log(that.value)
+        document.getElementById('delete_btn').value = that.value
+        
+    }
+</script>
+
+{% endblock script %}

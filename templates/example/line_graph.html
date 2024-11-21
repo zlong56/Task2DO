@@ -1,0 +1,113 @@
+{% extends "backend/base/admin_base.html" %}
+{% load static %}
+{% load custom_filters %}
+{% block title %} DEV - Line Graph {% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-4">
+        {% include "libs/input.html" with type="select" name="input_example" id="input_example" label="Line Graph Example" %}
+    </div>
+    <div class="col-lg-1 align-self-end">
+        {% comment %} search button {% endcomment %}
+        {% include "libs/button.html" with text="Copy" toast="Copied" id="Copy_btn" class="success" %}
+    </div>
+    <div class="col-lg-7 align-self-end">
+        {% comment %} search button {% endcomment %}
+        <span id="Input_value"></span>
+    </div>
+    <div class="col-12">
+    <hr>
+    </div>
+</div>
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-xl-6">
+        {% include "libs/graph/line_graph.html" with label="Example Line Graph" id="myChart" xData=xData yData=yData.0 %}
+    </div>
+    <div class="col-xl-6">
+        {% include "libs/graph/line_graph.html" with label="Show Point Line Graph" id="myChart_show" xData=xData yData=yData.0 show_point=True %}
+    </div>
+    <div class="col-xl-6">
+        {% include "libs/graph/multi_line_graph.html" with label="Demo Multi Line Data" id="myChart2" xData=xData yData=yData seriesName=seriesName %}
+    </div>
+    <div class="col-xl-6">
+        {% include "libs/graph/annotate_line_graph.html" with label="Demo Annotate Graph" id="myChart3" xData=xData yData=yData seriesName=seriesName %}
+    </div>
+    <div class="col-xl-6">
+        {% include "libs/graph/range_line_graph.html" with label="Demo Range Line Graph" id="myChart4" xData=xData yData=yData.0  %}
+    </div>
+    <div class="col-xl-6">
+        {% include "libs/graph/sync_line_graph.html" with label="Demo Sync Line Graph" id="myChart5" xData=xData yData=yData seriesName=seriesName %}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+
+{% comment %} <script src="https://img.themesbrand.com/velzon/apexchart-js/stock-prices.js"></script> {% endcomment %}
+
+<!-- linecharts init -->
+<script>
+    // Line graph
+    /*editLineChart(myChart, ["Apr", "May", "Jun","July","Hello","World"], [45, 50, 60,50,10,30],"Series 1");
+
+    // MultiLine graph
+    editMultiLineChart(myChart2, ["Apr", "May", "Jun", "July", "Aug", "Sept"], 
+                   [[50, 50, 160, 30, 13, 35], [26, 37, 45, 99, 13, 59]], 
+                   ["Series 1", "Series 2"]);
+    addSeriesToMultiChart(myChart2, "Mobiles", [14, 61, 73,35,84,16]);
+    addSeriesToMultiChart(myChart2, "Mobiles2", [51, 11, 78,7,15,67]);
+
+
+
+    // AnnotateLine graph
+    editAnnotateLineChart(myChart3, ["Apr", "May", "Jun", "July", "Aug", "Sept"], 
+                   [[50, 50, 160, 30, 13, 35], [26, 37, 45, 99, 13, 59]], 
+                   ["Series 1", "Series 2"]);*/
+    // For some reason, must add point annotation before add x-axis range
+    addPointAnnotation(myChart3, '{{xRange.0}}', 103.55, "Point Annotation");
+    addYaxisRangeAnnotation(myChart3, 120, 140, "Demo Y-axis range");
+    addXaxisRangeAnnotation(myChart3, '{{xRange.0}}','{{xRange.1}}', "Demo X-axis range");
+    
+
+</script>
+
+
+<script>
+    function show_text(input_text){
+        return "{ %".replaceAll(" ","") +" include "+ input_text +" "+ "% }".replaceAll(" ","");
+    }
+
+    var example_dict = {}
+    example_dict["Example Line Graph"] = show_text("'libs/graph/line_graph.html' with label='Example Line Graph' id='myChart' xData=xData yData=yData.0");
+    example_dict["Show Point Line Graph"] = show_text("'libs/graph/line_graph.html' with label='Show Point Line Graph' id='myChart_show' xData=xData yData=yData.0 show_point=True");
+    example_dict["Demo Multi Line Data"] = show_text("'libs/graph/multi_line_graph.html' with label='Demo Multi Line Data' id='myChart2' xData=xData yData=yData seriesName=seriesName");
+    example_dict["Demo Annotate Graph"] = show_text("'libs/graph/annotate_line_graph.html' with label='Demo Annotate Graph' id='myChart3' xData=xData yData=yData seriesName=seriesName");
+    example_dict["Demo Range Line Graph"] = show_text("'libs/graph/range_line_graph.html' with label='Demo Range Line Graph' id='myChart4' xData=xData yData=yData.0");
+    example_dict["Demo Sync Line Graph"] = show_text("'libs/graph/sync_line_graph.html' with label='Demo Sync Line Graph' id='myChart5' xData=xData yData=yData seriesName=seriesName");
+
+    $(document).ready(function() {
+        // set select option value using example_dict key while value is value of example_dict
+        for(var key in example_dict){
+            $('#input_example').append('<option value="'+key+'">'+key+'</option>');
+        }
+        $('#input_example').on('change', function() {
+            var selected = document.getElementById("input_example").value
+            console.log(selected,example_dict[selected])
+            document.getElementById("Input_value").innerHTML = example_dict[selected];
+        });
+        $('#Copy_btn').on('click', function() {
+            var copyText = document.getElementById("Input_value");
+            var textArea = document.createElement("textarea");
+            textArea.value = copyText.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand("Copy");
+            textArea.remove();
+        });
+    });
+</script>
+{% endblock %}

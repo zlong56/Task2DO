@@ -1,0 +1,44 @@
+{% if placeholder %}
+placeholder="{{placeholder}}"
+{% elif label %} 
+placeholder="Enter {{label}}"
+{% elif field %} 
+placeholder="Enter {{field}}"
+{% else %}
+placeholder="Enter {{name}}"
+{% endif %}
+
+
+{% if id %}
+id="{{id}}"
+{% elif name %} 
+id="{{name}}"
+{% else %}
+id="{{field}}"
+{% endif %}
+
+{% if value %}
+value="{{value}}"
+{% endif %}
+
+{% if not no_name %}
+    {% if name %}
+    name="{{name}}"
+    {% elif label %}
+    name="{{label}}"
+    {% else %}
+    name="{{field}}"
+    {% endif %}
+{% endif %}
+
+{% if required %}
+required
+{% endif %}
+{% if readonly %}
+readonly
+{% endif %}
+
+{% if disabled %}
+disabled
+{% endif %}
+{{kwargs}}

@@ -1,0 +1,131 @@
+{% load custom_filters %}
+
+
+<div class="card card-animate" style="height:90%">
+    <div class="card-body">
+        <div class="d-flex align-items-center">
+            <div class="flex-grow-1 overflow-hidden">
+                {% if title_xl %}
+                <p class="fw-medium text-primary text-truncate mb-0" style="font-size:24px;"> {{title_xl}} </p>
+                {% else %}
+                <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> {{title}} </p>
+                {% endif %}
+            </div>
+            <div class="flex-shrink-0">
+                {% if delta %}
+                <h5 class="
+                {% if delta > 0 %}
+                text-success
+                {% elif delta < 0 %}
+                text-danger
+                {% else %}
+                text-muted
+                {% endif %}
+                fs-14 mb-0">
+                    {% if delta > 0 %}
+                    <i class="ri-arrow-right-up-line fs-13 align-middle"></i>
+                    +
+                    {% elif delta < 0 %}
+                    <i class="ri-arrow-right-down-line fs-13 align-middle"></i>
+                    {% endif %}
+                    {% if delta_front_unit %}{{delta_front_unit}}{% endif %}
+                    {% if delta %}{{delta}}{% endif %}
+                    {% if delta_unit %}{{delta_unit}}{% endif %}
+                </h5>
+                {% else %}
+                    {% if up %}
+                    <i class="ri-arrow-up-circle-line text-success fs-18 float-end align-middle"></i></h5>
+                    {% elif down %}
+                    <i class="ri-arrow-down-circle-line text-danger fs-18 float-end align-middle"></i>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="d-flex align-items-start justify-content-between mt-4">
+            <div>
+                {% if value %}
+                    <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                        {% if front_unit %}{{front_unit}}{% endif %}
+                        <span class="counter-value" data-target="{{value|remove:','}}">0</span>
+                        {% if unit %}{{unit}}{% endif %}
+                    </h4>
+                {% elif text %}
+                    <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                        {{text}}
+                    </h4>
+                {% endif %}
+                {% if label_list %}
+                    <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                        {% with label_list=label_list|split:"," %}
+                        {% for label in label_list %}
+                            {% if forloop.counter == 1 %}
+                                {% if value1 %}
+                                    {% include "libs/sub/rising_text.html" with label=label value=value1 unit=unit1 %}
+                                {% else %}
+                                    <span style="font-size: 16px;">{{label}} : {{text1}}</span>
+                                {% endif %}
+                            {% elif forloop.counter == 2 %}
+                                {% if value2 %}
+                                    {% include "libs/sub/rising_text.html" with label=label value=value2 unit=unit2 %}
+                                {% else %}
+                                    <span style="font-size: 16px;">{{label}} : {{text2}}</span>
+                                {% endif %}
+                            {% elif forloop.counter == 3 %}
+                                {% if value3 %}
+                                    {% include "libs/sub/rising_text.html" with label=label value=value3 unit=unit3 %}
+                                {% else %}
+                                    <span style="font-size: 16px;">{{label}} : {{text3}}</span>
+                                {% endif %}
+                            {% elif forloop.counter == 4 %}
+                                {% if value4 %}
+                                    {% include "libs/sub/rising_text.html" with label=label value=value4 unit=unit4 %}
+                                {% else %}
+                                    <span style="font-size: 16px;">{{label}} : {{text4}}</span>
+                                {% endif %}
+                            {% else %}
+                                {% if value5 %}
+                                    {% include "libs/sub/rising_text.html" with label=label value=value5 unit=unit5 %}
+                                {% else %}
+                                    <span style="font-size: 16px;">{{label}} : {{text5}}</span>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        {% endwith %}
+                    </h4>
+                {% endif %}
+                {% if link %}
+                <a href="{{link|to_url}}" class="text-decoration-underline">
+                    {% if link_text %}
+                    {{link_text}}
+                    {% else %}
+                    {{link|capfirst}}
+                    {% endif %}
+                </a>
+                {% endif %}
+            </div>
+            {% if icon or full_icon %}
+            <div class="avatar-sm flex-shrink-0">
+                <span class="avatar-title 
+                {% if style %}
+                bg-{{style}}-subtle
+                {% else %}
+                bg-info-subtle
+                {% endif %}
+                rounded fs-3">
+                    {% if icon %}
+                    {% include "libs/icon.html" with icon=icon %}
+                    {% elif full_icon %}
+                    <i class="{{full_icon}} display-6 
+                    {% if style %}
+                    text-{{style}}
+                    {% else %}
+                    text-muted
+                    {% endif %}
+                    "></i>
+                    {% endif %}
+                </span>
+            </div>
+            {% endif %}
+        </div>
+    </div><!-- end card body -->
+</div>

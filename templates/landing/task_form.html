@@ -1,0 +1,87 @@
+{% extends "backend/base/admin_base.html" %}
+{% load static %}
+{% load custom_filters %}
+{% block title %} CLIENT-DASHBOARD {% endblock %}
+
+{% block content %}
+
+<style>
+    .back{
+        border: none;
+        background-color: #303956;
+        color: white;
+        font-size: 36px;
+        font-weight: 1400;
+    }
+
+    .back:hover{
+        transform: scale(1.05);
+        color: grey;
+    }
+
+</style>
+
+<div class="container-fluid">
+
+    <div class="profile-foreground position-relative mx-n4 mt-n4">
+        <div class="profile-wid-bg">
+            {% comment %} <img src="{% static 'assets/images/profile-bg.jpg' %}" alt="" class="profile-wid-img" /> {% endcomment %}
+        </div>
+    </div>
+    <div class="pt-4 mb-4 mb-lg-3 pb-lg-4 profile-wrapper">
+        <div class="row g-4">
+            <h2 style="color: white; " ><button id="backButton" class="back" >&#8592;&nbsp;&nbsp;</button>
+            CREATE NEW TASK</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div>
+                <!-- Tab panes -->
+                <div class="tab-content pt-4 text-muted">
+                    <div class="tab-pane active" id="overview-tab" role="tabpanel">
+                        <div class="row">
+                            <div class="col-xxl-12">
+                                {% comment %} TASK DETAILs {% endcomment %}
+                                <div class="card">
+                                    <div class="card-body">
+                                        <form method="POST" action="" enctype="multipart/form-data"">
+                                            {% csrf_token %}
+
+                                            {% include "libs/input.html" with label="Title" name="title" required="True" %}
+                                            {% include "libs/input.html" with label="Description" name="description" required="True" %}
+                                            {% include "libs/input.html" with label="Due Date" name="duedate" type="datetime" %}
+                                            <!-- {% include "libs/input.html" with label="Upload Photo" type="file" name="photo" accept="image/*" multiple=True %} -->
+                                            <label style="margin-top: 10px;">Upload Photo</label>
+                                            <input class="form-control" type="file" name="photo" multiple accept="image/*" />
+                                            <!-- <input type="file" name="document"> -->
+                                            {% include "libs/input.html" with label="Upload File" type="file" name="document" multiple=True max_size="100MB" max_file=3 %}
+                                            {% include "libs/input.html" with type="switch" name="complete" class="success" %}
+
+                                            <p></p>
+                                            <button class="btn btn-primary" name="create_task">Create</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block script %}
+
+<script type="text/javascript">
+    document.getElementById("backButton").onclick = function(){
+        location.href = "{% url 'clienthome' %}"
+    }
+
+</script>
+
+{% endblock script %}

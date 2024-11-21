@@ -1,0 +1,82 @@
+
+{% load custom_filters %}
+
+<!-- Modal -->
+<form method="POST">
+{% csrf_token %}
+    <h5 class="modal-title" id="tableModelLabel">{{model|to_str}}</h5>
+    <div class="row">
+        {% with fields=model|get_fields %}
+            {% for parameter in fields %}
+                {% if parameter.name in model|get_parameter|append:"id" %}
+                {% if parameter.get_internal_type == "BigAutoField" %}
+                    <div class="col-6">
+                        {% include "libs/input.html" with name=parameter.name id=parameter.name label=parameter.verbose_name readonly=True%}
+                    </div>
+                {% elif parameter.verbose_name == "DateCreated" %}
+                    <div class="col-6">
+                        {% include "libs/input.html" with name=parameter.name id=parameter.name label=parameter.verbose_name readonly=True%}
+                    </div>
+                {% elif parameter.get_internal_type == "DateTimeField" %}
+                    <div class="col-6">
+                        {% include "libs/input.html" with type="datetime" name=parameter.name id=parameter.name label=parameter.verbose_name %}
+                    </div>
+                {% elif parameter.get_internal_type == "ForeignKey" %}
+                    <div class="col-6">
+                        {% include "libs/input.html" with type="select" name=parameter.name id=parameter.name label=parameter.verbose_name
+                            options=model|get_all_objects:parameter.name %}
+                    </div>
+                {% elif parameter.get_internal_type == "ManyToManyField" %}
+                    <div class="col-6">
+                        {% include "libs/input.html" with type="select" name=parameter.name id=parameter.name label=parameter.verbose_name
+                            options=model|get_all_objects:parameter.name multiple=True %}
+                    </div>
+                {% elif parameter.get_internal_type == "ImageField" %}
+                    <div class="col-6">
+                        {% include "libs/input.html" with type="image" name=parameter.name id=parameter.name label=parameter.verbose_name %}
+                    </div>
+                {% elif parameter.get_internal_type == "FileField" %}
+                    <div class="col-6">
+                        {% include "libs/input.html" with type="file" name=parameter.name id=parameter.name label=parameter.verbose_name %}
+                    </div>
+                {% elif parameter.get_internal_type == "DecimalField" %}
+                    <div class="col-6">
+                        {% include "libs/input.html" with type="number" name=parameter.name id=parameter.name label=parameter.verbose_name %}
+                    </div>
+                {% elif parameter.get_internal_type == "FloatField" %}
+                    <div class="col-6">
+                        {% include "libs/input.html" with type="number" name=parameter.name id=parameter.name label=parameter.verbose_name %}
+                    </div>
+                {% elif parameter.get_internal_type == "IntegerField" %}
+                    <div class="col-6">
+                        {% include "libs/input.html" with type="integer" name=parameter.name id=parameter.name label=parameter.verbose_name %}
+                    </div>
+                {% elif parameter.verbose_name == "Country" or parameter.verbose_name == "Nationality" %}
+                    <div class="col-6">
+                        {% include "libs/input.html" with type="country" name=parameter.name id=parameter.name label=parameter.verbose_name %}
+                    </div>
+                {% elif parameter.verbose_name == "Mobile" or parameter.verbose_name == "Phone" %}
+                    <div class="col-6">
+                        {% include "libs/input.html" with type="phone" name=parameter.name id=parameter.name label=parameter.verbose_name %}
+                    </div>
+                {% elif parameter.get_internal_type == "TextField" %}
+                    <div class="col-12">
+                        {% include "libs/input.html" with type="textarea" name=parameter.name id=parameter.name label=parameter.verbose_name %}
+                    </div>
+                {% elif parameter.get_internal_type == "CharField" %}
+                    <div class="col-6">
+                        {% include "libs/input.html" with name=parameter.name id=parameter.name label=parameter.verbose_name %}
+                    </div>
+                {% else %}
+                    <div class="col-6">
+                        {% include "libs/input.html" with name=parameter.name id=parameter.name label=parameter.verbose_name %}
+                    </div>
+                {% endif %}
+                {% endif %}
+            {% endfor %}
+        {% endwith %}
+        </div>
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    <input type="submit" class="btn btn-primary" value="Save changes" name="Edit">
+</div>
+</form>

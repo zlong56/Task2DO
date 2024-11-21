@@ -1,0 +1,26 @@
+{% load static %}
+{% load pwa %}
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+<title>CIDBLINK</title>
+    <link rel="stylesheet" href="{% static 'landing_assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ABeeZee&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alata&amp;display=swap">
+    <link rel="stylesheet" href="{% static 'landing_assets/fonts/font-awesome.min.css' %}">
+    <link rel="icon" type="image/jpeg" sizes="237x122" href="{% static 'pwa_assets/logo.png' %}">
+    {% progressive_web_app_meta %}
+    {% include "backend/base/sub/link.html" %}
+</head>
+
+<body>
+    {% include "backend/base/sub/libs.html" %}
+    {% block content %}{% endblock content %}
+    
+    {% include "backend/base/sub/init.html" %}
+</body>
+
+</html>

@@ -1,0 +1,173 @@
+{% extends "backend/base/admin_base.html" %}
+{% load static %}
+{% load custom_filters %}
+{% block title %} DEV - Input Examples {% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-4">
+            {% include "libs/input.html" with type="select" name="input_example" id="input_example" label="Input Example" %}
+        </div>
+        <div class="col-lg-1 align-self-end">
+            {% comment %} search button {% endcomment %}
+            {% include "libs/button.html" with text="Copy" toast="Copied" id="Copy_btn" class="success" %}
+        </div>
+        <div class="col-lg-7 align-self-end">
+            {% comment %} search button {% endcomment %}
+            <span id="Input_value"></span>
+        </div>
+        <div class="col-12">
+        <hr>
+        </div>
+    </div>
+    
+
+    <form method="POST" enctype="multipart/form-data" >
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-lg-3">
+                {% include "libs/input.html" with name="Text" value=result.Text %}
+            </div>
+            <div class="col-lg-3">
+                {% include "libs/input.html" with name="Password" type="password" value=result.Password %}
+            </div>
+            <div class="col-lg-3">
+                {% include "libs/input.html" with name="Number" type="number" value=result.Number  %}
+            </div>
+            <div class="col-lg-3">
+                {% include "libs/input.html" with name="Integer" type="integer" value=result.Number  %}
+            </div>
+            <div class="col-lg-4">
+                {% include "libs/input.html" with name="Email" type="email" value=result.Email %}
+            </div>
+            <div class="col-lg-4">
+                {% include "libs/input.html" with name="Passport" type="passport" value=result.Passport %}
+            </div>
+            <div class="col-lg-4">
+                {% include "libs/input.html" with name="IC" type="IC" value=result.IC %}
+            </div>
+            <div class="col-lg-6">
+                {% include "libs/input.html" with name="Phone" type="phone" value=result.Phone %}
+            </div>
+            <div class="col-lg-6">
+                {% include "libs/input.html" with name="Country" type="country" value=result.Country  %}
+            </div>
+            <div class="col-lg-6">
+                {% include "libs/input.html" with name="Select" type="select" value=result.Select options="Java,Javascript,Python,HTML,CSS,C,C++,C#"|split:","%}
+            </div>
+            <div class="col-lg-6">
+                {% comment %} The value parsed in should be list {% endcomment %}
+                {% include "libs/input.html" with name="SelectMultiple" type="selectmultiple" value=result.SelectMultiple options="Java,Javascript,Python,HTML,CSS,C,C++,C#"|split:"," %}
+            </div>
+            <div class="col-lg-12">
+                {% include "libs/input.html" with name="TextArea" type="textarea" value=result.TextArea %}
+            </div>
+            <div class="col-lg-4">
+                {% include "libs/input.html" with name="Date" type="date" value=result.Date %}
+            </div>
+            <div class="col-lg-4">
+                {% include "libs/input.html" with name="DateTime" type="datetime" value=result.DateTime %}
+            </div>
+            <div class="col-lg-4">
+                {% include "libs/input.html" with name="DateRange" type="daterange" value=result.DateRange %}
+            </div>
+            <div class="col-lg-6">
+                {% include "libs/input.html" with name="Image" type="image" label="Image" value=result.Image %}
+            </div>
+            <div class="col-lg-6">
+                {% include "libs/input.html" with name="File" type="file" value=result.File multiple=True max_size="100MB" max_file=3 %}
+            </div>
+            <div class="col-lg-6">
+                {% include "libs/input.html" with name="Datalist" type="datalist" value=result.Datalist  options="Java,Javascript,Python,HTML,CSS,C,C++,C#"|split:"," %}
+            </div>
+            <div class="col-lg-6">
+                {% include "libs/input.html" with name="Slider" type="slider" min="-100" max="100" value=result.Slider %}
+            </div>
+            <div class="col-lg-12">
+                {% include "libs/input.html" with name="Editor" type="editor"  value=result.Editor show=True %}
+            </div>
+            <div class="col-lg-4">
+                {% include "libs/input.html" with name="Checkbutton1" type="checkbutton" label="Check Button" value=result.Checkbutton1 %}
+                {% include "libs/input.html" with name="Checkbutton2" type="checkbutton" label="Check Button Success" class="success" value=result.Checkbutton2 %}
+                {% include "libs/input.html" with name="Checkbutton3" type="checkbutton" label="Check Button Warning" class="warning" value=result.Checkbutton3 %}
+                {% include "libs/input.html" with name="Checkbutton4" type="checkbutton" label="Check Button Danger" class="danger" value=result.Checkbutton4 %}
+            </div>
+            <div class="col-lg-4">
+                {% include "libs/input.html" with name="Switch1" type="switch" label="Switch" value=result.Switch1 %}
+                {% include "libs/input.html" with name="Switch2" type="switch" label="Switch Success" class="success" value=result.Switch2 %}
+                {% include "libs/input.html" with name="Switch3" type="switch" label="Switch Warning" class="warning" value=result.Switch3 %}
+                {% include "libs/input.html" with name="Switch4" type="switch" label="Switch Danger" class="danger" value=result.Switch4 %}
+            </div>
+            <div class="col-lg-4">
+                {% include "libs/input.html" with name="Checkbox" type="checkbox" label="Check Box" value=result.Checkbox %}
+            </div>
+            <!--end col-->
+            <div class="col-lg-12">
+                <hr>
+                <input type="submit" class="btn btn-primary" value="Submit">
+            </div>
+        </div>
+        <!--end row-->
+    </form>
+
+
+    <script>
+
+        function show_text(input_text){
+            return "{ %".replaceAll(" ","") +" include "+ input_text +" "+ "% }".replaceAll(" ","");
+        }
+
+        var example_dict = {}
+        example_dict["Text"] = show_text('"libs/input.html" with name="Text" value=result.Text');
+        example_dict["Password"] = show_text('"libs/input.html" with name="Password" type="password" value=result.Password');
+        example_dict["Number"] = show_text('"libs/input.html" with name="Number" type="number" value=result.Number');
+        example_dict["Integer"] = show_text('"libs/input.html" with name="Integer" type="integer" value=result.Number');
+        example_dict["Email"] = show_text('"libs/input.html" with name="Email" type="email" value=result.Email');
+        example_dict["Passport"] = show_text('"libs/input.html" with name="Passport" type="passport" value=result.Passport');
+        example_dict["IC"] = show_text('"libs/input.html" with name="IC" type="IC" value=result.IC');
+        example_dict["Phone"] = show_text('"libs/input.html" with name="Phone" type="phone" value=result.Phone');
+        example_dict["Country"] = show_text('"libs/input.html" with name="Country" type="country" value=result.Country');
+        example_dict["Select"] = show_text('"libs/input.html" with name="Select" type="select" value=result.Select options="Java,Javascript,Python,HTML,CSS,C,C++,C#"|split:","');
+        example_dict["SelectMultiple"] = show_text('"libs/input.html" with name="SelectMultiple" type="selectmultiple" value=result.SelectMultiple options="Java,Javascript,Python,HTML,CSS,C,C++,C#"|split:","');
+        example_dict["TextArea"] = show_text('"libs/input.html" with name="TextArea" type="textarea" value=result.TextArea');
+        example_dict["Date"] = show_text('"libs/input.html" with name="Date" type="date" value=result.Date');
+        example_dict["DateTime"] = show_text('"libs/input.html" with name="DateTime" type="datetime" value=result.DateTime');
+        example_dict["DateRange"] = show_text('"libs/input.html" with name="DateRange" type="daterange" value=result.DateRange');
+        example_dict["Image"] = show_text('"libs/input.html" with name="Image" type="image" label="Image" value=result.Image');
+        example_dict["File"] = show_text('"libs/input.html" with name="File" type="file" value=result.File multiple=True max_size="100MB" max_file=3');
+        example_dict["Datalist"] = show_text('"libs/input.html" with name="Datalist" type="datalist" value=result.Datalist  options="Java,Javascript,Python,HTML,CSS,C,C++,C#"|split:","');
+        example_dict["Slider"] = show_text('"libs/input.html" with name="Slider" type="slider" min="-100" max="100" value=result.Slider');
+        example_dict["Editor"] = show_text('"libs/input.html" with name="Editor" type="editor"  value=result.Editor show=True');
+        example_dict["Checkbutton1"] = show_text('"libs/input.html" with name="Checkbutton1" type="checkbutton" label="Check Button" value=result.Checkbutton1');
+        example_dict["Checkbutton2"] = show_text('"libs/input.html" with name="Checkbutton2" type="checkbutton" label="Check Button Success" class="success" value=result.Checkbutton2');
+        example_dict["Checkbutton3"] = show_text('"libs/input.html" with name="Checkbutton3" type="checkbutton" label="Check Button Warning" class="warning" value=result.Checkbutton3');
+        example_dict["Checkbutton4"] = show_text('"libs/input.html" with name="Checkbutton4" type="checkbutton" label="Check Button Danger" class="danger" value=result.Checkbutton4');
+        example_dict["Switch1"] = show_text('"libs/input.html" with name="Switch1" type="switch" label="Switch" value=result.Switch1');
+        example_dict["Switch2"] = show_text('"libs/input.html" with name="Switch2" type="switch" label="Switch Success" class="success" value=result.Switch2');
+        example_dict["Switch3"] = show_text('"libs/input.html" with name="Switch3" type="switch" label="Switch Warning" class="warning" value=result.Switch3');
+        example_dict["Switch4"] = show_text('"libs/input.html" with name="Switch4" type="switch" label="Switch Danger" class="danger" value=result.Switch4');
+        example_dict["Checkbox"] = show_text('"libs/input.html" with name="Checkbox" type="checkbox" label="Check Box" value=result.Checkbox');
+        
+
+        $(document).ready(function() {
+            // set select option value using example_dict key while value is value of example_dict
+            for(var key in example_dict){
+                $('#input_example').append('<option value="'+key+'">'+key+'</option>');
+            }
+            $('#input_example').on('change', function() {
+                var selected = document.getElementById("input_example").value
+                console.log(selected,example_dict[selected])
+                document.getElementById("Input_value").innerHTML = example_dict[selected];
+            });
+            $('#Copy_btn').on('click', function() {
+                var copyText = document.getElementById("Input_value");
+                var textArea = document.createElement("textarea");
+                textArea.value = copyText.textContent;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand("Copy");
+                textArea.remove();
+            });
+        });
+    </script>
+{% endblock %}

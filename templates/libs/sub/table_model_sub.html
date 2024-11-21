@@ -1,0 +1,136 @@
+{% load custom_filters %}
+
+{% if id %}
+<table id="{{id}}" class="table nowrap dt-responsive align-middle table-hover table-bordered" style="width:100%;">
+{% elif title %}
+<table id="{{title|remove_spaces}}" class="table nowrap dt-responsive align-middle table-hover table-bordered" style="width:100%;">
+{% elif quert %}
+<table id="{{query|get_model_name|remove_spaces}}" class="table nowrap dt-responsive align-middle table-hover table-bordered" style="width:100%;">
+{% else %}
+<table id="{{header.0|remove_spaces}}" class="table nowrap dt-responsive align-middle table-hover table-bordered" style="width:100%;">
+{% endif %}
+    <thead>
+        <tr>
+            <th style="width: 10px;">
+                <div class="form-check" style="width: fit-content;">
+                    <input class="form-check-input fs-15" type="checkbox" id="checkAll" value="option">
+                </div>
+            </th>
+            {% with fields=query|get_parameter %}
+                {% for cell in fields %}
+                    <th style="width: fit-content;">{{cell}}</th>
+                {% endfor %}
+                {% if view or edit or delete %}
+                    <th>Action</th>
+                {% endif %}
+            {% endwith %}
+        </tr>
+    </thead>
+    <tbody>
+        {% if query|length > 0 %}
+        {% with fields=query|get_parameter %}
+        {% for row in query %}
+        <tr>
+            <td style="width: 10px;">
+                <div class="form-check" style="width: fit-content;">
+                    <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option1">
+                </div>
+                <input type="hidden" class="hidden" value="{{row.pk}}">
+            </td>
+            {% for cell in row.list %}
+                <td style="width: fit-content;">
+                    {% if cell and cell != "None" %}
+                        {{cell}}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+            {% endfor %}
+            {% if view or edit or delete %}
+            {% include "libs/sub/table_sub_button.html" with view=view edit=edit delete=delete %}
+            {% endif %}
+        </tr>
+        {% endfor %}
+        {% endwith %}
+        {% else %}
+        <tr>
+            <td style="text-align:center;" colspan="{{query|get_parameter|length|add:1}}">No data found</td>
+        </tr>
+        {% endif %}
+    </tbody>
+</table>
+
+<script>
+    {% if view or edit or delete %}
+    var column_length = {{query|get_parameter|length}}
+    {% else %}
+    var column_length = {{query|get_parameter|length}} - 1
+    {% endif %}
+    var column_list = Array.from({ length: column_length }, (_, i) => i + 1);
+
+    {% if title %}
+    var title = "{{title|remove_spaces}}"
+    {% else %}
+    var title = "{{query|get_model_name|remove_spaces}}"
+    {% endif %}
+
+    {% if id %}
+    var id_{{id}}="{{id}}"
+    {% elif title %}
+    var id_{{title|remove_spaces}}="{{title|remove_spaces}}"
+    {% elif query %}
+    var id="{{query|get_model_name|remove_spaces}}"
+    {% else %}
+    var id="{{header.0|remove_spaces}}"
+    {% endif %}
+
+    document.addEventListener("DOMContentLoaded", function() {
+        console.log("ID = ",id)
+        new DataTable(
+            {% if id %}
+            "#{{id}}"
+            {% elif title %}
+            "#{{title|remove_spaces}}"
+            {% elif query %}
+            "#{{query|get_model_name|remove_spaces}}"
+            {% else %}
+            "#{{header.0|remove_spaces}}"
+            {% endif %}
+            , {
+            scrollCollapse: !0,
+            dom: "Bfrtip",
+            buttons: [
+                {
+                    extend: 'excel', // Export to Excel
+                    text: 'Export to Excel',
+                    filename: title+" Data", 
+                    exportOptions: {
+                        columns: column_list,
+                        customize: function(xlsx) {
+                            var sheet = xlsx.xl.worksheets[title+'.xml'];
+                            $('row c[r^="A"]', sheet).attr('s', '2');
+                            $('row:first c', sheet).attr('s', '27');
+                            $('row:first c t', sheet).text(title+' Data');
+                        }
+                    }
+                },
+                {
+                    extend: 'csv', // Export to CSV
+                    text: 'Export to CSV',
+                    filename: title+" Data", 
+                    exportOptions: {
+                        columns: column_list,
+                        title: title
+                    }
+            }],
+            {% if order %}
+            order: {{order}},
+            {% else %}
+            order: [[2, 'desc']],
+            {% endif %}
+        })
+        for(var row of document.getElementsByClassName("dtr-details")){
+            row.style.width="100%"
+        }
+    })
+</script>

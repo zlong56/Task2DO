@@ -1,0 +1,127 @@
+{% extends "backend/base/admin_base.html" %}
+{% load static %}
+{% load custom_filters %}
+{% block title %} DEV - Button Examples {% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-4">
+        {% include "libs/input.html" with type="select" name="input_example" id="input_example" label="Button Example" %}
+    </div>
+    <div class="col-lg-1 align-self-end">
+        {% comment %} search button {% endcomment %}
+        {% include "libs/button.html" with text="Copy" toast="Copied" id="Copy_btn" class="success" %}
+    </div>
+    <div class="col-lg-7 align-self-end">
+        {% comment %} search button {% endcomment %}
+        <span id="Input_value"></span>
+    </div>
+    <div class="col-12">
+    <hr>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <p> Normal button </p>
+        {% include "libs/button.html" with text="success" class="success"%}
+        {% include "libs/button.html" with text="info" class="info"%}
+        {% include "libs/button.html" with text="warning" class="warning"%}
+        {% include "libs/button.html" with text="primary" class="primary"%}
+        {% include "libs/button.html" with text="secondary" class="secondary"%}
+        {% include "libs/button.html" with text="danger" class="danger"%}
+        {% include "libs/button.html" with text="link" class="link"%}
+        {% include "libs/button.html" with text="dark" class="dark"%}
+        {% include "libs/button.html" with text="light" class="light"%}
+    </div>
+    <div class="col-lg-12">
+        <hr>
+        <p> Toast button </p>
+        {% include "libs/button.html" with text="Im a Toast Button" toast="Im toast, you just click me" %}
+        {% include "libs/button.html" with text="My color is red" toast="Im toast, you just click me" class="danger" %}
+    </div>
+    <div class="col-lg-12">
+        <hr>
+        <p> Icon button </p>
+        {% include "libs/button.html" with text="Book is here" icon="book" class="info"%}
+        {% include "libs/button.html" with text="I do math" icon="plus" class="success"%}
+    </div>
+    <div class="col-lg-12">
+        <hr>
+        <p> Onclick button </p>
+        {% include "libs/button.html" with text="Click me !" onclick="success('Title','Hooray')" class="info"%}
+    </div>
+    <div class="col-lg-12">
+        <hr>
+        <p> Link button </p>
+        {% include "libs/button.html" with text="Click me !" href="home" class="link"%}
+        {% include "libs/button.html" with text="Youtube" onclick="window.location.href='https://www.youtube.com/'" class="danger"%}
+        {% include "libs/button.html" with text="Anothe link button :)" href="home" class="secondary" newPage=True %}
+    </div>
+    <div class="col-lg-12">
+        <hr>
+        <p> style button </p>
+        {% include "libs/button.html" with text="Custom Button" style="width:100%;border:solid 5px;border-color:black;" class="primary"%}
+    </div>
+    <div class="col-lg-12">
+        <hr>
+        <p> Full Class button </p>
+        {% include "libs/button.html" with text="Custom Button" full_class="btn btn-outline-dark waves-effect waves-light"%}
+        {% include "libs/button.html" with text="Custom Button" full_class="btn rounded-pill btn-light waves-effect"%}
+        {% include "libs/button.html" with text="Custom Button" full_class="btn btn-soft-info waves-effect waves-light"%}
+        {% include "libs/button.html" with text="Custom Button" full_class="btn btn-ghost-info waves-effect waves-light"%}
+    </div>
+</div>
+
+<script>
+
+    function show_text(input_text){
+        return "{ %".replaceAll(" ","") +" include "+ input_text +" "+ "% }".replaceAll(" ","");
+    }
+
+    var example_dict = {}
+    example_dict["Success"] = show_text('"libs/button.html" with text="success" class="success"');
+    example_dict["Info"] = show_text('"libs/button.html" with text="info" class="info"');
+    example_dict["Warning"] = show_text('"libs/button.html" with text="warning" class="warning"');
+    example_dict["Primary"] = show_text('"libs/button.html" with text="primary" class="primary"');
+    example_dict["Secondary"] = show_text('"libs/button.html" with text="secondary" class="secondary"');
+    example_dict["Danger"] = show_text('"libs/button.html" with text="danger" class="danger"');
+    example_dict["Link"] = show_text('"libs/button.html" with text="link" class="link"');
+    example_dict["Dark"] = show_text('"libs/button.html" with text="dark" class="dark"');
+    example_dict["Light"] = show_text('"libs/button.html" with text="light" class="light"');
+    example_dict["Toast"] = show_text('"libs/button.html" with text="Im a Toast Button" toast="Im toast, you just click me"');
+    example_dict["Toast Danger"] = show_text('"libs/button.html" with text="My color is red" toast="Im toast, you just click me" class="danger"');
+    example_dict["Icon Book"] = show_text('"libs/button.html" with text="Book is here" icon="book" class="info"');
+    example_dict["Icon Plus"] = show_text('"libs/button.html" with text="I do math" icon="plus" class="success"');
+    example_dict["Onclick"] = show_text('"libs/button.html" with text="Click me !" onclick="success(\'Title\',\'Hooray\')" class="info"');
+    example_dict["Link"] = show_text('"libs/button.html" with text="Click me !" href="home" class="link"');
+    example_dict["Link Youtube"] = show_text('"libs/button.html" with text="Youtube" onclick="window.location.href=\'https://www.youtube.com/\'" class="danger"');
+    example_dict["Link New Page"] = show_text('"libs/button.html" with text="Anothe link button :)" href="home" class="secondary" newPage=True');
+    example_dict["Style"] = show_text('"libs/button.html" with text="Custom Button" style="width:100%;border:solid 5px;border-color:black;" class="primary"');
+    example_dict["Full Class 1"] = show_text('"libs/button.html" with text="Custom Button" full_class="btn btn-outline-dark waves-effect waves-light"');
+    example_dict["Full Class 2"] = show_text('"libs/button.html" with text="Custom Button" full_class="btn rounded-pill btn-light waves-effect"');
+    example_dict["Full Class 3"] = show_text('"libs/button.html" with text="Custom Button" full_class="btn btn-soft-info waves-effect waves-light"');
+    example_dict["Full Class 4"] = show_text('"libs/button.html" with text="Custom Button" full_class="btn btn-ghost-info waves-effect waves-light"');
+
+    $(document).ready(function() {
+        // set select option value using example_dict key while value is value of example_dict
+        for(var key in example_dict){
+            $('#input_example').append('<option value="'+key+'">'+key+'</option>');
+        }
+        $('#input_example').on('change', function() {
+            var selected = document.getElementById("input_example").value
+            console.log(selected,example_dict[selected])
+            document.getElementById("Input_value").innerHTML = example_dict[selected];
+        });
+        $('#Copy_btn').on('click', function() {
+            var copyText = document.getElementById("Input_value");
+            var textArea = document.createElement("textarea");
+            textArea.value = copyText.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand("Copy");
+            textArea.remove();
+        });
+    });
+</script>
+{% endblock %}

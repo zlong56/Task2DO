@@ -1,0 +1,134 @@
+{% extends "backend/base/admin_base.html" %}
+{% load static %}
+{% load custom_filters %}
+{% block title %} DEV - Page Create {% endblock %}
+
+{% block content %}
+    <style>
+        #createdContent {
+            .row {
+                margin-bottom: 10px;
+                .col-* {
+                    border: 1px solid #ddd;
+                }
+            }
+        }
+    </style>
+    <form method="POST">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-12"><h4>Page Creator System - 1</h4></div>
+        <div class="col-12 col-sm-6">
+            {% include "libs/input.html" with name="row" id="row" label="Number of Row" type="integer" onchange="createGrid()" %}
+        </div>
+        <div class="col-12">
+            <hr>
+            <h6>Column Setting</h6>
+            <div id="createdColumn">
+                
+            </div>
+        </div>
+        <div class="col-12">
+            <hr>
+            <h6>Content Setting</h6>
+                <div id="createdContent">
+                
+                </div>
+                {% include "libs/button.html" with type="submit" text="Preview" icon="plus" class="success" %}
+            <hr>
+        </div>
+    </div>
+    </form>
+
+    <template id="enter-column">
+        {% comment %} Select {% endcomment %}
+            <option value="-">-</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="2_1">2_1</option>
+            <option value="3">3</option>
+            <option value="3_1">3_1</option>
+            <option value="4">4</option>
+            <option value="4_2">4_2</option>
+            <option value="4_2_1">4_2_1</option>
+            <option value="4_1">4_1</option>
+            <option value="6">6</option>
+            <option value="6_3">6_3</option>
+            <option value="6_3_2">6_3_2</option>
+            <option value="6_3_1">6_3_1</option>
+            <option value="6_2">6_2</option>
+            <option value="6_2_1">6_2_1</option>
+    </template>
+
+    <template id="select-item">
+        {% comment %} select type of item (input,graph,table,text) {% endcomment %}
+            <option value="input">Input</option>
+            <option value="graph">Graph</option>
+            <option value="table">Table</option>
+            <option value="text">Text</option>
+            <option value="title">Title</option>
+            <option value="image">Image</option>
+            <option value="card">Card</option>
+    </template>
+
+    {% include "example/build/grid.html" %}
+
+    <script>
+        var debug_elem;
+        var content_list = [];
+        var column_list = [];
+        var last_row = 0;
+
+        function refresh_create_item_content(){
+            var content = '';
+            var parameter_content = '';
+            for (var i = 0; i < content_list.length; i++) {
+                // TODO
+                content += add_col(content_list[i].col, content_list[i].item)
+                document.getElementById('row_'+i.toString()).value = content_list[i].col;
+            }
+            document.getElementById('createdContent').innerHTML = content;
+        }
+
+
+        function create_column(that){
+            var content = document.getElementById('select-item').innerHTML;
+            var row_num = that.parentElement.querySelector('label').innerText.split(' ')[1] - 1;
+            var row_id = 'rowitem_'+row_num.toString();
+            content_list[row_num].col = that.value;
+            content_list[row_num].item = '<select name="'+row_id+'" id="'+row_id+'" class="form-control">'
+            content_list[row_num].item += content
+            content_list[row_num].item += '</select>'
+            content_list[row_num].param = '';
+            refresh_create_item_content();
+        }
+
+        function add_row(row_num){
+            var enter_column_elem = document.getElementById('enter-column');
+            var col_id = 'row_'+row_num.toString();
+            var row_content = '<div class="row"><div class="col-12">';
+            row_content += '<label for="col" style="margin-top:10px;">Row '+(row_num+1).toString()+'</label>';
+            row_content += '<select name="row_config" id="'+col_id+'" class="form-control" onchange="create_column(this)">';
+            row_content += enter_column_elem.innerHTML;
+            row_content += '</select>';
+            row_content += '</div></div>';
+            return row_content;
+        }
+        function createGrid() {
+            var row = $('#row').val();
+            var content_elem = document.getElementById('createdColumn');
+            if(row<last_row){
+                content_list = content_list.slice(0, row);
+            }
+            content_elem.innerHTML = '';
+            for (var i = 0; i < row; i++) {
+                content_elem.innerHTML += add_row(i);
+                if(i>=last_row){
+                    content_list.push({col:0, item:''});
+                }
+            }
+            last_row = row;
+            refresh_create_item_content();
+        }
+    </script>
+{% endblock %}

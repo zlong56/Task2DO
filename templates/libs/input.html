@@ -1,0 +1,792 @@
+{% load static %}
+{% load custom_filters %}
+
+{% if type == "image" or type == "img" %}
+{% if label %}
+<label class="form-label" style="margin-top:10px;"
+
+    {% if id %}
+    for="{{id}}"
+    {% elif name %} 
+    for="{{name}}"
+    {% else %}
+    for="{{label}}"
+    {% endif %}
+
+    >
+    {% if label %} 
+    {{label|capfirst}}
+    {% endif %}
+
+    {% if required %}
+    <span class="text-danger">*</span>
+    {% endif %}
+</label><br>
+{% endif %}
+<div 
+    {% if profile %}
+    class="profile-user position-relative d-inline-block mx-auto  mb-4"
+    {% else %}
+    class="profile-user"
+    {% endif %}
+>
+    <img 
+    {% if value %}
+        src="{{value}}" 
+    {% elif url %}
+        src="{{url}}" 
+    {% elif scr %}
+        src="{{scr}}" 
+    {% else %}
+        src="{% static 'assets/images/add-image.gif' %}"
+        onclick="document.getElementById('file_input_{{name}}').click()"
+    {% endif %}
+
+    {% if alt %}
+        alt="{{alt}}"
+    {% elif id %} 
+        alt="{{id}}"
+    {% elif label %} 
+        alt="{{label}}"
+    {% elif name %} 
+        alt="{{name}}"
+    {% elif value %} 
+        alt="{{value}}"
+    {% elif url %} 
+        alt="{{url}}"
+    {% elif scr %} 
+        alt="{{scr}}"
+    {% else %}
+    {% endif %}
+
+    id="showcase_image_{{name}}"
+
+    {% if profile %}
+        class="
+            {% if round %}
+            rounded-circle 
+            {% endif %}
+            avatar-xl " 
+    {% else %}
+        {% if width %}
+            style="width: 100%;max-width: {{width}};"
+        {% else %}
+            style="width: 100%;max-width: 250px;"
+        {% endif %}
+    {% endif %}
+    
+    >
+    <div class="avatar-xs p-0 rounded-circle profile-photo-edit">
+        <input name="{{name}}" id="file_input_{{name}}" type="file" accept="image/jpeg,image/jpg,image/png" style="display:contents;" {% if required %}required{% endif %} {{kwargs}}>
+        <label for="profile-img-file-input" class="profile-photo-edit avatar-xs" onclick="document.getElementById('file_input_{{name}}').click()">
+            <span class="avatar-title rounded-circle bg-light text-body">
+                <i class="ri-camera-fill"></i>
+            </span>
+        </label>
+    </div>
+
+    <script>
+        const fileInput_{{name}} = document.getElementById('file_input_{{name}}');
+        const image_{{name}} = document.getElementById('showcase_image_{{name}}');
+        // Add a change event listener to the file input element
+        fileInput_{{name}}.addEventListener('change', function() {
+          // Get the selected file
+          const file = fileInput_{{name}}.files[0];
+        
+          // Check if a file is selected
+          if (file) {
+            // Create a FileReader object to read the file
+            const reader = new FileReader();
+        
+            // Set the onload event of the FileReader object
+            reader.onload = function(e) {
+              // Set the src of the img element to the data URL of the uploaded image
+              image_{{name}}.src = e.target.result;
+            };
+        
+            // Read the selected file as a data URL
+            reader.readAsDataURL(file);
+          }
+        });
+        image_{{name}}.addEventListener('error', function() {
+
+            image_{{name}}.setAttribute('src',"{% static 'assets/images/add-image.gif' %}")
+        })
+    </script>
+</div>
+{% else %}
+<label class="form-label" style="margin-top:10px;"
+
+    {% if id %}
+    for="{{id}}"
+    {% elif name %} 
+    for="{{name}}"
+    {% else %}
+    for="{{field}}"
+    {% endif %}
+
+    >
+    {% if label %} 
+    {{label|capfirst}}
+    {% elif field %} 
+    {{field|capfirst}}
+    {% elif id %}
+    {{id|capfirst}}
+    {% else %}
+    {{name|capfirst}}
+    {% endif %}
+
+    {% if required %}
+    <span class="text-danger">*</span>
+    {% endif %}
+</label>
+<div class="position-relative auth-pass-inputgroup">
+    {% if "select" in type %}
+        <select
+        class="js-example-basic-{% if 'multi' in type %}multiple{% else %}single{% endif %}"
+            {% if 'multi' in type %} 
+                multiple="multiple"
+            {% endif %}
+            
+            {% include "libs/sub/input_sub.html" %}
+            >
+            {% if value_list %}
+                {% with zipped_list=options|zip_lists:value_list %}
+                    {% if 'multi' not in type %}
+                        {% if value %}
+                            <option value="{{value}}" selected>{{value}}</option>
+                        {% endif %}
+                        {% if not value %} 
+                            <option value="" selected disabled>
+                                {% if placeholder %}
+                                {{placeholder}}
+                                {% elif label %}
+                                {{label}}
+                                {% else %}
+                                Please Choose {{name}}
+                                {% endif %}
+                            </option>
+                        {% endif %}
+                    {% endif %}
+                    {% for option in zipped_list %}
+                        {% if option != value %}
+                            <option value="{{option.1}}">{{option.0}}</option>
+                        {% endif %}
+                    {% endfor %}
+                {% endwith %}
+            {% else %}
+                {% if 'multi' not in type %}
+                    {% if value %}
+                        {% if value|is_list %}
+                            <option value="{{value.0}}" selected>{{value.1}}</option>
+                        {% else %}
+                            <option value="{{value}}" selected>{{value}}</option>
+                        {% endif %}
+                    {% endif %}
+                    {% if not value %} 
+                        <option value="" selected disabled>
+                            {% if placeholder %}
+                            {{placeholder}}
+                            {% elif label %}
+                            {{label}}
+                            {% else %}
+                            Please Choose {{name}}
+                            {% endif %}
+                        </option>
+                    {% endif %}
+                {% endif %}
+                {% for option in options %}
+                    {% if option|is_list %}
+                        {% if option.0 != value %}
+                            <option value="{{option.0}}">{{option.1}}</option>
+                        {% endif %}
+                    {% else %}
+                        {% if option != value %}
+                            <option value="{{option}}">{{option}}</option>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </select>
+            <script>
+                {{name}}_element = $('#{{name}}')
+                $(document).ready(function() {
+                    $('#{{name}}').select2();
+                    {% if onchange %}
+                    $('#{{name}}').on('change', function() {
+                        {{onchange}}
+                    });
+                    {% endif %}
+                });
+                {% if 'multi' in type %}
+                function addSelect(elementId, value) {
+                    var currentValues = $('#' + elementId).val();
+                
+                    if (!currentValues) {
+                        currentValues = [];
+                    }
+                
+                    currentValues.push(value);
+                
+                    $('#' + elementId).val(currentValues).trigger('change');
+                }
+                document.addEventListener("DOMContentLoaded", function() {
+                    {% if value %}
+                        $('#{{name}}').val({{value|safe}}).trigger('change');
+                    {% endif %}
+                });
+                {% else %}
+                function setSelect(elementId, value) {
+                    $('#' + elementId).val(value).trigger('change');
+                }
+                {% endif %}
+            </script>
+    {% elif type == "textarea" %}
+        <textarea class="form-control" 
+
+        {% if row %}
+            rows="{{row}}"
+        {% elif rows %}
+            rows="{{rows}}"
+        {% else %}
+            rows="3"
+        {% endif %}
+        
+        {% include "libs/sub/input_sub.html" %}
+
+        >{% if value %}{{value}}{% endif %}</textarea>
+    {% elif type == "country" %}
+        <div data-input-flag data-option-flag-img-name>
+            <input type="text" style="background-image: none;" class="form-control rounded-end flag-input" readonly {% include "libs/sub/input_sub.html" %} data-bs-toggle="dropdown" aria-expanded="false" />
+            <div class="dropdown-menu w-100">
+                <div class="p-2 px-3 pt-1 searchlist-input">
+                        <input type="text" class="form-control form-control-sm border search-countryList" 
+                    />
+                </div>
+                <ul class="list-unstyled dropdown-menu-list mb-0"></ul>
+            </div>
+        </div>
+        
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var {{name}}_input = document.getElementById("{{name}}")
+                var country_element = Array.from(document.querySelectorAll('div.country-name.me-1')).find(div => div.innerText.trim() === {{name}}_input.value) || null
+                if(country_element){
+                    var flag_element = country_element.parentElement.parentElement.parentElement.querySelector('img.options-flagimg')
+                    Country_input.style.backgroundImage='url('+flag_element.getAttribute("src")+')'
+                    
+                }
+            })
+        </script>
+    {% elif type == "phone" %}
+        <div>
+            <div class="input-group" data-input-flag>
+                <input type="hidden" {% include "libs/sub/input_sub.html" %}/>
+                <button class="btn btn-light border" type="button" data-bs-toggle="dropdown" aria-expanded="false"><img src="{% static 'assets/images/flags/my.svg' %}" alt="flag img" height="20" class="country-flagimg rounded"><span class="ms-2 country-codeno">+ 60</span></button>
+                <input type="text" class="form-control rounded-end flag-input" placeholder="1X XXX XXXX" {% include "libs/sub/input_sub.html" with no_name=True id="this_phone_input_"|concat:name value=value|fix_Phone %} oninput="{{name}}_phone_change(this)" />
+                <div class="dropdown-menu w-100">
+                    <div class="p-2 px-3 pt-1 searchlist-input">
+                        <input type="text" class="form-control form-control-sm border search-countryList"
+                        placeholder="Search country name or country code..."
+                        />
+                    </div>
+                    <ul class="list-unstyled dropdown-menu-list mb-0"></ul>
+                </div>
+            </div>
+        </div>
+        <script>
+            function normalizePhoneNumber(phoneNumber) {
+                // Remove any non-digit characters (e.g., spaces, plus signs, etc.)
+                phoneNumber = phoneNumber.replace(/\D/g, '');
+              
+                // If the number starts with "0", remove it
+                if (phoneNumber.startsWith('0')) {
+                  phoneNumber = phoneNumber.substring(1);
+                }
+              
+                // If the number starts with "+60", remove the country code
+                if (phoneNumber.startsWith('60')) {
+                  phoneNumber = phoneNumber.substring(2);
+                }
+              
+                return phoneNumber;
+              }
+            function {{name}}_phone_change(that){
+                var ext = that.parentElement.childNodes[3].innerText.replace(" ","")
+                that.value = that.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+                that.value = normalizePhoneNumber(that.value)
+                that.parentElement.childNodes[1].value = ext+that.value
+            }
+        </script>
+    {% elif type == "slider" %}
+        <div class="slider" data-pk="slider_{{name}}"  ></div>
+        <input type="hidden" id="slider_{{name}}_min" name="{{name}}" />
+        <input type="hidden" id="slider_{{name}}_max" name="{{name}}" />
+        <script>
+            var mergingTooltipSlider = document.querySelector('div[data-pk="slider_{{name}}"]');
+            
+            function mergeTooltips(e, c, m) {
+                var u = "rtl" === getComputedStyle(e).direction,
+                    S = "rtl" === e.noUiSlider.options.direction,
+                    g = "vertical" === e.noUiSlider.options.orientation,
+                    p = e.noUiSlider.getTooltips(),
+                    t = e.noUiSlider.getOrigins();
+                Array.from(p).forEach(function(e, i) {
+                    e && t[i].appendChild(e)
+                }), e && e.noUiSlider.on("update", function(e, i, t, n, l) {
+                    var r = [
+                            []
+                        ],
+                        a = [
+                            []
+                        ],
+                        s = [
+                            []
+                        ],
+                        o = 0;
+                    p[0] && (r[0][0] = 0, a[0][0] = l[0], s[0][0] = e[0]);
+                    for (var d = 1; d < l.length; d++)(!p[d] || l[d] - l[d - 1] > c) && (r[++o] = [], s[o] = [], a[o] = []), p[d] && (r[o].push(d), s[o].push(e[d]), a[o].push(l[d]));
+                    Array.from(r).forEach(function(e, i) {
+                        for (var t = e.length, n = 0; n < t; n++) {
+                            var l, r, o, d = e[n];
+                            n === t - 1 ? (o = 0, Array.from(a[i]).forEach(function(e) {
+                                o += 1e3 - e
+                            }), l = g ? "bottom" : "right", r = 1e3 - a[i][S ? 0 : t - 1], o = (u && !g ? 100 : 0) + o / t - r, p[d].innerHTML = s[i].join(m), p[d].style.display = "block", p[d].style[l] = o + "%") : p[d].style.display = "none"
+                        }
+                    })
+                })
+            }
+            {% with interval=max|minus:min %}
+            {% with quarta=interval|mul:0.25 %}
+            {% if value %}
+            var start = [{{value.0}}, {{value.1}}]
+            {% else %}
+            var start = [{{min|add:quarta}}, {{max|minus:quarta}}]
+            {% endif %}
+            mergingTooltipSlider && (noUiSlider.create(mergingTooltipSlider, {
+                start: start,
+                connect: !0,
+                tooltips: [!0, !0],
+                range: {
+                    min: {{min}},
+                    max: {{max}}
+                }
+            }), mergeTooltips(mergingTooltipSlider, 5, " - "));
+            {% endwith %}
+            {% endwith %}
+
+            // Listen to the update event to get the slider values
+            mergingTooltipSlider.noUiSlider.on('update', function (values, handle) {
+                // Update the hidden input value
+                document.getElementById("slider_{{name}}_min").value = values[0]
+                document.getElementById("slider_{{name}}_max").value = values[1]
+            });
+        </script>
+    {% elif type == "editor" %}
+        {% if value and show %}
+        <div>
+            <hr>
+            <label>Saved {{name}}</label>
+            {{value|safe}}
+            <hr>
+        </div>
+        {% endif %}
+        <textarea style="display:none" id="editor-content-{{name}}" name="{{name}}">{{value|safe}}</textarea>
+        <div class="snow-editor" 
+        {% if height %}
+        style="height: {{height}};" 
+        {% else %}
+        style="height: 300px;" 
+        {% endif %}>
+            {% if value %}
+            {{value|safe}}
+            {% else %}
+            <p style="color:gray">Please Enter Your {{name}}</p>
+            {% endif %}
+        </div>
+        
+        <script>
+            var editor_content_{{name}} = document.getElementById('editor-content-{{name}}')
+            document.addEventListener("DOMContentLoaded", function() {
+                // Select the target node
+                var targetNode = document.getElementsByClassName('ql-editor');
+
+                // Create an observer instance linked to the callback function
+                if(targetNode){
+                    targetNode = targetNode[0]
+                    var observer = new MutationObserver(function(mutationsList, observer) {
+                        var ql_editor_flag = false
+                        for(var mutation of mutationsList) {
+                            if (mutation.type === 'childList' || mutation.type === 'characterData') {
+                                ql_editor_flag = true
+                                break
+                            }
+                        }
+                        if(ql_editor_flag){
+                            editor_content_{{name}}.innerHTML = targetNode.innerHTML
+                        }
+                    });
+
+                    // Configuration of the observer (what mutations to observe)
+                    var config = { attributes: true, childList: true, subtree: true, characterData: true };
+
+                    // Start observing the target node for configured mutations
+                    observer.observe(targetNode, config);
+                }else{
+                    console.log(" Not found Editor")
+                }
+                // Later, you can also stop observing
+                // observer.disconnect();
+            })
+        </script>
+    {% elif type == "switch" %}
+    <div class="form-check form-switch form-switch-md 
+    {% if class %}form-switch-{{class}}{% endif %}
+    " dir="ltr">
+        <input 
+        type="checkbox" class="form-check-input" 
+        {% if value and value != False and value != "off" %}checked{% endif %}
+        {% include "libs/sub/input_sub.html" %}
+        >
+        <label class="form-check-label" for="{{name}}">{{label}}</label>
+    </div>
+    {% else %}
+        <input 
+            {% if type %}
+                {% if type == "datetime" %}
+                    type="text" data-provider="flatpickr" data-date-format="y-m-d" data-time-format="h:m" data-enable-time
+                {% elif type == "date" %}
+                    type="text" data-provider="flatpickr" data-date-format="y-m-d" 
+                {% elif type == "daterange" %}
+                    type="text" data-provider="flatpickr" data-date-format="y-m-d" data-range-date="true"
+                {% elif type == "number" %}
+                    type="text" pattern="-?[0-9]+(\.[0-9]{1,2})?" onkeypress="numberInput_{{name}}(event)"
+                    onblur="numberInputBlur_{{name}}()"
+                {% elif type == "integer" %}
+                    type="text" pattern="-?[0-9]+" onkeypress="numberInput_integer{{name}}(event)"
+                    onblur="numberInputBlur_integer{{name}}()"
+                    {% elif type == "file" %}
+                    type="file" class="filepond"
+                {% elif type == "datalist" %}
+                    type="text" list="datalist_{{name}}"
+                {% elif type == "checkbutton" %}
+                    type="checkbox" class="btn-check"
+                    {% if value and value != False and value != "off" %}checked{% endif %}
+                {% elif type == "checkbox" %}
+                    type="checkbox" class="form-check-input"
+                    {% if value and value != False and value != "off" %}checked{% endif %}
+                {% elif type == "passport" %}
+                    type="text" onkeypress="passportInput_{{name}}(event)"
+                    onblur="passportInputBlur_{{name}}()"
+                {% elif type == "IC" %}
+                    type="text" onkeypress="ICInput_{{name}}(event)"
+                    onblur="ICInputBlur_{{name}}()"
+                {% elif type == "email" %}
+                    type="email" 
+                    onblur="EmailInputBlur_{{name}}()"
+                {% else %}
+                    type="{{type}}" 
+                {% endif %}
+            {% else %}
+                type="text"
+            {% endif %}
+
+            {% if capitalize %}
+                onkeypress="capitalize_{{name}}(event)"
+                onblur="capitalizeBlur_{{name}}()"
+            {% endif %}
+
+            {% if type == "password" %}
+                class='form-control pe-5 password-input' onpaste="return false" 
+            {% else %}
+                class='form-control pe-5'
+            {% endif %}
+
+            {% include "libs/sub/input_sub.html" %}
+        >
+        {% if type == "password" %}
+            <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" ><i class="ri-eye-fill align-middle"></i></button>
+        {% elif type == "datalist" %}
+            <datalist id="datalist_{{name}}">
+                {% for option in options %}
+                    <option value="{{option}}">
+                {% endfor %}
+            </datalist>
+        {% elif type == "checkbutton" %}
+        <label 
+            {% if class %}
+                class="btn btn-outline-{{class}}"
+            {% else %}
+                class="btn btn-outline-primary"
+            {% endif %}
+            for="{{name}}">{{label}}</label>
+        {% elif type == "checkbox" %}
+        <label class="form-check-label" for="{{name}}">{{label}}</label>
+        {% elif type == "file" %}
+            {% if value %}
+                <hr>
+                <p style="margin-bottom:0px">Previously uploaded {{name}} : </p> 
+                {% if value|is_list %}
+                    {% for v in value %}
+                    <a href="{{v}}" target="_blank">{{v|get_file_name}}</a><br>
+                    {% endfor %}
+                {% else %}
+                    <a href="{{value}}" target="_blank">{{value|get_file_name}}</a>
+                {% endif %}
+                <hr>
+            {% endif %}
+            <script>
+                var pond
+                document.addEventListener("DOMContentLoaded", function() {
+                    // Register FilePond plugins
+                    FilePond.registerPlugin(FilePondPluginFileValidateSize);
+
+                    // Initialize FilePond
+                     pond = FilePond.create(document.getElementById('{{name}}'), {
+                         // Allow multiple files
+                        name: '{{name}}',
+                        {% if multiple %}
+                            allowMultiple: true,
+                            {% if max_file %}
+                                maxFiles: {{max_file}},
+                            {% else %}
+                                maxFiles: 3,
+                            {% endif %}
+                        {% endif %}
+                        {% if max_size %}
+                            maxFileSize: "{{max_size}}",
+                        {% else %}
+                            maxFileSize: "1MB",
+                        {% endif %}
+                        server: {
+                            url: "{% url 'filePond_Upload_Handler' %}", // Django URL endpoint to handle file uploads
+                            method: 'POST',
+                            timeout: 7000,
+                            headers: {
+                                'X-CSRFToken': '{{ csrf_token }}', // Include the CSRF token in the request header
+                            },
+                            {% if user %}
+                            process: {
+                                ondata: (formData) => {
+                                    formData.append('user', '{{user.Username}}');
+                                    return formData;
+                                },
+                            },
+                            {% endif %}
+                        },
+                        // Additional FilePond options
+                    });
+                })
+            </script>
+        {% endif %}
+
+    {% endif %}
+</div>
+{% endif %}
+
+{% if type == "number" %}
+<script>
+    // Define the numberInput function
+    function numberInput_{{name}}(e) {
+        var char = String.fromCharCode(e.which);
+        var value = e.target.value + char;
+        var regex = /^-?[0-9]*[.]?[0-9]{0,4}$/;
+        if (!regex.test(value)) {
+            e.preventDefault();
+        }
+    }
+    function numberInputBlur_{{name}}() {
+        var value = document.getElementById("{{name}}").value;
+        value = value.replaceAll(" ","")
+        if(value[0] == "-"){
+            number = value.substring(1)
+            number = number.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+            value = "-"+number
+        }else{
+            value = value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+        }
+        // only remain 4 decimal places
+        if(value.includes(".")){
+            value = value.split(".")
+            value = value[0]+"."+value[1].substring(0,4)
+        }
+        // if value start with "." auto append "0" infront same goes to "-." auto change to "-0."
+        if(value.startsWith(".")){
+            value = "0."+value.substring(1)
+        }else if(value[0] == "-" && value[1] == "."){
+            value = "-0."+value.substring(2)
+        }
+        if(value == "." || value == "-" || value == "-." || value == "-0." || value == "0."){
+            value = ""
+        }
+        document.getElementById("{{name}}").value = value;
+    }
+</script>
+{% elif type == "passport" %}
+<script>
+    // Define auto capitalize and only alphanumeric input
+    function passportInput_{{name}}(e) {
+        var char = String.fromCharCode(e.which);
+        var value = e.target.value + char;
+        var regex = /^[a-zA-Z0-9]*$/;
+        if (!regex.test(value)) {
+            e.preventDefault();
+            value = document.getElementById("{{name}}").value.toUpperCase().replaceAll(" ","").replace(/[^a-zA-Z0-9]/g, '');
+            document.getElementById("{{name}}").value = value;
+            return
+        }
+        value = value.toUpperCase().replaceAll(" ","").replace(/[^a-zA-Z0-9]/g, '');
+        document.getElementById("{{name}}").value = value;
+        e.preventDefault();
+    }
+    function passportInputBlur_{{name}}() {
+        var value = document.getElementById("{{name}}").value;
+        value = value.toUpperCase().replaceAll(" ","").replace(/[^a-zA-Z0-9]/g, '');
+        document.getElementById("{{name}}").value = value;
+    }
+</script>
+{% elif type == "IC" %}
+<script>
+    function formatIC_{{name}}(input_value) {
+        // Extracting numeric values from the input
+        input_value = input_value.replace(/\D/g, ''); // Remove all non-digit characters
+        if(input_value.length >= 6){
+            var DD = parseInt(input_value[4]+input_value[5]);
+            var MM = parseInt(input_value[2]+input_value[3]);
+            if(MM==2){
+                var YY = parseInt(input_value[0]+input_value[1]);
+                if(YY%4==0 && (DD>29 || DD==0)){
+                    input_value = input_value.substring(0, 5)
+                }else if(YY%4!=0 && (DD>28 || DD==0)){
+                    input_value = input_value.substring(0, 5) 
+                }
+            }else if((MM==4 || MM==6 || MM==9 || MM==11) && (DD>31 || DD==0)){
+                input_value = input_value.substring(0, 5) 
+            }else if((MM<=12) && DD>31 || DD==0){
+                input_value = input_value.substring(0, 5) 
+            }else if(MM>12 || MM==0){
+                if(MM >= 20){
+                    input_value = input_value.substring(0, 2)
+                }else{
+                    input_value = input_value.substring(0, 3)
+                }
+            }
+        }else if(input_value.length >= 5){
+            if(parseInt(input_value[4])>3){
+                input_value = input_value.substring(0, 4) 
+            }
+        }else if(input_value.length >= 4){
+            var MM = parseInt(input_value[2]+input_value[3]);
+            if(MM>12 || MM==0){
+                input_value = input_value.substring(0, 3) 
+            }
+        }else if (input_value.length >= 3) {
+            if(parseInt(input_value[2])>1){
+                input_value = input_value.substring(0, 2)
+            }
+        }
+        // Check if the extracted numbers form a valid IC number
+        if (input_value.length >= 12) {
+            input_value = input_value.substring(0, 6) + "-" + input_value.substring(6, 8) + "-" + input_value.substring(8, 12);
+        }else if (input_value.length >= 8) {
+            input_value = input_value.substring(0, 6) + "-" + input_value.substring(6, 8) + "-" + input_value.substring(8, input_value.length);
+        }else if (input_value.length >= 6) {
+            input_value = input_value.substring(0, 6) + "-" + input_value.substring(6, input_value.length) 
+        }
+        return input_value
+    }
+    // Define auto capitalize and only alphanumeric input
+    function ICInput_{{name}}(e) {
+        var char = String.fromCharCode(e.which);
+        var value = e.target.value + char;
+        var regex = /^[0-9]*$/;
+        if (!regex.test(value)) {
+            e.preventDefault();
+            value = formatIC_{{name}}(value);
+            document.getElementById("{{name}}").value = value;
+            return
+        }
+        value = formatIC_{{name}}(value);
+        document.getElementById("{{name}}").value = value;
+        e.preventDefault();
+    }
+    function ICInputBlur_{{name}}() {
+        var value = document.getElementById("{{name}}").value;
+        value = formatIC_{{name}}(value);
+        document.getElementById("{{name}}").value = value;
+    }
+</script>
+{% elif type == "integer" %}
+<script>
+    // Define the numberInput function
+    function numberInput_integer{{name}}(e) {
+        var char = String.fromCharCode(e.which);
+        var value = e.target.value + char;
+        var regex = /^-?[0-9]*$/;
+        if (!regex.test(value)) {
+            e.preventDefault();
+        }
+    }
+    function numberInputBlur_integer{{name}}() {
+        var value = document.getElementById("{{name}}").value;
+        value = value.replaceAll(" ","")
+        
+        // only remain 4 decimal places
+        if(value.startsWith(".")){
+            value = "0"
+        }else if(value.includes(".")){
+            value = value.split(".")
+            value = value[0]
+        }
+        if(value[0] == "-"){
+            number = value.substring(1)
+            number = number.replace(/[^0-9]/g, '')//.replace(/(\..*?)\..*/g, '$1');
+            value = "-"+number
+        }else{
+            value = value.replace(/[^0-9]/g, '')//.replace(/(\..*?)\..*/g, '$1');
+        }
+        document.getElementById("{{name}}").value = value;
+    }
+</script>
+{% elif type == "email" %}
+<script>
+    // Define the emailInput function
+    function EmailInputBlur_{{name}}() {
+        var value = document.getElementById("{{name}}").value;
+        value = value.toLowerCase().replaceAll(" ","");//.replace(/[^a-zA-Z0-9@._-]/g, '');
+        if(value.startsWith("@") || value.startsWith(".") || value.startsWith("-")){
+            value = value.substring(1)
+        }
+        document.getElementById("{{name}}").value = value;
+    }
+</script>
+{% endif %}
+
+{% if capitalize %}
+<script>
+    // Define the capitalize function
+    function capitalize_{{name}}(e) {
+        var char = String.fromCharCode(e.which);
+        var value = e.target.value + char;
+        value = value.toUpperCase()//.replaceAll(" ","").replace(/[^a-zA-Z0-9]/g, '');
+        document.getElementById("{{name}}").value = value;
+        e.preventDefault();
+    }
+    function capitalizeBlur_{{name}}() {
+        var value = document.getElementById("{{name}}").value;
+        value = value.toUpperCase()//.replaceAll(" ","").replace(/[^a-zA-Z0-9]/g, '');
+        document.getElementById("{{name}}").value = value;
+    }
+</script>
+{% endif %}
+
+
+{% if onchange %}
+<script>
+$(document).ready(function() {
+    $('#{{name}}').on('change', function() {
+        {{onchange}}
+    });
+});
+</script>
+{% endif %}

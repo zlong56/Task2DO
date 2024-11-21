@@ -1,0 +1,207 @@
+{% load static %}
+{% load custom_filters %}
+
+<div class="card">
+    <div class="card-header">
+        {% if label %}
+            <h4 class="card-title mb-0">{{label}}</h4>
+        {% else %}
+            <h4 class="card-title mb-0">{{id}}</h4>
+        {% endif %}
+    </div><!-- end card header -->
+
+    <div class="card-body">
+        <div id="bar_chart_stack_{{id}}" data-colors='["--vz-primary"]' class="apex-charts" dir="ltr"></div>
+    </div><!-- end card-body -->
+</div><!-- end card -->
+
+<script>
+    
+    function createStackBarChart(elementId, titleText, xData, yData, seriesName,is_full_height) {
+        const colorsArray = ["#2E86C1","#F39C12","#7D3C98","#28B463","#D35400","#229954","#A569BD","#B03A2E","#9B59B6","#3498DB","#C39BD3","#E74C3C"];
+        var stackType = is_full_height ? "100%":null;
+        const options = {
+            chart: {
+                height: 350,
+                type: "bar",
+                stacked: !0,
+                stackType:stackType,
+                toolbar: {
+                    show: !1
+                }
+            },
+            plotOptions: {
+                bar: {
+                    dataLabels: {
+                        position: "top"
+                    }
+                }
+            },
+            stroke: {
+                width: 1,
+                colors: ["#fff"]
+            },
+            colors: colorsArray,
+            dataLabels: {
+                enabled: !0,
+                formatter: function(e) {
+                    if(stackType){
+                        return e.toFixed(1) + "%"
+                    }
+                },
+                offsetY: -20,
+                style: {
+                    fontSize: "12px",
+                    colors: ["#000000"]
+                }
+            },
+            title: {
+                {% if label %}
+                text: "{{label}}",
+                {% else %}
+                text: titleText,
+                {% endif %}
+                align: "center",
+                floating: !0,
+                style: {
+                    fontWeight: 500
+                }
+            },
+            grid: {
+                borderColor: "#f1f1f1"
+            },
+            xaxis: {
+                categories: xData,
+                type: "datetime",
+                title: {
+                    text: "DateTime"
+                }
+            },
+            yaxis: {
+                title: {
+                    text: "{{label}}"
+                },
+            },
+            tooltip: {
+                x: {
+                    format: "yyyy-MM-dd HH:mm"
+                }
+            },
+            responsive: [{
+                breakpoint: 600,
+                options: {
+                    chart: {
+                        toolbar: {
+                            show: !1
+                        }
+                    },
+                    legend: {
+                        show: !1
+                    }
+                }
+            }],
+            series: yData.map((data, index) => ({
+                    name: seriesName[index],
+                    data: data,
+                    type: "bar"
+                })),
+        };
+        
+        const chart = new ApexCharts(document.querySelector("#" + elementId), options);
+        chart.render();
+        return chart;
+    }
+
+    function getChartColorsArray(e) {
+        const elem = document.getElementById(e);
+        if (!elem) return null;
+    
+        const colorsData = elem.getAttribute("data-colors");
+        if (colorsData) {
+            return JSON.parse(colorsData).map(color => {
+                const trimmedColor = color.trim();
+                if (trimmedColor.startsWith("--")) {
+                    return getComputedStyle(document.documentElement).getPropertyValue(trimmedColor).trim() || trimmedColor;
+                } else if (trimmedColor.includes(",")) {
+                    const splitColor = trimmedColor.split(",");
+                    return `rgba(${getComputedStyle(document.documentElement).getPropertyValue(splitColor[0].trim()).trim()},${splitColor[1].trim()})`;
+                } else {
+                    return trimmedColor;
+                }
+            });
+        }
+        return null;
+    }
+
+    function editStackLineChart(chartInstance, newXData, newYData, seriesNames) {
+        if (!chartInstance || !chartInstance.opts.series || !chartInstance.opts.xaxis.categories) {
+            console.error("Series or xaxis categories property is not defined in the provided chart instance.");
+            return;
+        }
+        
+        if (seriesNames.length !== newYData.length) {
+            console.error("Mismatch between series names and data provided.");
+            return;
+        }
+    
+        for (let i = 0; i < seriesNames.length; i++) {
+            // Find the series to be updated by its name
+            let seriesToUpdate = chartInstance.opts.series.findIndex(series => series.name === seriesNames[i]);
+            
+            // If the series is found, update its data
+            if (seriesToUpdate !== -1) {
+                chartInstance.opts.series[seriesToUpdate].data = newYData[i];
+            } else {
+                console.error(`Series with the name ${seriesNames[i]} not found.`);
+                return;
+            }
+        }
+    
+        // Update the chart with new series data and X data
+        chartInstance.updateOptions({
+            series: chartInstance.opts.series,
+            xaxis: {
+                categories: newXData
+            }
+        });
+    }
+    
+    
+    function addSeriesToStackChart(chartInstance, newSeriesName, newYData) {
+        if (!chartInstance || !chartInstance.opts.series || !chartInstance.opts.xaxis.categories) {
+            console.error("Series or xaxis categories property is not defined in the provided chart instance.");
+            return;
+        }
+        
+        const existingXData = chartInstance.opts.xaxis.categories;
+    
+        const newSeries = {
+            name: newSeriesName,
+            data: newYData
+        };
+    
+        chartInstance.opts.series.push(newSeries);
+        chartInstance.updateOptions({
+            series: chartInstance.opts.series,
+            xaxis: {
+                categories: existingXData
+            }
+        });
+    }
+    
+    
+    {% if id %}
+    // Usage example:
+
+    var dateStrs = {{ xData|safe }}; // assuming date_list_from_context is a list of date strings
+        var {{id}}_xData = dateStrs.map(str => new Date(str).getTime());
+
+    {% if full_height %}
+    const {{id}} = createStackBarChart("bar_chart_stack_{{id}}","Stack Graph", {{id}}_xData, {{yData|safe}}, {{seriesName|safe}},true);
+    {% else %}
+    const {{id}} = createStackBarChart("bar_chart_stack_{{id}}","Stack Graph", {{id}}_xData, {{yData|safe}}, {{seriesName|safe}},false);
+    {% endif %}
+    {% endif %}
+    
+
+</script>

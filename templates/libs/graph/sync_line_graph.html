@@ -1,0 +1,175 @@
+{% load static %}
+{% load custom_filters %}
+
+
+<div class="card">
+    <div class="card-header">
+        {% if label %}
+            <h4 class="card-title mb-0">{{label}}</h4>
+        {% else %}
+            <h4 class="card-title mb-0">{{id}}</h4>
+        {% endif %}
+    </div><!-- end card header -->
+
+    <div class="card-body">
+        {% for this_yData in yData %}
+        <div id="sync_line_{{id}}_{{forloop.counter}}" data-colors='["--vz-primary"]' class="apex-charts" dir="ltr"></div>
+        {% endfor %}
+    </div><!-- end card-body -->
+</div><!-- end card -->
+
+<script>
+    function createSyncedChart(elementId, xData, yData, titleText, group,counter,show_x) {
+        const colorsArray = ["#2E86C1","#F39C12","#7D3C98","#28B463","#D35400","#229954","#A569BD","#B03A2E","#9B59B6","#3498DB","#C39BD3","#E74C3C"];
+        let lastDateProcessed = null;
+        const options = {
+            series: [{
+                data: yData
+            }],
+            chart: {
+                id: elementId,
+                group: group,
+                type: "line",
+                height: 160,
+                zoom: {
+                    enabled: false
+                },
+                toolbar: {
+                    show: false
+                }
+            },
+            markers: {
+                size: 0,
+                hover: {
+                    size: 6
+                },
+            },
+            {% if show_point %}
+                dataLabels: {
+                enabled: true
+            },
+            {% endif %}
+            stroke: {
+                curve: "smooth",
+                {% if strokesize %}
+                width: {{strokesize}}
+                {% else %}
+                width: 3
+                {% endif %}
+            },
+            colors: [colorsArray[counter]],
+            title: {
+                align: "left",
+                style: {
+                    fontWeight: 500
+                }
+            },
+            xaxis: {
+                categories: xData,
+                type: "datetime",
+                labels: {
+                    show: show_x
+                }
+            },
+            yaxis: {
+                title: {
+                    text: titleText
+                },
+            },
+            grid: {
+                clipMarkers: false
+            },
+            tooltip: {
+                followCursor: false,
+                x: {
+                    show: false,
+                    format: "yyyy-MM-dd HH:mm"
+                },
+                marker: {
+                    show: false
+                },
+                y: {
+                    title: {
+                        formatter: function() {
+                            return "";
+                        }
+                    }
+                }
+            },
+        };
+    
+        const chart = new ApexCharts(document.querySelector("#" + elementId), options);
+        chart.render();
+        return chart; // Return chart instance for further interactions
+    }
+    
+    // Existing function modified to accept a new series data array
+    function editLineChart(chartInstance, newXData, seriesData,seriesName) {
+        const newSeries =[{
+            name: seriesName,
+            data: seriesData
+        }];
+        chartInstance.updateOptions({
+            series: newSeries,
+            xaxis: {
+                categories: newXData
+            }
+        });
+    }
+
+    function addSeriesToChart(chartInstance, seriesName, seriesData) {
+        const newSeries = {
+            name: seriesName,
+            data: seriesData
+        };
+    
+        // Assuming the series is available directly under chartInstance's options
+        if (!chartInstance.options.series) {
+            chartInstance.options.series = [];
+        }
+        
+        chartInstance.options.series.push(newSeries);
+        chartInstance.updateOptions({
+            series: chartInstance.options.series
+        });
+    }
+    
+    
+    function getChartColorsArray(e) {
+        const elem = document.getElementById(e);
+        if (!elem) return;
+    
+        const colorsData = elem.getAttribute("data-colors");
+        if (colorsData) {
+            return JSON.parse(colorsData).map(color => {
+                const trimmedColor = color.replace(" ", "");
+                if (trimmedColor.indexOf(",") === -1) {
+                    return getComputedStyle(document.documentElement).getPropertyValue(trimmedColor) || trimmedColor;
+                } else {
+                    const splitColor = color.split(",");
+                    if (splitColor.length === 2) {
+                        return `rgba(${getComputedStyle(document.documentElement).getPropertyValue(splitColor[0])},${splitColor[1]})`;
+                    }
+                    return trimmedColor;
+                }
+            });
+        }
+    }
+    {% if id %}
+    // Usage example:
+
+    var dateStrs = {{ xData|safe }}; // assuming date_list_from_context is a list of date strings
+    var {{id}}_xData = dateStrs.map(str => new Date(str).getTime());
+
+    {% for item in yData|zip_lists:seriesName %}
+        {% if forloop.last %}
+            const {{id}}_{{forloop.counter}} = createSyncedChart("sync_line_{{id}}_{{forloop.counter}}", {{id}}_xData, {{item.0|safe}}, "{{item.1}}","{{id}}",{{forloop.counter0}}, true);
+        {% else %}
+            const {{id}}_{{forloop.counter}} = createSyncedChart("sync_line_{{id}}_{{forloop.counter}}", {{id}}_xData, {{item.0|safe}}, "{{item.1}}","{{id}}",{{forloop.counter0}}, false);
+        {% endif %}
+    {% endfor %}
+    
+    {% endif %}
+    
+    
+</script>
