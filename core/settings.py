@@ -146,8 +146,8 @@ EMAIL_HOST = 'wolf.mschosting.com'
 # EMAIL_HOST = 'smtppro01.mschosting.com'
 EMAIL_PORT = 587 
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'no-reply@cidblink.com'
-EMAIL_HOST_PASSWORD = '1234CIDB@'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -162,16 +162,10 @@ USE_TZ = True
 # CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = (
-  'http://localhost:8000',
-  'http://127.0.0.1:8000',
-  'https://staging.expat.cidblink.com',
-  'https://expat.cidblink.com'
+    
 )
 CSRF_TRUSTED_ORIGINS = [
-  'http://localhost:8000',
-  'http://127.0.0.1:8000',
-  'https://staging.expat.cidblink.com',
-  'https://expat.cidblink.com'
+
 ]
 
 # Static files (CSS, JavaScript, Images)

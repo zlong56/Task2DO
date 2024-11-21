@@ -43,15 +43,7 @@
                                 {% csrf_token %}
                                 <h4>Personal</h4>
                                 <div class="row">
-                                    <div class="col-lg-6">
-                                        {% include "libs/input.html" with labe="SSM Register Number" name="SSMRegisterNum" value=obj.SSMRegisterNum required=True %}
-                                    </div>
-                                    <div class="col-lg-6">
-                                        {% include "libs/input.html" with labe="CIDB Register Number" name="CIDBRegNumber" value=obj.CIDBRegNumber required=True %}
-                                    </div>
-                                    <div class="col-lg-6">
-                                        {% include "libs/input.html" with label="Company Name" name="CompanyName" value=obj.CompanyName required=True %}
-                                    </div>
+                                    
                                     <div class="col-lg-6">
                                         {% include "libs/input.html" with label="Email" name="Email" value=obj.Email type="email" required=True %}
                                     </div>

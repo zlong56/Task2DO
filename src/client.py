@@ -75,19 +75,8 @@ def client_profile_setting(request):
             obj.ProfilePic = request.FILES.get("ProfilePic")
             obj.save()
         else:
-            if request.POST.get("CompanyName"):
-                obj.Name = request.POST.get("CompanyName")
-                obj.CompanyName = request.POST.get("CompanyName")
-            if request.POST.get("Email"):
-                obj.Email = request.POST.get("Email")
-            if request.POST.get("SSMRegisterNum"):
-                obj.SSMRegisterNum = request.POST.get("SSMRegisterNum")
-            if request.POST.get("CIDBRegNumber"):
-                obj.CIDBRegNumber = request.POST.get("CIDBRegNumber")
-
-            if obj.RegisterStatus == "Rejected":
-                obj.RegisterStatus = "Admin Checking"
-
+            pass
+        
             obj.save()
         return redirect('client_profile_setting')
 

@@ -30,7 +30,7 @@ class EmailBotClass:
                 <p> Dear <b>'+client_name+'</b><br><br><br>\
                 '+content+'<br><hr>\
                 Thanks for choosing CSWMS, wish you have a great day.<br>\
-                Support Email : <b>assessment@cidbh.com.my</b>\
+                Support Email : <b>assessment</b>\
             '
         attachment = kwargs.get("attachment")
         x = threading.Thread(target=send_email_thread, args=(client_email,subject,body_content,self.mail_id,attachment))
@@ -39,7 +39,3 @@ class EmailBotClass:
         
 EmailBot = EmailBotClass(EMAIL_HOST_USER)
 
-
-
-# Customer support : <b>+6016 1820298</b>\
-# Support Email : <b>customer@cidblink.com</b>\
