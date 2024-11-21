@@ -76,7 +76,6 @@ def client_profile_setting(request):
             obj.save()
         else:
             pass
-        
             obj.save()
         return redirect('client_profile_setting')
 
